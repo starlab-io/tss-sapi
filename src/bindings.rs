@@ -309,6 +309,9 @@ pub const ALG_KDF1_SP800_108_VALUE: ::std::os::raw::c_uint = 34;
 pub const ALG_ECC_VALUE: ::std::os::raw::c_uint = 35;
 pub const ALG_SYMCIPHER_VALUE: ::std::os::raw::c_uint = 37;
 pub const ALG_CAMELLIA_VALUE: ::std::os::raw::c_uint = 38;
+pub const ALG_SHA3_256_VALUE: ::std::os::raw::c_uint = 39;
+pub const ALG_SHA3_384_VALUE: ::std::os::raw::c_uint = 40;
+pub const ALG_SHA3_512_VALUE: ::std::os::raw::c_uint = 41;
 pub const ALG_CTR_VALUE: ::std::os::raw::c_uint = 64;
 pub const ALG_OFB_VALUE: ::std::os::raw::c_uint = 65;
 pub const ALG_CBC_VALUE: ::std::os::raw::c_uint = 66;
@@ -807,6 +810,15 @@ pub const MAX_NON_VENDOR_SPECIFIC: ::std::os::raw::c_uint = 536870912;
 pub const TSS_SAPI_FIRST_FAMILY: ::std::os::raw::c_uint = 1;
 pub const TSS_SAPI_FIRST_LEVEL: ::std::os::raw::c_uint = 1;
 pub const TSS_SAPI_FIRST_VERSION: ::std::os::raw::c_uint = 1;
+pub const DEFAULT_SIMULATOR_TPM_PORT: ::std::os::raw::c_uint = 2321;
+pub const DEFAULT_HOSTNAME: &'static [u8; 10usize] = b"127.0.0.1\x00";
+pub const MS_SIM_POWER_ON: ::std::os::raw::c_uint = 1;
+pub const MS_SIM_POWER_OFF: ::std::os::raw::c_uint = 2;
+pub const MS_SIM_TPM_SEND_COMMAND: ::std::os::raw::c_uint = 8;
+pub const MS_SIM_CANCEL_ON: ::std::os::raw::c_uint = 9;
+pub const MS_SIM_CANCEL_OFF: ::std::os::raw::c_uint = 10;
+pub const MS_SIM_NV_ON: ::std::os::raw::c_uint = 11;
+pub const TPM_SESSION_END: ::std::os::raw::c_uint = 20;
 pub type wchar_t = ::std::os::raw::c_int;
 #[repr(C)]
 #[derive(Debug, Copy)]
@@ -14509,6 +14521,126 @@ extern "C" {
                                     outputData: *mut TPM2B_DATA,
                                     rspAuthsArray: *mut TSS2_SYS_RSP_AUTHS)
      -> TPM_RC;
+}
+#[repr(u32)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+pub enum printf_type { NO_PREFIX = 0, RM_PREFIX = 1, }
+pub type TCTI_LOG_CALLBACK =
+    ::std::option::Option<unsafe extern "C" fn(data:
+                                                   *mut ::std::os::raw::c_void,
+                                               type_: printf_type,
+                                               format:
+                                                   *const ::std::os::raw::c_char, ...)
+                              -> ::std::os::raw::c_int>;
+pub type TCTI_LOG_BUFFER_CALLBACK =
+    ::std::option::Option<unsafe extern "C" fn(useriData:
+                                                   *mut ::std::os::raw::c_void,
+                                               type_: printf_type,
+                                               buffer: *mut UINT8,
+                                               length: UINT32)
+                              -> ::std::os::raw::c_int>;
+#[repr(C)]
+#[derive(Debug, Copy)]
+pub struct TCTI_DEVICE_CONF {
+    pub device_path: *const ::std::os::raw::c_char,
+    pub logCallback: TCTI_LOG_CALLBACK,
+    pub logData: *mut ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_TCTI_DEVICE_CONF() {
+    assert_eq!(::std::mem::size_of::<TCTI_DEVICE_CONF>() , 24usize , concat !
+               ( "Size of: " , stringify ! ( TCTI_DEVICE_CONF ) ));
+    assert_eq! (::std::mem::align_of::<TCTI_DEVICE_CONF>() , 8usize , concat !
+                ( "Alignment of " , stringify ! ( TCTI_DEVICE_CONF ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_DEVICE_CONF ) ) . device_path as *
+                const _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_DEVICE_CONF ) ,
+                "::" , stringify ! ( device_path ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_DEVICE_CONF ) ) . logCallback as *
+                const _ as usize } , 8usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_DEVICE_CONF ) ,
+                "::" , stringify ! ( logCallback ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_DEVICE_CONF ) ) . logData as * const
+                _ as usize } , 16usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_DEVICE_CONF ) ,
+                "::" , stringify ! ( logData ) ));
+}
+impl Clone for TCTI_DEVICE_CONF {
+    fn clone(&self) -> Self { *self }
+}
+extern "C" {
+    pub fn InitDeviceTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
+                          contextSize: *mut usize,
+                          config: *const TCTI_DEVICE_CONF) -> TSS2_RC;
+}
+extern "C" {
+    #[link_name = "printfFunction"]
+    pub static mut printfFunction:
+               ::std::option::Option<unsafe extern "C" fn(type_: printf_type,
+                                                          format:
+                                                              *const ::std::os::raw::c_char, ...)
+                                         -> ::std::os::raw::c_int>;
+}
+extern "C" {
+    pub fn PlatformCommand(tctiContext: *mut TSS2_TCTI_CONTEXT,
+                           cmd: ::std::os::raw::c_char) -> TSS2_RC;
+}
+#[repr(C)]
+#[derive(Debug, Copy)]
+pub struct TCTI_SOCKET_CONF {
+    pub hostname: *const ::std::os::raw::c_char,
+    pub port: u16,
+    pub logCallback: TCTI_LOG_CALLBACK,
+    pub logBufferCallback: TCTI_LOG_BUFFER_CALLBACK,
+    pub logData: *mut ::std::os::raw::c_void,
+}
+#[test]
+fn bindgen_test_layout_TCTI_SOCKET_CONF() {
+    assert_eq!(::std::mem::size_of::<TCTI_SOCKET_CONF>() , 40usize , concat !
+               ( "Size of: " , stringify ! ( TCTI_SOCKET_CONF ) ));
+    assert_eq! (::std::mem::align_of::<TCTI_SOCKET_CONF>() , 8usize , concat !
+                ( "Alignment of " , stringify ! ( TCTI_SOCKET_CONF ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_SOCKET_CONF ) ) . hostname as *
+                const _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_SOCKET_CONF ) ,
+                "::" , stringify ! ( hostname ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_SOCKET_CONF ) ) . port as * const _
+                as usize } , 8usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_SOCKET_CONF ) ,
+                "::" , stringify ! ( port ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_SOCKET_CONF ) ) . logCallback as *
+                const _ as usize } , 16usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_SOCKET_CONF ) ,
+                "::" , stringify ! ( logCallback ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_SOCKET_CONF ) ) . logBufferCallback
+                as * const _ as usize } , 24usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_SOCKET_CONF ) ,
+                "::" , stringify ! ( logBufferCallback ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TCTI_SOCKET_CONF ) ) . logData as * const
+                _ as usize } , 32usize , concat ! (
+                "Alignment of field: " , stringify ! ( TCTI_SOCKET_CONF ) ,
+                "::" , stringify ! ( logData ) ));
+}
+impl Clone for TCTI_SOCKET_CONF {
+    fn clone(&self) -> Self { *self }
+}
+extern "C" {
+    pub fn InitSocketTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
+                          contextSize: *mut usize,
+                          config: *const TCTI_SOCKET_CONF, serverSockets: u8)
+     -> TSS2_RC;
+}
+extern "C" {
+    pub fn SendSessionEndSocketTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
+                                    tpmCmdServer: UINT8) -> TSS2_RC;
 }
 #[repr(C)]
 #[derive(Debug, Copy)]
