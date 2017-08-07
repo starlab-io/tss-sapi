@@ -10087,6 +10087,7 @@ impl Clone for TSS2_SYS_RSP_AUTHS {
 extern "C" {
     pub fn Tss2_Sys_GetContextSize(maxCommandResponseSize: usize) -> usize;
 }
+#[link(name = "sapi")]
 extern "C" {
     pub fn Tss2_Sys_Initialize(sysContext: *mut TSS2_SYS_CONTEXT,
                                contextSize: usize,
@@ -14571,6 +14572,7 @@ fn bindgen_test_layout_TCTI_DEVICE_CONF() {
 impl Clone for TCTI_DEVICE_CONF {
     fn clone(&self) -> Self { *self }
 }
+#[link(name = "tcti-device")]
 extern "C" {
     pub fn InitDeviceTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
                           contextSize: *mut usize,
@@ -14632,6 +14634,7 @@ fn bindgen_test_layout_TCTI_SOCKET_CONF() {
 impl Clone for TCTI_SOCKET_CONF {
     fn clone(&self) -> Self { *self }
 }
+#[link(name = "tcti-socket")]
 extern "C" {
     pub fn InitSocketTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
                           contextSize: *mut usize,
