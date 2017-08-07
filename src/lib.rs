@@ -38,6 +38,11 @@ fn free<T>(mem: *mut T, size: usize) {
     unsafe { mem::drop(Vec::from_raw_parts(mem, 0, size)) }
 }
 
+pub enum Startup {
+    Clear,
+    State,
+}
+
 pub struct Context {
     inner: *mut sys::TSS2_SYS_CONTEXT,
     size: usize,
@@ -90,6 +95,17 @@ impl Context {
         let tcti = TctiContext::socket(host, port)?;
         Self::_new_context(tcti)
     }
+
+    pub fn startup(&self, action: Startup) -> Result<()> {
+        let action = match action {
+            Startup::State => sys::TPM_SU_STATE,
+            Startup::Clear => sys::TPM_SU_CLEAR,
+        };
+
+        let result = unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) };
+        ensure!(result == 0, "Unable to issue startup");
+        Ok(())
+    }
 }
 
 struct TctiContext {
@@ -112,6 +128,7 @@ impl Drop for TctiContext {
             sys::Tss2_Tcti_Finalize(self.inner);
         }
         */
+
 
 
         trace!("TctiContext free({:?})", self.inner);
