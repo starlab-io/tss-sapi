@@ -19,12 +19,60 @@ mod errors;
 #[allow(non_upper_case_globals, improper_ctypes)]
 mod sys {
     include!("bindings.rs");
+
+    // error values aren't getting pulled from sapi/tss2_common.h
+    pub const TSS2_ERROR_LEVEL_MASK: TSS2_RC = 0xFF << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_TPM_ERROR_LEVEL: TSS2_RC = 0 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_APP_ERROR_LEVEL: TSS2_RC = 5 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_FEATURE_ERROR_LEVEL: TSS2_RC = 6 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_ESAPI_ERROR_LEVEL: TSS2_RC = 7 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_SYS_ERROR_LEVEL: TSS2_RC = 8 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_SYS_PART2_ERROR_LEVEL: TSS2_RC = 9 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_TCTI_ERROR_LEVEL: TSS2_RC = 10 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_RESMGRTPM_ERROR_LEVEL: TSS2_RC = 11 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_RESMGR_ERROR_LEVEL: TSS2_RC = 12 << TSS2_RC_LEVEL_SHIFT;
+    pub const TSS2_DRIVER_ERROR_LEVEL: TSS2_RC = 13 << TSS2_RC_LEVEL_SHIFT;
+
+    // masks not defined in the spec but defined in tpm2.0-tools/lib/rc-decode.h
+    const TPM_RC_7BIT_ERROR_MASK: TSS2_RC = 0x7f;
+    const TPM_RC_6BIT_ERROR_MASK: TSS2_RC = 0x3f;
+    const TPM_RC_PARAMETER_MASK: TSS2_RC = 0xf00;
+    const TPM_RC_HANDLE_MASK: TSS2_RC = 0x700;
+    const TPM_RC_SESSION_MASK: TSS2_RC = 0x700;
+
+    // bit positions for the different fields
+    const TPM_RC_FORMAT_ONE: u8 = 7;
+
+    fn is_bit_set(rc: TSS2_RC, pos: u8) -> bool {
+        ((1 << pos) & rc) > 0
+    }
+
+    pub trait ErrorCodes {
+        fn is_format_one(self) -> bool;
+        fn get_code_fmt1(self) -> Self;
+        fn get_code_ver1(self) -> Self;
+    }
+
+    impl ErrorCodes for TSS2_RC {
+        fn is_format_one(self) -> bool {
+            is_bit_set(self, TPM_RC_FORMAT_ONE)
+        }
+
+        fn get_code_fmt1(self) -> TSS2_RC {
+            (self & TPM_RC_6BIT_ERROR_MASK) + RC_FMT1
+        }
+
+        fn get_code_ver1(self) -> TSS2_RC {
+            (self & TPM_RC_7BIT_ERROR_MASK) + RC_VER1
+        }
+    }
 }
 
 pub use errors::*;
 use std::ffi::{CStr, CString};
 use std::mem;
 use std::ptr;
+use sys::ErrorCodes;
 
 fn malloc<T>(size: usize) -> *mut T {
     // use a Vec as our allocator
@@ -36,6 +84,122 @@ fn malloc<T>(size: usize) -> *mut T {
 
 fn free<T>(mem: *mut T, size: usize) {
     unsafe { mem::drop(Vec::from_raw_parts(mem, 0, size)) }
+}
+
+macro_rules! tss_tpm_err(
+    ($kind:path) => ( Err(ErrorKind::Tpm($kind).into()) )
+);
+
+macro_rules! tss_tcti_err(
+    ($kind:path) => ( Err(ErrorKind::Tcti($kind).into()) )
+);
+
+fn tss_err(err: sys::TSS2_RC) -> Result<()> {
+    // match against the error returned
+    match err {
+        // do nothing for success
+        sys::TPM_RC_SUCCESS => Ok(()),
+        // any error in the valid error range needs to be taken apart by layer
+        val => {
+            match val & sys::TSS2_ERROR_LEVEL_MASK {
+                sys::TSS2_TPM_ERROR_LEVEL |
+                sys::TSS2_SYS_PART2_ERROR_LEVEL => {
+                    match val.is_format_one() {
+                        true => {
+                            // format one codes
+                            match val.get_code_fmt1() {
+                                sys::TPM_RC_ASYMMETRIC => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Asymmetric)
+                                }
+                                sys::TPM_RC_ATTRIBUTES => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Attributes)
+                                }
+                                sys::TPM_RC_HASH => tss_tpm_err!(errors::tpm::ErrorKind::Hash),
+                                sys::TPM_RC_VALUE => tss_tpm_err!(errors::tpm::ErrorKind::Value),
+                                sys::TPM_RC_HIERARCHY => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Hierarchy)
+                                }
+                                sys::TPM_RC_KEY_SIZE => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::KeySize)
+                                }
+                                sys::TPM_RC_MGF => tss_tpm_err!(errors::tpm::ErrorKind::Mgf),
+                                sys::TPM_RC_MODE => tss_tpm_err!(errors::tpm::ErrorKind::Mode),
+                                sys::TPM_RC_TYPE => tss_tpm_err!(errors::tpm::ErrorKind::Type),
+                                sys::TPM_RC_HANDLE => tss_tpm_err!(errors::tpm::ErrorKind::Handle),
+                                sys::TPM_RC_KDF => tss_tpm_err!(errors::tpm::ErrorKind::Kdf),
+                                sys::TPM_RC_RANGE => tss_tpm_err!(errors::tpm::ErrorKind::Range),
+                                sys::TPM_RC_AUTH_FAIL => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::AuthFail)
+                                }
+                                sys::TPM_RC_NONCE => tss_tpm_err!(errors::tpm::ErrorKind::Nonce),
+                                sys::TPM_RC_PP => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::PhysicalPresence)
+                                }
+                                sys::TPM_RC_SCHEME => tss_tpm_err!(errors::tpm::ErrorKind::Scheme),
+                                sys::TPM_RC_SIZE => tss_tpm_err!(errors::tpm::ErrorKind::Size),
+                                sys::TPM_RC_SYMMETRIC => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Symmetric)
+                                }
+                                sys::TPM_RC_TAG => tss_tpm_err!(errors::tpm::ErrorKind::Tag),
+                                sys::TPM_RC_SELECTOR => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Selector)
+                                }
+                                sys::TPM_RC_INSUFFICIENT => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Insufficient)
+                                }
+                                sys::TPM_RC_SIGNATURE => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Signature)
+                                }
+                                sys::TPM_RC_KEY => tss_tpm_err!(errors::tpm::ErrorKind::Key),
+                                sys::TPM_RC_POLICY_FAIL => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::PolicyFail)
+                                }
+                                sys::TPM_RC_BAD_AUTH => tss_tpm_err!(errors::tpm::ErrorKind::BadAuth),
+                                err => {
+                                    Err(ErrorKind::Tpm(errors::tpm::ErrorKind::FormatOne(err))
+                                            .into())
+                                }
+                            }
+                        }
+                        false => {
+                            // format zero uses "version 1" codes
+                            match val.get_code_ver1() {
+                                sys::TPM_RC_INITIALIZE => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Initialize)
+                                }
+                                sys::TPM_RC_EXCLUSIVE => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Exclusive)
+                                }
+                                err => {
+                                    Err(ErrorKind::Tpm(errors::tpm::ErrorKind::FormatZero(err))
+                                            .into())
+                                }
+                            }
+                        }
+                    }
+                }
+                sys::TSS2_APP_ERROR_LEVEL => Err(ErrorKind::AppError(err).into()),
+                sys::TSS2_FEATURE_ERROR_LEVEL => Err(ErrorKind::FeatureError(err).into()),
+                sys::TSS2_ESAPI_ERROR_LEVEL => Err(ErrorKind::EsapiError(err).into()),
+                sys::TSS2_TCTI_ERROR_LEVEL |
+                sys::TSS2_SYS_ERROR_LEVEL => {
+                    // get the error code
+                    match val & !sys::TSS2_ERROR_LEVEL_MASK {
+                        sys::TSS2_BASE_RC_GENERAL_FAILURE => {
+                            tss_tcti_err!(errors::tcti::ErrorKind::GenFail)
+                        }
+                        err => {
+                            Err(ErrorKind::Tcti(errors::tcti::ErrorKind::NotWrapped(err)).into())
+                        }
+                    }
+                }
+                sys::TSS2_RESMGRTPM_ERROR_LEVEL => Err(ErrorKind::ResMgrTpmError(err).into()),
+                sys::TSS2_RESMGR_ERROR_LEVEL => Err(ErrorKind::ResMgrError(err).into()),
+                sys::TSS2_DRIVER_ERROR_LEVEL => Err(ErrorKind::DriverError(err).into()),
+                _ => Err(ErrorKind::Unknown(err).into()),
+            }
+        }
+    }
 }
 
 pub enum Startup {
@@ -74,8 +238,7 @@ impl Context {
 
         let ptr = malloc::<sys::TSS2_SYS_CONTEXT>(alloc_size);
 
-        let result = unsafe { sys::Tss2_Sys_Initialize(ptr, alloc_size, tcti.inner, &mut abi) };
-        ensure!(result == 0, "Unable to initialize context");
+        tss_err(unsafe { sys::Tss2_Sys_Initialize(ptr, alloc_size, tcti.inner, &mut abi) })?;
 
         Ok(Context {
                inner: ptr,
@@ -102,8 +265,18 @@ impl Context {
             Startup::Clear => sys::TPM_SU_CLEAR,
         };
 
-        let result = unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) };
-        ensure!(result == 0, "Unable to issue startup");
+        tss_err(unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) })?;
+        Ok(())
+    }
+
+    pub fn take_ownership(&self) -> Result<()> {
+        let sessionData = sys::TPMS_AUTH_COMMAND {
+            sessionHandle: sys::TPM_RS_PW,
+            nonce: ::std::mem::zeroed(),
+            hmac: ::std::mem::zeroed(),
+            sessionAttributes: 0 as sys::TPMA_SESSION,
+        };
+
         Ok(())
     }
 }
@@ -132,6 +305,11 @@ impl Drop for TctiContext {
 
 
 
+
+
+
+
+
         trace!("TctiContext free({:?})", self.inner);
         free(self.inner, self.size);
     }
@@ -154,13 +332,11 @@ impl TctiContext {
 
         let mut alloc_size: usize = 0;
 
-        let result = unsafe { sys::InitDeviceTcti(ptr::null_mut(), &mut alloc_size, &config) };
-        ensure!(result == 0, "InitDeviceTcti failed to return a size");
+        tss_err(unsafe { sys::InitDeviceTcti(ptr::null_mut(), &mut alloc_size, &config) })?;
 
         let ptr = malloc::<sys::TSS2_TCTI_CONTEXT>(alloc_size);
 
-        let result = unsafe { sys::InitDeviceTcti(ptr, &mut alloc_size, &config) };
-        ensure!(result == 0, "InitDeviceTcti failed to initialize");
+        tss_err(unsafe { sys::InitDeviceTcti(ptr, &mut alloc_size, &config) })?;
 
         Ok(TctiContext {
                inner: ptr,
@@ -193,13 +369,11 @@ impl TctiContext {
 
         let mut alloc_size: usize = 0;
 
-        let result = unsafe { sys::InitSocketTcti(ptr::null_mut(), &mut alloc_size, &config, 0) };
-        ensure!(result == 0, "InitSocketTcti failed to return a size");
+        tss_err(unsafe { sys::InitSocketTcti(ptr::null_mut(), &mut alloc_size, &config, 0) })?;
 
         let ptr = malloc::<sys::TSS2_TCTI_CONTEXT>(alloc_size);
 
-        let result = unsafe { sys::InitSocketTcti(ptr, &mut alloc_size, &config, 0) };
-        ensure!(result == 0, "InitSocketTcti failed to initialize");
+        tss_err(unsafe { sys::InitSocketTcti(ptr, &mut alloc_size, &config, 0) })?;
 
         Ok(TctiContext {
                inner: ptr,
