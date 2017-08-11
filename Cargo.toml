@@ -8,7 +8,8 @@ repository = "https://github.com/starlab-io/tss-sapi.git"
 homepage = "https://github.com/starlab-io/tss-sapi"
 documentation = "https://docs.rs/tss-sapi"
 keywords = ["tpm", "tss", "sapi"]
-build = false
+build = "build.rs"
+links = "sapi"
 
 [dependencies]
 error-chain = "0.10.0"
