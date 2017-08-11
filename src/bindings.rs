@@ -214,12 +214,8 @@ pub const TSS2_LEVEL_IMPLEMENTATION_SPECIFIC_SHIFT: ::std::os::raw::c_uint =
     11;
 pub const TSS2_LEVEL_IMPLEMENTATION_SPECIFIC_OFFSET: ::std::os::raw::c_uint =
     63488;
-pub const TRUE: ::std::os::raw::c_uint = 1;
-pub const FALSE: ::std::os::raw::c_uint = 0;
 pub const YES: ::std::os::raw::c_uint = 1;
 pub const NO: ::std::os::raw::c_uint = 0;
-pub const SET: ::std::os::raw::c_uint = 1;
-pub const CLEAR: ::std::os::raw::c_uint = 0;
 pub const BIG_ENDIAN_TPM: ::std::os::raw::c_uint = 0;
 pub const LITTLE_ENDIAN_TPM: ::std::os::raw::c_uint = 1;
 pub const NO_AUTO_ALIGN: ::std::os::raw::c_uint = 0;
@@ -278,47 +274,47 @@ pub const CRT_FORMAT_RSA: ::std::os::raw::c_uint = 1;
 pub const VENDOR_COMMAND_COUNT: ::std::os::raw::c_uint = 0;
 pub const PRIVATE_VENDOR_SPECIFIC_BYTES: ::std::os::raw::c_uint = 640;
 pub const MAX_VENDOR_BUFFER_SIZE: ::std::os::raw::c_uint = 1024;
-pub const ALG_ERROR_VALUE: ::std::os::raw::c_uint = 0;
-pub const ALG_RSA_VALUE: ::std::os::raw::c_uint = 1;
-pub const ALG_SHA_VALUE: ::std::os::raw::c_uint = 4;
-pub const ALG_SHA1_VALUE: ::std::os::raw::c_uint = 4;
-pub const ALG_HMAC_VALUE: ::std::os::raw::c_uint = 5;
-pub const ALG_AES_VALUE: ::std::os::raw::c_uint = 6;
-pub const ALG_MGF1_VALUE: ::std::os::raw::c_uint = 7;
-pub const ALG_KEYEDHASH_VALUE: ::std::os::raw::c_uint = 8;
-pub const ALG_XOR_VALUE: ::std::os::raw::c_uint = 10;
-pub const ALG_SHA256_VALUE: ::std::os::raw::c_uint = 11;
-pub const ALG_SHA384_VALUE: ::std::os::raw::c_uint = 12;
-pub const ALG_SHA512_VALUE: ::std::os::raw::c_uint = 13;
-pub const ALG_NULL_VALUE: ::std::os::raw::c_uint = 16;
-pub const ALG_SM3_256_VALUE: ::std::os::raw::c_uint = 18;
-pub const ALG_SM4_VALUE: ::std::os::raw::c_uint = 19;
-pub const ALG_RSASSA_VALUE: ::std::os::raw::c_uint = 20;
-pub const ALG_RSAES_VALUE: ::std::os::raw::c_uint = 21;
-pub const ALG_RSAPSS_VALUE: ::std::os::raw::c_uint = 22;
-pub const ALG_OAEP_VALUE: ::std::os::raw::c_uint = 23;
-pub const ALG_ECDSA_VALUE: ::std::os::raw::c_uint = 24;
-pub const ALG_ECDH_VALUE: ::std::os::raw::c_uint = 25;
-pub const ALG_ECDAA_VALUE: ::std::os::raw::c_uint = 26;
-pub const ALG_SM2_VALUE: ::std::os::raw::c_uint = 27;
-pub const ALG_ECSCHNORR_VALUE: ::std::os::raw::c_uint = 28;
-pub const ALG_ECMQV_VALUE: ::std::os::raw::c_uint = 29;
-pub const ALG_KDF1_SP800_56A_VALUE: ::std::os::raw::c_uint = 32;
-pub const ALG_KDF2_VALUE: ::std::os::raw::c_uint = 33;
-pub const ALG_KDF1_SP800_108_VALUE: ::std::os::raw::c_uint = 34;
-pub const ALG_ECC_VALUE: ::std::os::raw::c_uint = 35;
-pub const ALG_SYMCIPHER_VALUE: ::std::os::raw::c_uint = 37;
-pub const ALG_CAMELLIA_VALUE: ::std::os::raw::c_uint = 38;
-pub const ALG_SHA3_256_VALUE: ::std::os::raw::c_uint = 39;
-pub const ALG_SHA3_384_VALUE: ::std::os::raw::c_uint = 40;
-pub const ALG_SHA3_512_VALUE: ::std::os::raw::c_uint = 41;
-pub const ALG_CTR_VALUE: ::std::os::raw::c_uint = 64;
-pub const ALG_OFB_VALUE: ::std::os::raw::c_uint = 65;
-pub const ALG_CBC_VALUE: ::std::os::raw::c_uint = 66;
-pub const ALG_CFB_VALUE: ::std::os::raw::c_uint = 67;
-pub const ALG_ECB_VALUE: ::std::os::raw::c_uint = 68;
-pub const ALG_FIRST_VALUE: ::std::os::raw::c_uint = 1;
-pub const ALG_LAST_VALUE: ::std::os::raw::c_uint = 68;
+pub const TPM_ALG_ERROR: ::std::os::raw::c_uint = 0;
+pub const TPM_ALG_RSA: ::std::os::raw::c_uint = 1;
+pub const TPM_ALG_SHA: ::std::os::raw::c_uint = 4;
+pub const TPM_ALG_SHA1: ::std::os::raw::c_uint = 4;
+pub const TPM_ALG_HMAC: ::std::os::raw::c_uint = 5;
+pub const TPM_ALG_AES: ::std::os::raw::c_uint = 6;
+pub const TPM_ALG_MGF1: ::std::os::raw::c_uint = 7;
+pub const TPM_ALG_KEYEDHASH: ::std::os::raw::c_uint = 8;
+pub const TPM_ALG_XOR: ::std::os::raw::c_uint = 10;
+pub const TPM_ALG_SHA256: ::std::os::raw::c_uint = 11;
+pub const TPM_ALG_SHA384: ::std::os::raw::c_uint = 12;
+pub const TPM_ALG_SHA512: ::std::os::raw::c_uint = 13;
+pub const TPM_ALG_NULL: ::std::os::raw::c_uint = 16;
+pub const TPM_ALG_SM3_256: ::std::os::raw::c_uint = 18;
+pub const TPM_ALG_SM4: ::std::os::raw::c_uint = 19;
+pub const TPM_ALG_RSASSA: ::std::os::raw::c_uint = 20;
+pub const TPM_ALG_RSAES: ::std::os::raw::c_uint = 21;
+pub const TPM_ALG_RSAPSS: ::std::os::raw::c_uint = 22;
+pub const TPM_ALG_OAEP: ::std::os::raw::c_uint = 23;
+pub const TPM_ALG_ECDSA: ::std::os::raw::c_uint = 24;
+pub const TPM_ALG_ECDH: ::std::os::raw::c_uint = 25;
+pub const TPM_ALG_ECDAA: ::std::os::raw::c_uint = 26;
+pub const TPM_ALG_SM2: ::std::os::raw::c_uint = 27;
+pub const TPM_ALG_ECSCHNORR: ::std::os::raw::c_uint = 28;
+pub const TPM_ALG_ECMQV: ::std::os::raw::c_uint = 29;
+pub const TPM_ALG_KDF1_SP800_56A: ::std::os::raw::c_uint = 32;
+pub const TPM_ALG_KDF2: ::std::os::raw::c_uint = 33;
+pub const TPM_ALG_KDF1_SP800_108: ::std::os::raw::c_uint = 34;
+pub const TPM_ALG_ECC: ::std::os::raw::c_uint = 35;
+pub const TPM_ALG_SYMCIPHER: ::std::os::raw::c_uint = 37;
+pub const TPM_ALG_CAMELLIA: ::std::os::raw::c_uint = 38;
+pub const TPM_ALG_CTR: ::std::os::raw::c_uint = 64;
+pub const TPM_ALG_SHA3_256: ::std::os::raw::c_uint = 39;
+pub const TPM_ALG_SHA3_384: ::std::os::raw::c_uint = 40;
+pub const TPM_ALG_SHA3_512: ::std::os::raw::c_uint = 41;
+pub const TPM_ALG_OFB: ::std::os::raw::c_uint = 65;
+pub const TPM_ALG_CBC: ::std::os::raw::c_uint = 66;
+pub const TPM_ALG_CFB: ::std::os::raw::c_uint = 67;
+pub const TPM_ALG_ECB: ::std::os::raw::c_uint = 68;
+pub const TPM_ALG_FIRST: ::std::os::raw::c_uint = 1;
+pub const TPM_ALG_LAST: ::std::os::raw::c_uint = 68;
 pub const SHA1_DIGEST_SIZE: ::std::os::raw::c_uint = 20;
 pub const SHA1_BLOCK_SIZE: ::std::os::raw::c_uint = 64;
 pub const SHA1_DER_SIZE: ::std::os::raw::c_uint = 15;
@@ -348,9 +344,8 @@ pub const CAMELLIA_ALLOWED_KEY_SIZE_256: ::std::os::raw::c_uint = 1;
 pub const CAMELLIA_128_BLOCK_SIZE_BYTES: ::std::os::raw::c_uint = 16;
 pub const CAMELLIA_192_BLOCK_SIZE_BYTES: ::std::os::raw::c_uint = 16;
 pub const CAMELLIA_256_BLOCK_SIZE_BYTES: ::std::os::raw::c_uint = 16;
-pub const ADD_FILL: ::std::os::raw::c_uint = 1;
-pub const ALG_CAMELLIA: ::std::os::raw::c_uint = 0;
 pub const MAX_CAP_ALGS: ::std::os::raw::c_uint = 68;
+pub const MAX_CAP_CC: ::std::os::raw::c_uint = 256;
 pub const TPM_SPEC_FAMILY: ::std::os::raw::c_uint = 841887744;
 pub const TPM_SPEC_LEVEL: ::std::os::raw::c_uint = 0;
 pub const TPM_SPEC_VERSION: ::std::os::raw::c_uint = 126;
@@ -821,7 +816,7 @@ pub const MS_SIM_NV_ON: ::std::os::raw::c_uint = 11;
 pub const TPM_SESSION_END: ::std::os::raw::c_uint = 20;
 pub type wchar_t = ::std::os::raw::c_int;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct max_align_t {
     pub __clang_max_align_nonce1: ::std::os::raw::c_longlong,
     pub __bindgen_padding_0: u64,
@@ -869,7 +864,7 @@ pub type uintmax_t = ::std::os::raw::c_ulong;
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum idtype_t { P_ALL = 0, P_PID = 1, P_PGID = 2, }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct div_t {
     pub quot: ::std::os::raw::c_int,
     pub rem: ::std::os::raw::c_int,
@@ -895,7 +890,7 @@ impl Clone for div_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct ldiv_t {
     pub quot: ::std::os::raw::c_long,
     pub rem: ::std::os::raw::c_long,
@@ -921,7 +916,7 @@ impl Clone for ldiv_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct lldiv_t {
     pub quot: ::std::os::raw::c_longlong,
     pub rem: ::std::os::raw::c_longlong,
@@ -1041,7 +1036,7 @@ pub type __off_t = ::std::os::raw::c_long;
 pub type __off64_t = ::std::os::raw::c_long;
 pub type __pid_t = ::std::os::raw::c_int;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct __fsid_t {
     pub __val: [::std::os::raw::c_int; 2usize],
 }
@@ -1121,7 +1116,7 @@ pub type u_int64_t = ::std::os::raw::c_ulong;
 pub type register_t = ::std::os::raw::c_long;
 pub type __sig_atomic_t = ::std::os::raw::c_int;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct __sigset_t {
     pub __val: [::std::os::raw::c_ulong; 16usize],
 }
@@ -1142,7 +1137,7 @@ impl Clone for __sigset_t {
 }
 pub type sigset_t = __sigset_t;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct timespec {
     pub tv_sec: __time_t,
     pub tv_nsec: __syscall_slong_t,
@@ -1168,7 +1163,7 @@ impl Clone for timespec {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct timeval {
     pub tv_sec: __time_t,
     pub tv_usec: __suseconds_t,
@@ -1196,7 +1191,7 @@ impl Clone for timeval {
 pub type suseconds_t = __suseconds_t;
 pub type __fd_mask = ::std::os::raw::c_long;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct fd_set {
     pub __fds_bits: [__fd_mask; 16usize],
 }
@@ -1246,7 +1241,7 @@ pub type fsblkcnt_t = __fsblkcnt_t;
 pub type fsfilcnt_t = __fsfilcnt_t;
 pub type pthread_t = ::std::os::raw::c_ulong;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_attr_t {
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 56usize]>,
     pub __align: __BindgenUnionField<::std::os::raw::c_long>,
@@ -1300,9 +1295,12 @@ fn bindgen_test_layout___pthread_internal_list() {
 impl Clone for __pthread_internal_list {
     fn clone(&self) -> Self { *self }
 }
+impl Default for __pthread_internal_list {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type __pthread_list_t = __pthread_internal_list;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_mutex_t {
     pub __data: __BindgenUnionField<pthread_mutex_t___pthread_mutex_s>,
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 40usize]>,
@@ -1383,6 +1381,9 @@ fn bindgen_test_layout_pthread_mutex_t___pthread_mutex_s() {
 impl Clone for pthread_mutex_t___pthread_mutex_s {
     fn clone(&self) -> Self { *self }
 }
+impl Default for pthread_mutex_t___pthread_mutex_s {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_pthread_mutex_t() {
     assert_eq!(::std::mem::size_of::<pthread_mutex_t>() , 40usize , concat ! (
@@ -1409,7 +1410,7 @@ impl Clone for pthread_mutex_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_mutexattr_t {
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 4usize]>,
     pub __align: __BindgenUnionField<::std::os::raw::c_int>,
@@ -1437,7 +1438,7 @@ impl Clone for pthread_mutexattr_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_cond_t {
     pub __data: __BindgenUnionField<pthread_cond_t__bindgen_ty_1>,
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 48usize]>,
@@ -1517,6 +1518,9 @@ fn bindgen_test_layout_pthread_cond_t__bindgen_ty_1() {
 impl Clone for pthread_cond_t__bindgen_ty_1 {
     fn clone(&self) -> Self { *self }
 }
+impl Default for pthread_cond_t__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_pthread_cond_t() {
     assert_eq!(::std::mem::size_of::<pthread_cond_t>() , 48usize , concat ! (
@@ -1543,7 +1547,7 @@ impl Clone for pthread_cond_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_condattr_t {
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 4usize]>,
     pub __align: __BindgenUnionField<::std::os::raw::c_int>,
@@ -1572,7 +1576,7 @@ impl Clone for pthread_condattr_t {
 pub type pthread_key_t = ::std::os::raw::c_uint;
 pub type pthread_once_t = ::std::os::raw::c_int;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_rwlock_t {
     pub __data: __BindgenUnionField<pthread_rwlock_t__bindgen_ty_1>,
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 56usize]>,
@@ -1580,7 +1584,7 @@ pub struct pthread_rwlock_t {
     pub bindgen_union_field: [u64; 7usize],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_rwlock_t__bindgen_ty_1 {
     pub __lock: ::std::os::raw::c_int,
     pub __nr_readers: ::std::os::raw::c_uint,
@@ -1709,7 +1713,7 @@ impl Clone for pthread_rwlock_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_rwlockattr_t {
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 8usize]>,
     pub __align: __BindgenUnionField<::std::os::raw::c_long>,
@@ -1738,7 +1742,7 @@ impl Clone for pthread_rwlockattr_t {
 }
 pub type pthread_spinlock_t = ::std::os::raw::c_int;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_barrier_t {
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 32usize]>,
     pub __align: __BindgenUnionField<::std::os::raw::c_long>,
@@ -1765,7 +1769,7 @@ impl Clone for pthread_barrier_t {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pthread_barrierattr_t {
     pub __size: __BindgenUnionField<[::std::os::raw::c_char; 4usize]>,
     pub __align: __BindgenUnionField<::std::os::raw::c_int>,
@@ -1864,6 +1868,9 @@ fn bindgen_test_layout_random_data() {
 impl Clone for random_data {
     fn clone(&self) -> Self { *self }
 }
+impl Default for random_data {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 extern "C" {
     pub fn random_r(__buf: *mut random_data, __result: *mut i32)
      -> ::std::os::raw::c_int;
@@ -1923,7 +1930,7 @@ extern "C" {
     pub fn lcong48(__param: *mut ::std::os::raw::c_ushort);
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct drand48_data {
     pub __x: [::std::os::raw::c_ushort; 3usize],
     pub __old_x: [::std::os::raw::c_ushort; 3usize],
@@ -2366,6 +2373,9 @@ fn bindgen_test_layout___locale_struct() {
 impl Clone for __locale_struct {
     fn clone(&self) -> Self { *self }
 }
+impl Default for __locale_struct {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type __locale_t = *mut __locale_struct;
 pub type locale_t = __locale_t;
 extern "C" {
@@ -2533,7 +2543,7 @@ pub type TSS2_RC = UINT32;
  * ABI runetime negotiation structure.
  */
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TSS2_ABI_VERSION {
     pub tssCreator: UINT32,
     pub tssFamily: UINT32,
@@ -2571,7 +2581,7 @@ impl Clone for TSS2_ABI_VERSION {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B {
     pub size: UINT16,
     pub buffer: [BYTE; 1usize],
@@ -2634,6 +2644,9 @@ fn bindgen_test_layout_TPM2B_MAX_HASH_BLOCK__bindgen_ty_1() {
                 TPM2B_MAX_HASH_BLOCK__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_MAX_HASH_BLOCK__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_MAX_HASH_BLOCK() {
     assert_eq!(::std::mem::size_of::<TPM2B_MAX_HASH_BLOCK>() , 130usize ,
@@ -2656,16 +2669,18 @@ fn bindgen_test_layout_TPM2B_MAX_HASH_BLOCK() {
 impl Clone for TPM2B_MAX_HASH_BLOCK {
     fn clone(&self) -> Self { *self }
 }
-pub type TPM2B_HASH_BLOCK = TPM2B_MAX_HASH_BLOCK;
+impl Default for TPM2B_MAX_HASH_BLOCK {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_SEED {
     pub t: __BindgenUnionField<TPM2B_SEED__bindgen_ty_1>,
     pub b: __BindgenUnionField<TPM2B>,
     pub bindgen_union_field: [u16; 17usize],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_SEED__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 32usize],
@@ -2735,14 +2750,14 @@ pub type TPM_HT = UINT8;
 pub type TPM_RH = TPM_HANDLE;
 pub type TPM_HC = TPM_HANDLE;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_ALGORITHM {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_ALGORITHM__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_ALGORITHM__bindgen_ty_1 {
     pub _bitfield_1: u32,
     pub __bindgen_align: [u32; 0usize],
@@ -2986,14 +3001,14 @@ impl Clone for TPMA_ALGORITHM {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_OBJECT {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_OBJECT__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_OBJECT__bindgen_ty_1 {
     pub _bitfield_1: [u16; 2usize],
     pub __bindgen_align: [u32; 0usize],
@@ -3454,14 +3469,14 @@ impl Clone for TPMA_OBJECT {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_SESSION {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_SESSION__bindgen_ty_1>,
-    pub val: __BindgenUnionField<UINT32>,
+    pub val: __BindgenUnionField<UINT8>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_SESSION__bindgen_ty_1 {
     pub _bitfield_1: u8,
     pub __bindgen_padding_0: [u8; 3usize],
@@ -3654,14 +3669,14 @@ impl Clone for TPMA_SESSION {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_LOCALITY {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_LOCALITY__bindgen_ty_1>,
-    pub val: __BindgenUnionField<UINT32>,
+    pub val: __BindgenUnionField<UINT8>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_LOCALITY__bindgen_ty_1 {
     pub _bitfield_1: u8,
     pub __bindgen_padding_0: [u8; 3usize],
@@ -3833,14 +3848,14 @@ impl Clone for TPMA_LOCALITY {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_PERMANENT {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_PERMANENT__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_PERMANENT__bindgen_ty_1 {
     pub _bitfield_1: u32,
     pub __bindgen_align: [u32; 0usize],
@@ -4062,14 +4077,14 @@ impl Clone for TPMA_PERMANENT {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_STARTUP_CLEAR {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_STARTUP_CLEAR__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_STARTUP_CLEAR__bindgen_ty_1 {
     pub _bitfield_1: u32,
     pub __bindgen_align: [u32; 0usize],
@@ -4243,14 +4258,14 @@ impl Clone for TPMA_STARTUP_CLEAR {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_MEMORY {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_MEMORY__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_MEMORY__bindgen_ty_1 {
     pub _bitfield_1: u32,
     pub __bindgen_align: [u32; 0usize],
@@ -4375,14 +4390,14 @@ impl Clone for TPMA_MEMORY {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_CC {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_CC__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_CC__bindgen_ty_1 {
     pub _bitfield_1: [u16; 2usize],
     pub __bindgen_align: [u32; 0usize],
@@ -4623,14 +4638,14 @@ impl Clone for TPMA_CC {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_MODES {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_MODES__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_MODES__bindgen_ty_1 {
     pub _bitfield_1: u32,
     pub __bindgen_align: [u32; 0usize],
@@ -4738,7 +4753,7 @@ pub type TPMI_ALG_SIG_SCHEME = TPM_ALG_ID;
 pub type TPMI_ECC_KEY_EXCHANGE = TPM_ALG_ID;
 pub type TPMI_ST_COMMAND_TAG = TPM_ST;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_EMPTY {
     pub empty: __IncompleteArrayField<BYTE>,
 }
@@ -4758,7 +4773,7 @@ impl Clone for TPMS_EMPTY {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_ALGORITHM_DESCRIPTION {
     pub alg: TPM_ALG_ID,
     pub attributes: TPMA_ALGORITHM,
@@ -4795,6 +4810,7 @@ pub struct TPMU_HA {
     pub sha384: __BindgenUnionField<[BYTE; 48usize]>,
     pub sha512: __BindgenUnionField<[BYTE; 64usize]>,
     pub sm3_256: __BindgenUnionField<[BYTE; 32usize]>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u8; 64usize],
 }
 #[test]
@@ -4828,9 +4844,17 @@ fn bindgen_test_layout_TPMU_HA() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_HA ) , "::" ,
                 stringify ! ( sm3_256 ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_HA ) ) . na as * const _ as usize }
+                , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_HA ) , "::" ,
+                stringify ! ( na ) ));
 }
 impl Clone for TPMU_HA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMU_HA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -4857,6 +4881,9 @@ fn bindgen_test_layout_TPMT_HA() {
 }
 impl Clone for TPMT_HA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMT_HA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -4891,6 +4918,9 @@ fn bindgen_test_layout_TPM2B_DIGEST__bindgen_ty_1() {
                 TPM2B_DIGEST__bindgen_ty_1 ) , "::" , stringify ! ( buffer )
                 ));
 }
+impl Default for TPM2B_DIGEST__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_DIGEST() {
     assert_eq!(::std::mem::size_of::<TPM2B_DIGEST>() , 66usize , concat ! (
@@ -4910,6 +4940,9 @@ fn bindgen_test_layout_TPM2B_DIGEST() {
 }
 impl Clone for TPM2B_DIGEST {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_DIGEST {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -4942,6 +4975,9 @@ fn bindgen_test_layout_TPM2B_DATA__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_DATA__bindgen_ty_1 ) , "::" , stringify ! ( buffer ) ));
 }
+impl Default for TPM2B_DATA__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_DATA() {
     assert_eq!(::std::mem::size_of::<TPM2B_DATA>() , 68usize , concat ! (
@@ -4961,6 +4997,9 @@ fn bindgen_test_layout_TPM2B_DATA() {
 }
 impl Clone for TPM2B_DATA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 pub type TPM2B_NONCE = TPM2B_DIGEST;
 pub type TPM2B_AUTH = TPM2B_DIGEST;
@@ -4998,6 +5037,9 @@ fn bindgen_test_layout_TPM2B_EVENT__bindgen_ty_1() {
                 TPM2B_EVENT__bindgen_ty_1 ) , "::" , stringify ! ( buffer )
                 ));
 }
+impl Default for TPM2B_EVENT__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_EVENT() {
     assert_eq!(::std::mem::size_of::<TPM2B_EVENT>() , 1026usize , concat ! (
@@ -5017,6 +5059,9 @@ fn bindgen_test_layout_TPM2B_EVENT() {
 }
 impl Clone for TPM2B_EVENT {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_EVENT {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -5053,6 +5098,9 @@ fn bindgen_test_layout_TPM2B_MAX_BUFFER__bindgen_ty_1() {
                 TPM2B_MAX_BUFFER__bindgen_ty_1 ) , "::" , stringify ! ( buffer
                 ) ));
 }
+impl Default for TPM2B_MAX_BUFFER__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_MAX_BUFFER() {
     assert_eq!(::std::mem::size_of::<TPM2B_MAX_BUFFER>() , 1026usize , concat
@@ -5072,6 +5120,9 @@ fn bindgen_test_layout_TPM2B_MAX_BUFFER() {
 }
 impl Clone for TPM2B_MAX_BUFFER {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_MAX_BUFFER {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -5108,6 +5159,9 @@ fn bindgen_test_layout_TPM2B_MAX_NV_BUFFER__bindgen_ty_1() {
                 TPM2B_MAX_NV_BUFFER__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_MAX_NV_BUFFER__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_MAX_NV_BUFFER() {
     assert_eq!(::std::mem::size_of::<TPM2B_MAX_NV_BUFFER>() , 1026usize ,
@@ -5130,16 +5184,19 @@ fn bindgen_test_layout_TPM2B_MAX_NV_BUFFER() {
 impl Clone for TPM2B_MAX_NV_BUFFER {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_MAX_NV_BUFFER {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TPM2B_TIMEOUT = TPM2B_DIGEST;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_IV {
     pub t: __BindgenUnionField<TPM2B_IV__bindgen_ty_1>,
     pub b: __BindgenUnionField<TPM2B>,
     pub bindgen_union_field: [u16; 9usize],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_IV__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 16usize],
@@ -5187,10 +5244,11 @@ impl Clone for TPM2B_IV {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_NAME {
     pub digest: __BindgenUnionField<TPMT_HA>,
     pub handle: __BindgenUnionField<TPM_HANDLE>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u32; 17usize],
 }
 #[test]
@@ -5209,6 +5267,11 @@ fn bindgen_test_layout_TPMU_NAME() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_NAME ) , "::" ,
                 stringify ! ( handle ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_NAME ) ) . na as * const _ as usize
+                } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_NAME ) , "::" ,
+                stringify ! ( na ) ));
 }
 impl Clone for TPMU_NAME {
     fn clone(&self) -> Self { *self }
@@ -5244,6 +5307,9 @@ fn bindgen_test_layout_TPM2B_NAME__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_NAME__bindgen_ty_1 ) , "::" , stringify ! ( name ) ));
 }
+impl Default for TPM2B_NAME__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_NAME() {
     assert_eq!(::std::mem::size_of::<TPM2B_NAME>() , 70usize , concat ! (
@@ -5264,8 +5330,11 @@ fn bindgen_test_layout_TPM2B_NAME() {
 impl Clone for TPM2B_NAME {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_NAME {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_PCR_SELECT {
     pub sizeofSelect: UINT8,
     pub pcrSelect: [BYTE; 3usize],
@@ -5291,7 +5360,7 @@ impl Clone for TPMS_PCR_SELECT {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_PCR_SELECTION {
     pub hash: TPMI_ALG_HASH,
     pub sizeofSelect: UINT8,
@@ -5354,6 +5423,9 @@ fn bindgen_test_layout_TPMT_TK_CREATION() {
 impl Clone for TPMT_TK_CREATION {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMT_TK_CREATION {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMT_TK_VERIFIED {
@@ -5385,6 +5457,9 @@ fn bindgen_test_layout_TPMT_TK_VERIFIED() {
 }
 impl Clone for TPMT_TK_VERIFIED {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMT_TK_VERIFIED {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -5418,6 +5493,9 @@ fn bindgen_test_layout_TPMT_TK_AUTH() {
 impl Clone for TPMT_TK_AUTH {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMT_TK_AUTH {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMT_TK_HASHCHECK {
@@ -5450,8 +5528,11 @@ fn bindgen_test_layout_TPMT_TK_HASHCHECK() {
 impl Clone for TPMT_TK_HASHCHECK {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMT_TK_HASHCHECK {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_ALG_PROPERTY {
     pub alg: TPM_ALG_ID,
     pub algProperties: TPMA_ALGORITHM,
@@ -5477,7 +5558,7 @@ impl Clone for TPMS_ALG_PROPERTY {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_TAGGED_PROPERTY {
     pub property: TPM_PT,
     pub value: UINT32,
@@ -5504,7 +5585,7 @@ impl Clone for TPMS_TAGGED_PROPERTY {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_TAGGED_PCR_SELECT {
     pub tag: TPM_PT_PCR,
     pub sizeofSelect: UINT8,
@@ -5540,11 +5621,11 @@ impl Clone for TPMS_TAGGED_PCR_SELECT {
 #[repr(C)]
 pub struct TPML_CC {
     pub count: UINT32,
-    pub commandCodes: [TPM_CC; 114usize],
+    pub commandCodes: [TPM_CC; 256usize],
 }
 #[test]
 fn bindgen_test_layout_TPML_CC() {
-    assert_eq!(::std::mem::size_of::<TPML_CC>() , 460usize , concat ! (
+    assert_eq!(::std::mem::size_of::<TPML_CC>() , 1028usize , concat ! (
                "Size of: " , stringify ! ( TPML_CC ) ));
     assert_eq! (::std::mem::align_of::<TPML_CC>() , 4usize , concat ! (
                 "Alignment of " , stringify ! ( TPML_CC ) ));
@@ -5559,14 +5640,17 @@ fn bindgen_test_layout_TPML_CC() {
                 "Alignment of field: " , stringify ! ( TPML_CC ) , "::" ,
                 stringify ! ( commandCodes ) ));
 }
+impl Default for TPML_CC {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 pub struct TPML_CCA {
     pub count: UINT32,
-    pub commandAttributes: [TPMA_CC; 114usize],
+    pub commandAttributes: [TPMA_CC; 256usize],
 }
 #[test]
 fn bindgen_test_layout_TPML_CCA() {
-    assert_eq!(::std::mem::size_of::<TPML_CCA>() , 460usize , concat ! (
+    assert_eq!(::std::mem::size_of::<TPML_CCA>() , 1028usize , concat ! (
                "Size of: " , stringify ! ( TPML_CCA ) ));
     assert_eq! (::std::mem::align_of::<TPML_CCA>() , 4usize , concat ! (
                 "Alignment of " , stringify ! ( TPML_CCA ) ));
@@ -5580,6 +5664,9 @@ fn bindgen_test_layout_TPML_CCA() {
                 const _ as usize } , 4usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPML_CCA ) , "::" ,
                 stringify ! ( commandAttributes ) ));
+}
+impl Default for TPML_CCA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 pub struct TPML_ALG {
@@ -5603,6 +5690,9 @@ fn bindgen_test_layout_TPML_ALG() {
                 "Alignment of field: " , stringify ! ( TPML_ALG ) , "::" ,
                 stringify ! ( algorithms ) ));
 }
+impl Default for TPML_ALG {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 pub struct TPML_HANDLE {
     pub count: UINT32,
@@ -5624,6 +5714,9 @@ fn bindgen_test_layout_TPML_HANDLE() {
                 usize } , 4usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPML_HANDLE ) , "::" ,
                 stringify ! ( handle ) ));
+}
+impl Default for TPML_HANDLE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -5651,6 +5744,9 @@ fn bindgen_test_layout_TPML_DIGEST() {
 impl Clone for TPML_DIGEST {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPML_DIGEST {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPML_DIGEST_VALUES {
@@ -5676,6 +5772,9 @@ fn bindgen_test_layout_TPML_DIGEST_VALUES() {
 }
 impl Clone for TPML_DIGEST_VALUES {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPML_DIGEST_VALUES {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -5712,6 +5811,9 @@ fn bindgen_test_layout_TPM2B_DIGEST_VALUES__bindgen_ty_1() {
                 TPM2B_DIGEST_VALUES__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_DIGEST_VALUES__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_DIGEST_VALUES() {
     assert_eq!(::std::mem::size_of::<TPM2B_DIGEST_VALUES>() , 338usize ,
@@ -5734,8 +5836,11 @@ fn bindgen_test_layout_TPM2B_DIGEST_VALUES() {
 impl Clone for TPM2B_DIGEST_VALUES {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_DIGEST_VALUES {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPML_PCR_SELECTION {
     pub count: UINT32,
     pub pcrSelections: [TPMS_PCR_SELECTION; 5usize],
@@ -5782,6 +5887,9 @@ fn bindgen_test_layout_TPML_ALG_PROPERTY() {
                 "Alignment of field: " , stringify ! ( TPML_ALG_PROPERTY ) ,
                 "::" , stringify ! ( algProperties ) ));
 }
+impl Default for TPML_ALG_PROPERTY {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 pub struct TPML_TAGGED_TPM_PROPERTY {
     pub count: UINT32,
@@ -5806,6 +5914,9 @@ fn bindgen_test_layout_TPML_TAGGED_TPM_PROPERTY() {
                 "Alignment of field: " , stringify ! (
                 TPML_TAGGED_TPM_PROPERTY ) , "::" , stringify ! ( tpmProperty
                 ) ));
+}
+impl Default for TPML_TAGGED_TPM_PROPERTY {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 pub struct TPML_TAGGED_PCR_PROPERTY {
@@ -5832,6 +5943,9 @@ fn bindgen_test_layout_TPML_TAGGED_PCR_PROPERTY() {
                 TPML_TAGGED_PCR_PROPERTY ) , "::" , stringify ! ( pcrProperty
                 ) ));
 }
+impl Default for TPML_TAGGED_PCR_PROPERTY {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 pub struct TPML_ECC_CURVE {
     pub count: UINT32,
@@ -5854,6 +5968,9 @@ fn bindgen_test_layout_TPML_ECC_CURVE() {
                 "Alignment of field: " , stringify ! ( TPML_ECC_CURVE ) , "::"
                 , stringify ! ( eccCurves ) ));
 }
+impl Default for TPML_ECC_CURVE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMU_CAPABILITIES {
@@ -5866,11 +5983,12 @@ pub struct TPMU_CAPABILITIES {
     pub tpmProperties: __BindgenUnionField<TPML_TAGGED_TPM_PROPERTY>,
     pub pcrProperties: __BindgenUnionField<TPML_TAGGED_PCR_PROPERTY>,
     pub eccCurves: __BindgenUnionField<TPML_ECC_CURVE>,
-    pub bindgen_union_field: [u32; 255usize],
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
+    pub bindgen_union_field: [u32; 257usize],
 }
 #[test]
 fn bindgen_test_layout_TPMU_CAPABILITIES() {
-    assert_eq!(::std::mem::size_of::<TPMU_CAPABILITIES>() , 1020usize , concat
+    assert_eq!(::std::mem::size_of::<TPMU_CAPABILITIES>() , 1028usize , concat
                ! ( "Size of: " , stringify ! ( TPMU_CAPABILITIES ) ));
     assert_eq! (::std::mem::align_of::<TPMU_CAPABILITIES>() , 4usize , concat
                 ! ( "Alignment of " , stringify ! ( TPMU_CAPABILITIES ) ));
@@ -5919,9 +6037,17 @@ fn bindgen_test_layout_TPMU_CAPABILITIES() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_CAPABILITIES ) ,
                 "::" , stringify ! ( eccCurves ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_CAPABILITIES ) ) . na as * const _
+                as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_CAPABILITIES ) ,
+                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_CAPABILITIES {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMU_CAPABILITIES {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -5931,7 +6057,7 @@ pub struct TPMS_CAPABILITY_DATA {
 }
 #[test]
 fn bindgen_test_layout_TPMS_CAPABILITY_DATA() {
-    assert_eq!(::std::mem::size_of::<TPMS_CAPABILITY_DATA>() , 1024usize ,
+    assert_eq!(::std::mem::size_of::<TPMS_CAPABILITY_DATA>() , 1032usize ,
                concat ! ( "Size of: " , stringify ! ( TPMS_CAPABILITY_DATA )
                ));
     assert_eq! (::std::mem::align_of::<TPMS_CAPABILITY_DATA>() , 4usize ,
@@ -5951,8 +6077,11 @@ fn bindgen_test_layout_TPMS_CAPABILITY_DATA() {
 impl Clone for TPMS_CAPABILITY_DATA {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_CAPABILITY_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_CLOCK_INFO {
     pub clock: UINT64,
     pub resetCount: UINT32,
@@ -5990,7 +6119,7 @@ impl Clone for TPMS_CLOCK_INFO {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_TIME_INFO {
     pub time: UINT64,
     pub clockInfo: TPMS_CLOCK_INFO,
@@ -6016,7 +6145,7 @@ impl Clone for TPMS_TIME_INFO {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_TIME_ATTEST_INFO {
     pub time: TPMS_TIME_INFO,
     pub firmwareVersion: UINT64,
@@ -6069,6 +6198,9 @@ fn bindgen_test_layout_TPMS_CERTIFY_INFO() {
 impl Clone for TPMS_CERTIFY_INFO {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_CERTIFY_INFO {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMS_QUOTE_INFO {
@@ -6094,6 +6226,9 @@ fn bindgen_test_layout_TPMS_QUOTE_INFO() {
 }
 impl Clone for TPMS_QUOTE_INFO {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMS_QUOTE_INFO {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -6135,6 +6270,9 @@ fn bindgen_test_layout_TPMS_COMMAND_AUDIT_INFO() {
 impl Clone for TPMS_COMMAND_AUDIT_INFO {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_COMMAND_AUDIT_INFO {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMS_SESSION_AUDIT_INFO {
@@ -6163,6 +6301,9 @@ fn bindgen_test_layout_TPMS_SESSION_AUDIT_INFO() {
 impl Clone for TPMS_SESSION_AUDIT_INFO {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_SESSION_AUDIT_INFO {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMS_CREATION_INFO {
@@ -6188,6 +6329,9 @@ fn bindgen_test_layout_TPMS_CREATION_INFO() {
 }
 impl Clone for TPMS_CREATION_INFO {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMS_CREATION_INFO {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -6223,6 +6367,9 @@ fn bindgen_test_layout_TPMS_NV_CERTIFY_INFO() {
 impl Clone for TPMS_NV_CERTIFY_INFO {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_NV_CERTIFY_INFO {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TPMI_ST_ATTEST = TPM_ST;
 #[repr(C)]
 #[derive(Copy)]
@@ -6234,6 +6381,7 @@ pub struct TPMU_ATTEST {
     pub sessionAudit: __BindgenUnionField<TPMS_SESSION_AUDIT_INFO>,
     pub time: __BindgenUnionField<TPMS_TIME_ATTEST_INFO>,
     pub nv: __BindgenUnionField<TPMS_NV_CERTIFY_INFO>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u64; 138usize],
 }
 #[test]
@@ -6277,9 +6425,17 @@ fn bindgen_test_layout_TPMU_ATTEST() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ATTEST ) , "::" ,
                 stringify ! ( nv ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_ATTEST ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_ATTEST ) , "::" ,
+                stringify ! ( na ) ));
 }
 impl Clone for TPMU_ATTEST {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMU_ATTEST {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -6337,6 +6493,9 @@ fn bindgen_test_layout_TPMS_ATTEST() {
 impl Clone for TPMS_ATTEST {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_ATTEST {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPM2B_ATTEST {
@@ -6370,6 +6529,9 @@ fn bindgen_test_layout_TPM2B_ATTEST__bindgen_ty_1() {
                 TPM2B_ATTEST__bindgen_ty_1 ) , "::" , stringify ! (
                 attestationData ) ));
 }
+impl Default for TPM2B_ATTEST__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_ATTEST() {
     assert_eq!(::std::mem::size_of::<TPM2B_ATTEST>() , 1282usize , concat ! (
@@ -6389,6 +6551,9 @@ fn bindgen_test_layout_TPM2B_ATTEST() {
 }
 impl Clone for TPM2B_ATTEST {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_ATTEST {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -6428,6 +6593,9 @@ fn bindgen_test_layout_TPMS_AUTH_COMMAND() {
 impl Clone for TPMS_AUTH_COMMAND {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_AUTH_COMMAND {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMS_AUTH_RESPONSE {
@@ -6461,16 +6629,21 @@ fn bindgen_test_layout_TPMS_AUTH_RESPONSE() {
 impl Clone for TPMS_AUTH_RESPONSE {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_AUTH_RESPONSE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TPMI_AES_KEY_BITS = TPM_KEY_BITS;
 pub type TPMI_SM4_KEY_BITS = TPM_KEY_BITS;
 pub type TPMI_CAMELLIA_KEY_BITS = TPM_KEY_BITS;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_SYM_KEY_BITS {
     pub aes: __BindgenUnionField<TPMI_AES_KEY_BITS>,
     pub sm4: __BindgenUnionField<TPMI_SM4_KEY_BITS>,
+    pub camellia: __BindgenUnionField<TPMI_CAMELLIA_KEY_BITS>,
     pub sym: __BindgenUnionField<TPM_KEY_BITS>,
     pub exclusiveOr: __BindgenUnionField<TPMI_ALG_HASH>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: u16,
 }
 #[test]
@@ -6490,6 +6663,11 @@ fn bindgen_test_layout_TPMU_SYM_KEY_BITS() {
                 "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
                 "::" , stringify ! ( sm4 ) ));
     assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SYM_KEY_BITS ) ) . camellia as *
+                const _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
+                "::" , stringify ! ( camellia ) ));
+    assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_SYM_KEY_BITS ) ) . sym as * const _
                 as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
@@ -6499,16 +6677,23 @@ fn bindgen_test_layout_TPMU_SYM_KEY_BITS() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
                 "::" , stringify ! ( exclusiveOr ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SYM_KEY_BITS ) ) . na as * const _
+                as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
+                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SYM_KEY_BITS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_SYM_MODE {
     pub aes: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
     pub sm4: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
+    pub camellia: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
     pub sym: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: u16,
 }
 #[test]
@@ -6528,16 +6713,26 @@ fn bindgen_test_layout_TPMU_SYM_MODE() {
                 "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
                 , stringify ! ( sm4 ) ));
     assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SYM_MODE ) ) . camellia as * const _
+                as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
+                , stringify ! ( camellia ) ));
+    assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_SYM_MODE ) ) . sym as * const _ as
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
                 , stringify ! ( sym ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SYM_MODE ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
+                , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SYM_MODE {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_SYM_DEF {
     pub algorithm: TPMI_ALG_SYM,
     pub keyBits: TPMU_SYM_KEY_BITS,
@@ -6569,7 +6764,7 @@ impl Clone for TPMT_SYM_DEF {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_SYM_DEF_OBJECT {
     pub algorithm: TPMI_ALG_SYM_OBJECT,
     pub keyBits: TPMU_SYM_KEY_BITS,
@@ -6602,14 +6797,14 @@ impl Clone for TPMT_SYM_DEF_OBJECT {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_SYM_KEY {
     pub t: __BindgenUnionField<TPM2B_SYM_KEY__bindgen_ty_1>,
     pub b: __BindgenUnionField<TPM2B>,
     pub bindgen_union_field: [u16; 17usize],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_SYM_KEY__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 32usize],
@@ -6660,7 +6855,7 @@ impl Clone for TPM2B_SYM_KEY {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_SYMCIPHER_PARMS {
     pub sym: TPMT_SYM_DEF_OBJECT,
 }
@@ -6715,6 +6910,9 @@ fn bindgen_test_layout_TPM2B_SENSITIVE_DATA__bindgen_ty_1() {
                 TPM2B_SENSITIVE_DATA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_SENSITIVE_DATA__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_SENSITIVE_DATA() {
     assert_eq!(::std::mem::size_of::<TPM2B_SENSITIVE_DATA>() , 130usize ,
@@ -6736,6 +6934,9 @@ fn bindgen_test_layout_TPM2B_SENSITIVE_DATA() {
 }
 impl Clone for TPM2B_SENSITIVE_DATA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_SENSITIVE_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -6764,6 +6965,9 @@ fn bindgen_test_layout_TPMS_SENSITIVE_CREATE() {
 }
 impl Clone for TPMS_SENSITIVE_CREATE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMS_SENSITIVE_CREATE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -6804,6 +7008,9 @@ fn bindgen_test_layout_TPM2B_SENSITIVE_CREATE__bindgen_ty_1() {
 impl Clone for TPM2B_SENSITIVE_CREATE__bindgen_ty_1 {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_SENSITIVE_CREATE__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_SENSITIVE_CREATE() {
     assert_eq!(::std::mem::size_of::<TPM2B_SENSITIVE_CREATE>() , 198usize ,
@@ -6826,8 +7033,11 @@ fn bindgen_test_layout_TPM2B_SENSITIVE_CREATE() {
 impl Clone for TPM2B_SENSITIVE_CREATE {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_SENSITIVE_CREATE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_SCHEME_HASH {
     pub hashAlg: TPMI_ALG_HASH,
 }
@@ -6847,7 +7057,7 @@ impl Clone for TPMS_SCHEME_HASH {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_SCHEME_ECDAA {
     pub hashAlg: TPMI_ALG_HASH,
     pub count: UINT16,
@@ -6875,7 +7085,7 @@ impl Clone for TPMS_SCHEME_ECDAA {
 pub type TPMI_ALG_KEYEDHASH_SCHEME = TPM_ALG_ID;
 pub type TPMS_SCHEME_HMAC = TPMS_SCHEME_HASH;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_SCHEME_XOR {
     pub hashAlg: TPMI_ALG_HASH,
     pub kdf: TPMI_ALG_KDF,
@@ -6901,10 +7111,11 @@ impl Clone for TPMS_SCHEME_XOR {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_SCHEME_KEYEDHASH {
     pub hmac: __BindgenUnionField<TPMS_SCHEME_HMAC>,
     pub exclusiveOr: __BindgenUnionField<TPMS_SCHEME_XOR>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 2usize],
 }
 #[test]
@@ -6925,12 +7136,17 @@ fn bindgen_test_layout_TPMU_SCHEME_KEYEDHASH() {
                 as * const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SCHEME_KEYEDHASH )
                 , "::" , stringify ! ( exclusiveOr ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SCHEME_KEYEDHASH ) ) . na as * const
+                _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SCHEME_KEYEDHASH )
+                , "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SCHEME_KEYEDHASH {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_KEYEDHASH_SCHEME {
     pub scheme: TPMI_ALG_KEYEDHASH_SCHEME,
     pub details: TPMU_SCHEME_KEYEDHASH,
@@ -6964,7 +7180,7 @@ pub type TPMS_SIG_SCHEME_SM2 = TPMS_SCHEME_HASH;
 pub type TPMS_SIG_SCHEME_ECSCHNORR = TPMS_SCHEME_HASH;
 pub type TPMS_SIG_SCHEME_ECDAA = TPMS_SCHEME_ECDAA;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_SIG_SCHEME {
     pub rsassa: __BindgenUnionField<TPMS_SIG_SCHEME_RSASSA>,
     pub rsapss: __BindgenUnionField<TPMS_SIG_SCHEME_RSAPSS>,
@@ -6974,6 +7190,7 @@ pub struct TPMU_SIG_SCHEME {
     pub ecschnorr: __BindgenUnionField<TPMS_SIG_SCHEME_ECSCHNORR>,
     pub hmac: __BindgenUnionField<TPMS_SCHEME_HMAC>,
     pub any: __BindgenUnionField<TPMS_SCHEME_HASH>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 2usize],
 }
 #[test]
@@ -7022,12 +7239,17 @@ fn bindgen_test_layout_TPMU_SIG_SCHEME() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SIG_SCHEME ) ,
                 "::" , stringify ! ( any ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SIG_SCHEME ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SIG_SCHEME ) ,
+                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SIG_SCHEME {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_SIG_SCHEME {
     pub scheme: TPMI_ALG_SIG_SCHEME,
     pub details: TPMU_SIG_SCHEME,
@@ -7061,11 +7283,13 @@ pub type TPMS_SCHEME_KDF1_SP800_56A = TPMS_SCHEME_HASH;
 pub type TPMS_SCHEME_KDF2 = TPMS_SCHEME_HASH;
 pub type TPMS_SCHEME_KDF1_SP800_108 = TPMS_SCHEME_HASH;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_KDF_SCHEME {
     pub mgf1: __BindgenUnionField<TPMS_SCHEME_MGF1>,
     pub kdf1_sp800_56a: __BindgenUnionField<TPMS_SCHEME_KDF1_SP800_56A>,
+    pub kdf2: __BindgenUnionField<TPMS_SCHEME_KDF2>,
     pub kdf1_sp800_108: __BindgenUnionField<TPMS_SCHEME_KDF1_SP800_108>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: u16,
 }
 #[test]
@@ -7085,16 +7309,26 @@ fn bindgen_test_layout_TPMU_KDF_SCHEME() {
                 "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
                 "::" , stringify ! ( kdf1_sp800_56a ) ));
     assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_KDF_SCHEME ) ) . kdf2 as * const _
+                as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
+                "::" , stringify ! ( kdf2 ) ));
+    assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_KDF_SCHEME ) ) . kdf1_sp800_108 as *
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
                 "::" , stringify ! ( kdf1_sp800_108 ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_KDF_SCHEME ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
+                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_KDF_SCHEME {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_KDF_SCHEME {
     pub scheme: TPMI_ALG_KDF,
     pub details: TPMU_KDF_SCHEME,
@@ -7121,9 +7355,10 @@ impl Clone for TPMT_KDF_SCHEME {
 }
 pub type TPMI_ALG_ASYM_SCHEME = TPM_ALG_ID;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_ASYM_SCHEME {
     pub ecdh: __BindgenUnionField<TPMS_KEY_SCHEME_ECDH>,
+    pub ecmqv: __BindgenUnionField<TPMS_KEY_SCHEME_ECMQV>,
     pub rsassa: __BindgenUnionField<TPMS_SIG_SCHEME_RSASSA>,
     pub rsapss: __BindgenUnionField<TPMS_SIG_SCHEME_RSAPSS>,
     pub ecdsa: __BindgenUnionField<TPMS_SIG_SCHEME_ECDSA>,
@@ -7133,6 +7368,7 @@ pub struct TPMU_ASYM_SCHEME {
     pub rsaes: __BindgenUnionField<TPMS_ENC_SCHEME_RSAES>,
     pub oaep: __BindgenUnionField<TPMS_ENC_SCHEME_OAEP>,
     pub anySig: __BindgenUnionField<TPMS_SCHEME_HASH>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 2usize],
 }
 #[test]
@@ -7146,6 +7382,11 @@ fn bindgen_test_layout_TPMU_ASYM_SCHEME() {
                 as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
                 "::" , stringify ! ( ecdh ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_ASYM_SCHEME ) ) . ecmqv as * const _
+                as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
+                "::" , stringify ! ( ecmqv ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_ASYM_SCHEME ) ) . rsassa as * const
                 _ as usize } , 0usize , concat ! (
@@ -7191,12 +7432,17 @@ fn bindgen_test_layout_TPMU_ASYM_SCHEME() {
                 _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
                 "::" , stringify ! ( anySig ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_ASYM_SCHEME ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
+                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_ASYM_SCHEME {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_ASYM_SCHEME {
     pub scheme: TPMI_ALG_ASYM_SCHEME,
     pub details: TPMU_ASYM_SCHEME,
@@ -7223,7 +7469,7 @@ impl Clone for TPMT_ASYM_SCHEME {
 }
 pub type TPMI_ALG_RSA_SCHEME = TPM_ALG_ID;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_RSA_SCHEME {
     pub scheme: TPMI_ALG_RSA_SCHEME,
     pub details: TPMU_ASYM_SCHEME,
@@ -7250,7 +7496,7 @@ impl Clone for TPMT_RSA_SCHEME {
 }
 pub type TPMI_ALG_RSA_DECRYPT = TPM_ALG_ID;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_RSA_DECRYPT {
     pub scheme: TPMI_ALG_RSA_DECRYPT,
     pub details: TPMU_ASYM_SCHEME,
@@ -7310,6 +7556,9 @@ fn bindgen_test_layout_TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1() {
                 TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_PUBLIC_KEY_RSA() {
     assert_eq!(::std::mem::size_of::<TPM2B_PUBLIC_KEY_RSA>() , 258usize ,
@@ -7331,6 +7580,9 @@ fn bindgen_test_layout_TPM2B_PUBLIC_KEY_RSA() {
 }
 impl Clone for TPM2B_PUBLIC_KEY_RSA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_PUBLIC_KEY_RSA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 pub type TPMI_RSA_KEY_BITS = TPM_KEY_BITS;
 #[repr(C)]
@@ -7368,6 +7620,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1() {
                 TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_PRIVATE_KEY_RSA() {
     assert_eq!(::std::mem::size_of::<TPM2B_PRIVATE_KEY_RSA>() , 130usize ,
@@ -7390,8 +7645,11 @@ fn bindgen_test_layout_TPM2B_PRIVATE_KEY_RSA() {
 impl Clone for TPM2B_PRIVATE_KEY_RSA {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_PRIVATE_KEY_RSA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_ECC_PARAMETER {
     pub t: __BindgenUnionField<TPM2B_ECC_PARAMETER__bindgen_ty_1>,
     pub b: __BindgenUnionField<TPM2B>,
@@ -7425,6 +7683,9 @@ fn bindgen_test_layout_TPM2B_ECC_PARAMETER__bindgen_ty_1() {
                 TPM2B_ECC_PARAMETER__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_ECC_PARAMETER__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_ECC_PARAMETER() {
     assert_eq!(::std::mem::size_of::<TPM2B_ECC_PARAMETER>() , 50usize , concat
@@ -7447,7 +7708,7 @@ impl Clone for TPM2B_ECC_PARAMETER {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_ECC_POINT {
     pub x: TPM2B_ECC_PARAMETER,
     pub y: TPM2B_ECC_PARAMETER,
@@ -7480,7 +7741,7 @@ pub struct TPM2B_ECC_POINT {
     pub bindgen_union_field: [u16; 51usize],
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_ECC_POINT__bindgen_ty_1 {
     pub size: UINT16,
     pub point: TPMS_ECC_POINT,
@@ -7530,10 +7791,13 @@ fn bindgen_test_layout_TPM2B_ECC_POINT() {
 impl Clone for TPM2B_ECC_POINT {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_ECC_POINT {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TPMI_ALG_ECC_SCHEME = TPM_ALG_ID;
 pub type TPMI_ECC_CURVE = TPM_ECC_CURVE;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_ECC_SCHEME {
     pub scheme: TPMI_ALG_ECC_SCHEME,
     pub details: TPMU_ASYM_SCHEME,
@@ -7559,7 +7823,7 @@ impl Clone for TPMT_ECC_SCHEME {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_ALGORITHM_DETAIL_ECC {
     pub curveID: TPM_ECC_CURVE,
     pub keySize: UINT16,
@@ -7669,10 +7933,13 @@ fn bindgen_test_layout_TPMS_SIGNATURE_RSA() {
 impl Clone for TPMS_SIGNATURE_RSA {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_SIGNATURE_RSA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TPMS_SIGNATURE_RSASSA = TPMS_SIGNATURE_RSA;
 pub type TPMS_SIGNATURE_RSAPSS = TPMS_SIGNATURE_RSA;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_SIGNATURE_ECC {
     pub hash: TPMI_ALG_HASH,
     pub signatureR: TPM2B_ECC_PARAMETER,
@@ -7718,6 +7985,7 @@ pub struct TPMU_SIGNATURE {
     pub ecschnorr: __BindgenUnionField<TPMS_SIGNATURE_ECSCHNORR>,
     pub hmac: __BindgenUnionField<TPMT_HA>,
     pub any: __BindgenUnionField<TPMS_SCHEME_HASH>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 130usize],
 }
 #[test]
@@ -7766,9 +8034,17 @@ fn bindgen_test_layout_TPMU_SIGNATURE() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SIGNATURE ) , "::"
                 , stringify ! ( any ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SIGNATURE ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_SIGNATURE ) , "::"
+                , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SIGNATURE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMU_SIGNATURE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -7796,6 +8072,9 @@ fn bindgen_test_layout_TPMT_SIGNATURE() {
 impl Clone for TPMT_SIGNATURE {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMT_SIGNATURE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMU_ENCRYPTED_SECRET {
@@ -7803,6 +8082,7 @@ pub struct TPMU_ENCRYPTED_SECRET {
     pub rsa: __BindgenUnionField<[BYTE; 256usize]>,
     pub symmetric: __BindgenUnionField<[BYTE; 66usize]>,
     pub keyedHash: __BindgenUnionField<[BYTE; 66usize]>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u8; 256usize],
 }
 #[test]
@@ -7833,9 +8113,17 @@ fn bindgen_test_layout_TPMU_ENCRYPTED_SECRET() {
                 * const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ENCRYPTED_SECRET )
                 , "::" , stringify ! ( keyedHash ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_ENCRYPTED_SECRET ) ) . na as * const
+                _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_ENCRYPTED_SECRET )
+                , "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_ENCRYPTED_SECRET {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMU_ENCRYPTED_SECRET {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -7872,6 +8160,9 @@ fn bindgen_test_layout_TPM2B_ENCRYPTED_SECRET__bindgen_ty_1() {
                 TPM2B_ENCRYPTED_SECRET__bindgen_ty_1 ) , "::" , stringify ! (
                 secret ) ));
 }
+impl Default for TPM2B_ENCRYPTED_SECRET__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_ENCRYPTED_SECRET() {
     assert_eq!(::std::mem::size_of::<TPM2B_ENCRYPTED_SECRET>() , 258usize ,
@@ -7894,6 +8185,9 @@ fn bindgen_test_layout_TPM2B_ENCRYPTED_SECRET() {
 impl Clone for TPM2B_ENCRYPTED_SECRET {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_ENCRYPTED_SECRET {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TPMI_ALG_PUBLIC = TPM_ALG_ID;
 #[repr(C)]
 #[derive(Copy)]
@@ -7902,6 +8196,7 @@ pub struct TPMU_PUBLIC_ID {
     pub sym: __BindgenUnionField<TPM2B_DIGEST>,
     pub rsa: __BindgenUnionField<TPM2B_PUBLIC_KEY_RSA>,
     pub ecc: __BindgenUnionField<TPMS_ECC_POINT>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 129usize],
 }
 #[test]
@@ -7930,12 +8225,20 @@ fn bindgen_test_layout_TPMU_PUBLIC_ID() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_PUBLIC_ID ) , "::"
                 , stringify ! ( ecc ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_PUBLIC_ID ) ) . na as * const _ as
+                usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_PUBLIC_ID ) , "::"
+                , stringify ! ( na ) ));
 }
 impl Clone for TPMU_PUBLIC_ID {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMU_PUBLIC_ID {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_KEYEDHASH_PARMS {
     pub scheme: TPMT_KEYEDHASH_SCHEME,
 }
@@ -7956,7 +8259,7 @@ impl Clone for TPMS_KEYEDHASH_PARMS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_ASYM_PARMS {
     pub symmetric: TPMT_SYM_DEF_OBJECT,
     pub scheme: TPMT_ASYM_SCHEME,
@@ -7982,7 +8285,7 @@ impl Clone for TPMS_ASYM_PARMS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_RSA_PARMS {
     pub symmetric: TPMT_SYM_DEF_OBJECT,
     pub scheme: TPMT_RSA_SCHEME,
@@ -8020,7 +8323,7 @@ impl Clone for TPMS_RSA_PARMS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_ECC_PARMS {
     pub symmetric: TPMT_SYM_DEF_OBJECT,
     pub scheme: TPMT_ECC_SCHEME,
@@ -8058,13 +8361,14 @@ impl Clone for TPMS_ECC_PARMS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMU_PUBLIC_PARMS {
     pub keyedHashDetail: __BindgenUnionField<TPMS_KEYEDHASH_PARMS>,
     pub symDetail: __BindgenUnionField<TPMS_SYMCIPHER_PARMS>,
     pub rsaDetail: __BindgenUnionField<TPMS_RSA_PARMS>,
     pub eccDetail: __BindgenUnionField<TPMS_ECC_PARMS>,
     pub asymDetail: __BindgenUnionField<TPMS_ASYM_PARMS>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u32; 5usize],
 }
 #[test]
@@ -8098,12 +8402,17 @@ fn bindgen_test_layout_TPMU_PUBLIC_PARMS() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_PUBLIC_PARMS ) ,
                 "::" , stringify ! ( asymDetail ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_PUBLIC_PARMS ) ) . na as * const _
+                as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPMU_PUBLIC_PARMS ) ,
+                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_PUBLIC_PARMS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMT_PUBLIC_PARMS {
     pub type_: TPMI_ALG_PUBLIC,
     pub parameters: TPMU_PUBLIC_PARMS,
@@ -8178,6 +8487,9 @@ fn bindgen_test_layout_TPMT_PUBLIC() {
 impl Clone for TPMT_PUBLIC {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMT_PUBLIC {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPM2B_PUBLIC {
@@ -8215,6 +8527,9 @@ fn bindgen_test_layout_TPM2B_PUBLIC__bindgen_ty_1() {
 impl Clone for TPM2B_PUBLIC__bindgen_ty_1 {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_PUBLIC__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_PUBLIC() {
     assert_eq!(::std::mem::size_of::<TPM2B_PUBLIC>() , 360usize , concat ! (
@@ -8234,6 +8549,9 @@ fn bindgen_test_layout_TPM2B_PUBLIC() {
 }
 impl Clone for TPM2B_PUBLIC {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_PUBLIC {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -8272,6 +8590,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1() {
                 TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1 ) , "::" ,
                 stringify ! ( buffer ) ));
 }
+impl Default for TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_PRIVATE_VENDOR_SPECIFIC() {
     assert_eq!(::std::mem::size_of::<TPM2B_PRIVATE_VENDOR_SPECIFIC>() ,
@@ -8295,6 +8616,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE_VENDOR_SPECIFIC() {
 impl Clone for TPM2B_PRIVATE_VENDOR_SPECIFIC {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_PRIVATE_VENDOR_SPECIFIC {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPMU_SENSITIVE_COMPOSITE {
@@ -8303,6 +8627,7 @@ pub struct TPMU_SENSITIVE_COMPOSITE {
     pub bits: __BindgenUnionField<TPM2B_SENSITIVE_DATA>,
     pub sym: __BindgenUnionField<TPM2B_SYM_KEY>,
     pub any: __BindgenUnionField<TPM2B_PRIVATE_VENDOR_SPECIFIC>,
+    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 321usize],
 }
 #[test]
@@ -8338,9 +8663,17 @@ fn bindgen_test_layout_TPMU_SENSITIVE_COMPOSITE() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! (
                 TPMU_SENSITIVE_COMPOSITE ) , "::" , stringify ! ( any ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPMU_SENSITIVE_COMPOSITE ) ) . na as *
+                const _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! (
+                TPMU_SENSITIVE_COMPOSITE ) , "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SENSITIVE_COMPOSITE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMU_SENSITIVE_COMPOSITE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -8380,6 +8713,9 @@ fn bindgen_test_layout_TPMT_SENSITIVE() {
 impl Clone for TPMT_SENSITIVE {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMT_SENSITIVE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPM2B_SENSITIVE {
@@ -8418,6 +8754,9 @@ fn bindgen_test_layout_TPM2B_SENSITIVE__bindgen_ty_1() {
 impl Clone for TPM2B_SENSITIVE__bindgen_ty_1 {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_SENSITIVE__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_SENSITIVE() {
     assert_eq!(::std::mem::size_of::<TPM2B_SENSITIVE>() , 778usize , concat !
@@ -8437,6 +8776,9 @@ fn bindgen_test_layout_TPM2B_SENSITIVE() {
 }
 impl Clone for TPM2B_SENSITIVE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_SENSITIVE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -8469,6 +8811,9 @@ fn bindgen_test_layout__PRIVATE() {
 }
 impl Clone for _PRIVATE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for _PRIVATE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -8504,6 +8849,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE__bindgen_ty_1() {
                 TPM2B_PRIVATE__bindgen_ty_1 ) , "::" , stringify ! ( buffer )
                 ));
 }
+impl Default for TPM2B_PRIVATE__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_PRIVATE() {
     assert_eq!(::std::mem::size_of::<TPM2B_PRIVATE>() , 912usize , concat ! (
@@ -8523,6 +8871,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE() {
 }
 impl Clone for TPM2B_PRIVATE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_PRIVATE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -8549,6 +8900,9 @@ fn bindgen_test_layout__ID_OBJECT() {
 }
 impl Clone for _ID_OBJECT {
     fn clone(&self) -> Self { *self }
+}
+impl Default for _ID_OBJECT {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -8584,6 +8938,9 @@ fn bindgen_test_layout_TPM2B_ID_OBJECT__bindgen_ty_1() {
                 TPM2B_ID_OBJECT__bindgen_ty_1 ) , "::" , stringify ! (
                 credential ) ));
 }
+impl Default for TPM2B_ID_OBJECT__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_ID_OBJECT() {
     assert_eq!(::std::mem::size_of::<TPM2B_ID_OBJECT>() , 134usize , concat !
@@ -8604,15 +8961,18 @@ fn bindgen_test_layout_TPM2B_ID_OBJECT() {
 impl Clone for TPM2B_ID_OBJECT {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_ID_OBJECT {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM_NV_INDEX {
     pub __bindgen_anon_1: __BindgenUnionField<TPM_NV_INDEX__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM_NV_INDEX__bindgen_ty_1 {
     pub _bitfield_1: u32,
     pub __bindgen_align: [u32; 0usize],
@@ -8692,7 +9052,7 @@ impl Clone for TPM_NV_INDEX {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMS_NV_PIN_COUNTER_PARAMETERS {
     pub pinCount: UINT32,
     pub pinLimit: UINT32,
@@ -8724,14 +9084,14 @@ impl Clone for TPMS_NV_PIN_COUNTER_PARAMETERS {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_NV {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_NV__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPMA_NV__bindgen_ty_1 {
     pub _bitfield_1: [u8; 4usize],
     pub __bindgen_align: [u32; 0usize],
@@ -9505,8 +9865,11 @@ fn bindgen_test_layout_TPMS_NV_PUBLIC() {
 impl Clone for TPMS_NV_PUBLIC {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_NV_PUBLIC {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM2B_NV_PUBLIC {
     pub t: __BindgenUnionField<TPM2B_NV_PUBLIC__bindgen_ty_1>,
     pub b: __BindgenUnionField<TPM2B>,
@@ -9542,6 +9905,9 @@ fn bindgen_test_layout_TPM2B_NV_PUBLIC__bindgen_ty_1() {
 }
 impl Clone for TPM2B_NV_PUBLIC__bindgen_ty_1 {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_NV_PUBLIC__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[test]
 fn bindgen_test_layout_TPM2B_NV_PUBLIC() {
@@ -9598,6 +9964,9 @@ fn bindgen_test_layout_TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1() {
                 TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_CONTEXT_SENSITIVE() {
     assert_eq!(::std::mem::size_of::<TPM2B_CONTEXT_SENSITIVE>() , 2050usize ,
@@ -9619,6 +9988,9 @@ fn bindgen_test_layout_TPM2B_CONTEXT_SENSITIVE() {
 }
 impl Clone for TPM2B_CONTEXT_SENSITIVE {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_CONTEXT_SENSITIVE {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -9645,6 +10017,9 @@ fn bindgen_test_layout_TPMS_CONTEXT_DATA() {
 }
 impl Clone for TPMS_CONTEXT_DATA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMS_CONTEXT_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -9681,6 +10056,9 @@ fn bindgen_test_layout_TPM2B_CONTEXT_DATA__bindgen_ty_1() {
                 TPM2B_CONTEXT_DATA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
 }
+impl Default for TPM2B_CONTEXT_DATA__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_CONTEXT_DATA() {
     assert_eq!(::std::mem::size_of::<TPM2B_CONTEXT_DATA>() , 2118usize ,
@@ -9700,6 +10078,9 @@ fn bindgen_test_layout_TPM2B_CONTEXT_DATA() {
 }
 impl Clone for TPM2B_CONTEXT_DATA {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPM2B_CONTEXT_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -9738,6 +10119,9 @@ fn bindgen_test_layout_TPMS_CONTEXT() {
 }
 impl Clone for TPMS_CONTEXT {
     fn clone(&self) -> Self { *self }
+}
+impl Default for TPMS_CONTEXT {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
 #[derive(Copy)]
@@ -9796,6 +10180,9 @@ fn bindgen_test_layout_TPMS_CREATION_DATA() {
 impl Clone for TPMS_CREATION_DATA {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPMS_CREATION_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Copy)]
 pub struct TPM2B_CREATION_DATA {
@@ -9835,6 +10222,9 @@ fn bindgen_test_layout_TPM2B_CREATION_DATA__bindgen_ty_1() {
 impl Clone for TPM2B_CREATION_DATA__bindgen_ty_1 {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_CREATION_DATA__bindgen_ty_1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[test]
 fn bindgen_test_layout_TPM2B_CREATION_DATA() {
     assert_eq!(::std::mem::size_of::<TPM2B_CREATION_DATA>() , 324usize ,
@@ -9857,9 +10247,12 @@ fn bindgen_test_layout_TPM2B_CREATION_DATA() {
 impl Clone for TPM2B_CREATION_DATA {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TPM2B_CREATION_DATA {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type nfds_t = ::std::os::raw::c_ulong;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct pollfd {
     pub fd: ::std::os::raw::c_int,
     pub events: ::std::os::raw::c_short,
@@ -9902,7 +10295,7 @@ pub struct TSS2_TCTI_OPAQUE_CONTEXT_BLOB {
 }
 pub type TSS2_TCTI_CONTEXT = TSS2_TCTI_OPAQUE_CONTEXT_BLOB;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TSS2_TCTI_CONTEXT_VERSION {
     pub magic: u64,
     pub version: u32,
@@ -10025,6 +10418,9 @@ fn bindgen_test_layout_TSS2_TCTI_CONTEXT_COMMON_V1() {
 impl Clone for TSS2_TCTI_CONTEXT_COMMON_V1 {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TSS2_TCTI_CONTEXT_COMMON_V1 {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 pub type TSS2_TCTI_CONTEXT_COMMON_CURRENT = TSS2_TCTI_CONTEXT_COMMON_V1;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -10058,6 +10454,9 @@ fn bindgen_test_layout_TSS2_SYS_CMD_AUTHS() {
 impl Clone for TSS2_SYS_CMD_AUTHS {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TSS2_SYS_CMD_AUTHS {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 #[repr(C)]
 #[derive(Debug, Copy)]
 pub struct TSS2_SYS_RSP_AUTHS {
@@ -10084,10 +10483,12 @@ fn bindgen_test_layout_TSS2_SYS_RSP_AUTHS() {
 impl Clone for TSS2_SYS_RSP_AUTHS {
     fn clone(&self) -> Self { *self }
 }
+impl Default for TSS2_SYS_RSP_AUTHS {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 extern "C" {
     pub fn Tss2_Sys_GetContextSize(maxCommandResponseSize: usize) -> usize;
 }
-#[link(name = "sapi")]
 extern "C" {
     pub fn Tss2_Sys_Initialize(sysContext: *mut TSS2_SYS_CONTEXT,
                                contextSize: usize,
@@ -10162,7 +10563,7 @@ extern "C" {
                                 rpBuffer: *mut *const u8) -> TPM_RC;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_Startup_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10200,7 +10601,7 @@ impl Clone for TPM20_Startup_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_Shutdown_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10238,7 +10639,7 @@ impl Clone for TPM20_Shutdown_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_SelfTest_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10276,7 +10677,7 @@ impl Clone for TPM20_SelfTest_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyRestart_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10316,7 +10717,7 @@ impl Clone for TPM20_PolicyRestart_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_StirRandom_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10356,7 +10757,7 @@ impl Clone for TPM20_StirRandom_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_SequenceUpdate_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10399,7 +10800,7 @@ impl Clone for TPM20_SequenceUpdate_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_SetCommandCodeAuditStatus_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10445,7 +10846,7 @@ impl Clone for TPM20_SetCommandCodeAuditStatus_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PCR_Extend_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10485,7 +10886,7 @@ impl Clone for TPM20_PCR_Extend_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PCR_SetAuthPolicy_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10529,7 +10930,7 @@ impl Clone for TPM20_PCR_SetAuthPolicy_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PCR_SetAuthValue_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10573,7 +10974,7 @@ impl Clone for TPM20_PCR_SetAuthValue_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PCR_Reset_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10612,7 +11013,7 @@ impl Clone for TPM20_PCR_Reset_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyTicket_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10652,7 +11053,7 @@ impl Clone for TPM20_PolicyTicket_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyOR_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10690,7 +11091,7 @@ impl Clone for TPM20_PolicyOR_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyPCR_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10729,7 +11130,7 @@ impl Clone for TPM20_PolicyPCR_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyLocality_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10772,7 +11173,7 @@ impl Clone for TPM20_PolicyLocality_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyNV_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10810,7 +11211,7 @@ impl Clone for TPM20_PolicyNV_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyCounterTimer_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10855,7 +11256,7 @@ impl Clone for TPM20_PolicyCounterTimer_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyCommandCode_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10899,7 +11300,7 @@ impl Clone for TPM20_PolicyCommandCode_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyPhysicalPresence_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10945,7 +11346,7 @@ impl Clone for TPM20_PolicyPhysicalPresence_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyCpHash_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -10985,7 +11386,7 @@ impl Clone for TPM20_PolicyCpHash_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyNameHash_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11028,7 +11429,7 @@ impl Clone for TPM20_PolicyNameHash_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyDuplicationSelect_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11074,7 +11475,7 @@ impl Clone for TPM20_PolicyDuplicationSelect_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyAuthorize_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11118,7 +11519,7 @@ impl Clone for TPM20_PolicyAuthorize_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyAuthValue_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11162,7 +11563,7 @@ impl Clone for TPM20_PolicyAuthValue_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyPassword_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11205,7 +11606,7 @@ impl Clone for TPM20_PolicyPassword_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PolicyNvWritten_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11249,7 +11650,7 @@ impl Clone for TPM20_PolicyNvWritten_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_HierarchyControl_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11293,7 +11694,7 @@ impl Clone for TPM20_HierarchyControl_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_SetPrimaryPolicy_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11337,7 +11738,7 @@ impl Clone for TPM20_SetPrimaryPolicy_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_ChangePPS_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11376,7 +11777,7 @@ impl Clone for TPM20_ChangePPS_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_ChangeEPS_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11415,7 +11816,7 @@ impl Clone for TPM20_ChangeEPS_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_Clear_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11453,7 +11854,7 @@ impl Clone for TPM20_Clear_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_ClearControl_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11493,7 +11894,7 @@ impl Clone for TPM20_ClearControl_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_HierarchyChangeAuth_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11538,7 +11939,7 @@ impl Clone for TPM20_HierarchyChangeAuth_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_DictionaryAttackLockReset_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11584,7 +11985,7 @@ impl Clone for TPM20_DictionaryAttackLockReset_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_DictionaryAttackParameters_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11630,7 +12031,7 @@ impl Clone for TPM20_DictionaryAttackParameters_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_PP_Commands_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11670,7 +12071,7 @@ impl Clone for TPM20_PP_Commands_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_SetAlgorithmSet_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11714,7 +12115,7 @@ impl Clone for TPM20_SetAlgorithmSet_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_FieldUpgradeStart_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11758,7 +12159,7 @@ impl Clone for TPM20_FieldUpgradeStart_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_FlushContext_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11798,7 +12199,7 @@ impl Clone for TPM20_FlushContext_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_EvictControl_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11838,7 +12239,7 @@ impl Clone for TPM20_EvictControl_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_ClockSet_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11876,7 +12277,7 @@ impl Clone for TPM20_ClockSet_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_ClockRateAdjust_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11920,7 +12321,7 @@ impl Clone for TPM20_ClockRateAdjust_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_TestParms_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -11959,7 +12360,7 @@ impl Clone for TPM20_TestParms_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_DefineSpace_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12002,7 +12403,7 @@ impl Clone for TPM20_NV_DefineSpace_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_UndefineSpace_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12046,7 +12447,7 @@ impl Clone for TPM20_NV_UndefineSpace_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_UndefineSpaceSpecial_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12092,7 +12493,7 @@ impl Clone for TPM20_NV_UndefineSpaceSpecial_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_Write_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12130,7 +12531,7 @@ impl Clone for TPM20_NV_Write_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_Increment_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12170,7 +12571,7 @@ impl Clone for TPM20_NV_Increment_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_Extend_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12209,7 +12610,7 @@ impl Clone for TPM20_NV_Extend_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_SetBits_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12249,7 +12650,7 @@ impl Clone for TPM20_NV_SetBits_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_WriteLock_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12289,7 +12690,7 @@ impl Clone for TPM20_NV_WriteLock_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_GlobalWriteLock_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12334,7 +12735,7 @@ impl Clone for TPM20_NV_GlobalWriteLock_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_ReadLock_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -12374,7 +12775,7 @@ impl Clone for TPM20_NV_ReadLock_Out {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct TPM20_NV_ChangeAuth_Out {
     pub tag: TPM_ST,
     pub responseSize: UINT32,
@@ -14572,7 +14973,9 @@ fn bindgen_test_layout_TCTI_DEVICE_CONF() {
 impl Clone for TCTI_DEVICE_CONF {
     fn clone(&self) -> Self { *self }
 }
-#[link(name = "tcti-device")]
+impl Default for TCTI_DEVICE_CONF {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 extern "C" {
     pub fn InitDeviceTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
                           contextSize: *mut usize,
@@ -14634,7 +15037,9 @@ fn bindgen_test_layout_TCTI_SOCKET_CONF() {
 impl Clone for TCTI_SOCKET_CONF {
     fn clone(&self) -> Self { *self }
 }
-#[link(name = "tcti-socket")]
+impl Default for TCTI_SOCKET_CONF {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
 extern "C" {
     pub fn InitSocketTcti(tctiContext: *mut TSS2_TCTI_CONTEXT,
                           contextSize: *mut usize,
@@ -14646,7 +15051,7 @@ extern "C" {
                                     tpmCmdServer: UINT8) -> TSS2_RC;
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug, Default, Copy)]
 pub struct __locale_data {
     pub _address: u8,
 }
