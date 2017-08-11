@@ -154,7 +154,9 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
                                 sys::TPM_RC_POLICY_FAIL => {
                                     tss_tpm_err!(errors::tpm::ErrorKind::PolicyFail)
                                 }
-                                sys::TPM_RC_BAD_AUTH => tss_tpm_err!(errors::tpm::ErrorKind::BadAuth),
+                                sys::TPM_RC_BAD_AUTH => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::BadAuth)
+                                }
                                 err => {
                                     Err(ErrorKind::Tpm(errors::tpm::ErrorKind::FormatOne(err))
                                             .into())
@@ -297,9 +299,7 @@ impl Context {
             // set the length of our password
             auth.size = passwd.len() as u16;
             // copy the password into the password struct
-            ptr::copy(passwd.as_ptr(),
-                      auth.buffer.as_mut_ptr(),
-                      passwd.len());
+            ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
         }
 
         let auth_handle = match auth_type {
@@ -340,12 +340,10 @@ impl Drop for TctiContext {
         // am OK with leaking the data until upstream addresses this.
         // see: https://github.com/01org/tpm2-tss/issues/490
         // see: https://github.com/01org/tpm2-tss/pull/491
-        /*
-        trace!("Tss2_Tcti_Finalize({:?})", self.inner);
-        unsafe {
-            sys::Tss2_Tcti_Finalize(self.inner);
-        }
-        */
+        //trace!("Tss2_Tcti_Finalize({:?})", self.inner);
+        //unsafe {
+        //    sys::Tss2_Tcti_Finalize(self.inner);
+        //}
 
         trace!("TctiContext free({:?})", self.inner);
         free(self.inner, self.size);

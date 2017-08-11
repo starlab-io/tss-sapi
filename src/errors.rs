@@ -61,11 +61,14 @@ pub mod tpm {
                 display("TPM not initialized")
             }
             Insufficient {
-                description("the TPM was unable to unmarshal a value because there were not enough objects in the input")
-                display("the TPM was unable to unmarshal a value because there were not enough objects in the input")
+                description("the TPM was unable to unmarshal a value\
+                    because there were not enough objects in the input")
+                display("the TPM was unable to unmarshal a value\
+                    because there were not enough objects in the input")
             }
             Kdf {
-                description("unsupported key derivation function or function not appropriate for use")
+                description(r#"unsupported key derivation function or
+                    function not appropriate for use"#)
                 display("unsupported key derivation function or function not appropriate for use")
             }
             Key {
