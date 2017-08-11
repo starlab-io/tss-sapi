@@ -1,0 +1,36 @@
+stages:
+    - format
+    - build
+    - test
+
+format:
+    stage: format
+    image: starlabio/ubuntu-native-build:1.0.9
+    script:
+        - cargo fmt -- --write-mode=diff
+
+build:
+    stage: build
+    image: starlabio/tpm2-emulator:1.1
+    dependencies: []
+    before_script:
+        - curl -sSf rustup-install.sh https://sh.rustup.rs > rustup-install.sh
+        - sh rustup-install.sh -y
+        - source $HOME/.cargo/env
+        - rustup default 1.15.1-x86_64-unknown-linux-gnu
+    script:
+        - cargo build --verbose
+        - cargo build --example ownership
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - target/debug/examples/
+
+test:
+    stage: test
+    image: starlabio/tpm2-emulator:1.1
+    before_script:
+        - tpm_server -rm &
+        - tpm2_startup --clear
+    script:
+        - ./target/debug/examples/ownership
