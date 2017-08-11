@@ -290,21 +290,16 @@ impl Context {
             cmdAuths: &mut cmds,
         };
 
-        let mut new_auth: sys::TPM2B_AUTH = unsafe { mem::zeroed() };
-
-        // create the structure for our new password and initialize the array to 0
-        let mut pass_struct = sys::TPM2B_DIGEST__bindgen_ty_1 {
-            size: passwd.len() as u16,
-            buffer: unsafe { mem::zeroed() },
-        };
+        let mut new_auth: sys::TPM2B_AUTH = Default::default();
 
         unsafe {
+            let mut auth = new_auth.t.as_mut();
+            // set the length of our password
+            auth.size = passwd.len() as u16;
             // copy the password into the password struct
             ptr::copy(passwd.as_ptr(),
-                      pass_struct.buffer.as_mut_ptr(),
+                      auth.buffer.as_mut_ptr(),
                       passwd.len());
-
-            *new_auth.t.as_mut() = pass_struct;
         }
 
         let auth_handle = match auth_type {
