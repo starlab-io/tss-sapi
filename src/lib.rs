@@ -302,14 +302,6 @@ impl Drop for TctiContext {
         }
         */
 
-
-
-
-
-
-
-
-
         trace!("TctiContext free({:?})", self.inner);
         free(self.inner, self.size);
     }
