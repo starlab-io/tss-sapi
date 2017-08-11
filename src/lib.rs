@@ -207,6 +207,12 @@ pub enum Startup {
     State,
 }
 
+enum HierarchyAuth {
+    Owner,
+    Endorsement,
+    Lockout,
+}
+
 pub struct Context {
     inner: *mut sys::TSS2_SYS_CONTEXT,
     size: usize,
@@ -269,15 +275,59 @@ impl Context {
         Ok(())
     }
 
-    pub fn take_ownership(&self) -> Result<()> {
-        let sessionData = sys::TPMS_AUTH_COMMAND {
+    fn take_ownership_helper(&self, auth_type: HierarchyAuth, passwd: &[u8]) -> Result<()> {
+        let mut cmd = sys::TPMS_AUTH_COMMAND {
             sessionHandle: sys::TPM_RS_PW,
-            nonce: ::std::mem::zeroed(),
-            hmac: ::std::mem::zeroed(),
-            sessionAttributes: 0 as sys::TPMA_SESSION,
+            nonce: unsafe { mem::zeroed() },
+            hmac: unsafe { mem::zeroed() },
+            sessionAttributes: unsafe { mem::zeroed() },
         };
 
+        let mut cmds: *mut sys::TPMS_AUTH_COMMAND = &mut cmd;
+
+        let session_data = sys::TSS2_SYS_CMD_AUTHS {
+            cmdAuthsCount: 1,
+            cmdAuths: &mut cmds,
+        };
+
+        let mut new_auth: sys::TPM2B_AUTH = unsafe { mem::zeroed() };
+
+        // create the structure for our new password and initialize the array to 0
+        let mut pass_struct = sys::TPM2B_DIGEST__bindgen_ty_1 {
+            size: passwd.len() as u16,
+            buffer: unsafe { mem::zeroed() },
+        };
+
+        unsafe {
+            // copy the password into the password struct
+            ptr::copy(passwd.as_ptr(),
+                      pass_struct.buffer.as_mut_ptr(),
+                      passwd.len());
+
+            *new_auth.t.as_mut() = pass_struct;
+        }
+
+        let auth_handle = match auth_type {
+            HierarchyAuth::Owner => sys::TPM_RH_OWNER,
+            HierarchyAuth::Endorsement => sys::TPM_RH_ENDORSEMENT,
+            HierarchyAuth::Lockout => sys::TPM_RH_LOCKOUT,
+        };
+
+        tss_err(unsafe {
+                    sys::Tss2_Sys_HierarchyChangeAuth(self.inner,
+                                                      auth_handle,
+                                                      &session_data,
+                                                      &mut new_auth,
+                                                      ptr::null_mut())
+                })?;
         Ok(())
+    }
+
+    /// take ownership of the TPM setting the Owner, Endorsement and Lockout passwords to `passwd`
+    pub fn take_ownership(&self, passwd: &str) -> Result<()> {
+        self.take_ownership_helper(HierarchyAuth::Owner, passwd.as_bytes())?;
+        self.take_ownership_helper(HierarchyAuth::Endorsement, passwd.as_bytes())?;
+        self.take_ownership_helper(HierarchyAuth::Lockout, passwd.as_bytes())
     }
 }
 
