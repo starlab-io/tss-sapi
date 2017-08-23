@@ -33,6 +33,16 @@ mod sys {
     pub const TSS2_RESMGR_ERROR_LEVEL: TSS2_RC = 12 << TSS2_RC_LEVEL_SHIFT;
     pub const TSS2_DRIVER_ERROR_LEVEL: TSS2_RC = 13 << TSS2_RC_LEVEL_SHIFT;
 
+    // values not pulled from sapi/tss2_tpm2_types.h
+    // MAX_TPM_PROPERTIES = (MAX_CAP_DATA / sizeof(TPMS_TAGGED_PROPERTY))
+    // MAX_CAP_DATA = (MAX_CAP_BUFFER - sizeof(TPM_CAP) - sizeof(UINT32)
+    // TPM_CAP = typedef UINT32
+    // MAX_CAP_BUFFER = 1024
+    // TPMS_TAGGED_PROPERTY = struct { TPM_PT, UINT32 };
+    // TPM_PT = typedef UINT32;
+    // MAX_TPM_PROPERTIES = ((1024 - 4 - 4) / (4 + 4) = 127
+    pub const MAX_TPM_PROPERTIES: UINT32 = 127;
+
     // masks not defined in the spec but defined in tpm2.0-tools/lib/rc-decode.h
     const TPM_RC_7BIT_ERROR_MASK: TSS2_RC = 0x7f;
     const TPM_RC_6BIT_ERROR_MASK: TSS2_RC = 0x3f;
@@ -215,6 +225,31 @@ enum HierarchyAuth {
     Lockout,
 }
 
+enum Capabilities {
+    VariableProperties,
+}
+
+struct TpmProperties {
+    index: usize,
+    caps: sys::TPMU_CAPABILITIES,
+}
+
+impl Iterator for TpmProperties {
+    type Item = sys::TPMS_TAGGED_PROPERTY;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let inner = unsafe { self.caps.tpmProperties.as_ref() };
+
+        if self.index < inner.count as usize {
+            let i = self.index;
+            self.index += 1;
+            inner.tpmProperty.get(i).cloned()
+        } else {
+            None
+        }
+    }
+}
+
 pub struct Context {
     inner: *mut sys::TSS2_SYS_CONTEXT,
     size: usize,
@@ -275,6 +310,65 @@ impl Context {
 
         tss_err(unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) })?;
         Ok(())
+    }
+
+    fn get_cap(&self, cap: Capabilities) -> Result<sys::TPMU_CAPABILITIES> {
+
+        let (cap, prop, count) = match cap {
+            Capabilities::VariableProperties => {
+                (sys::TPM_CAP_TPM_PROPERTIES, sys::PT_VAR, sys::MAX_TPM_PROPERTIES)
+            }
+        };
+
+        let mut more_data: sys::TPMI_YES_NO = unsafe { mem::zeroed() };
+        let mut cap_data: sys::TPMS_CAPABILITY_DATA = unsafe { mem::zeroed() };
+
+        trace!("Tss2_Sys_GetCapability({:?}, NULL, {}, {}, {}, more_data, cap, NULL)",
+               self.inner,
+               cap,
+               prop,
+               count);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_GetCapability(self.inner,
+                                                ptr::null(),
+                                                cap,
+                                                prop,
+                                                count,
+                                                &mut more_data,
+                                                &mut cap_data,
+                                                ptr::null_mut())
+                })?;
+
+        Ok(cap_data.data)
+    }
+
+    fn get_variable_properties(&self) -> Result<TpmProperties> {
+        let caps = self.get_cap(Capabilities::VariableProperties)?;
+
+        Ok(TpmProperties {
+               index: 0,
+               caps: caps,
+           })
+    }
+
+    /// check if the TPM is owned or not
+    pub fn is_owned(&self) -> Result<bool> {
+        // Get the variable TPM properties since this is how we see if the TPM is owned
+        // filter those to the TPM_PT_PERMANENT ones convert those to the TPMA_PERMANENT
+        // type which then allows us to check the 3 bits that we need to check
+        let props = self.get_variable_properties()?;
+
+        Ok(props.filter_map(|p| {
+                if p.property == sys::TPM_PT_PERMANENT {
+                    Some(unsafe {mem::transmute::<_, sys::TPMA_PERMANENT__bindgen_ty_1>(p.value) })
+                } else {
+                    None
+                }
+            }).map(|p| {
+                // combine all the bits to see if this should be true or false
+                p.ownerAuthSet() > 0 && p.endorsementAuthSet() > 0 && p.lockoutAuthSet() > 0
+            }).all(|p| p)
+           )
     }
 
     fn take_ownership_helper(&self, auth_type: HierarchyAuth, passwd: &[u8]) -> Result<()> {
