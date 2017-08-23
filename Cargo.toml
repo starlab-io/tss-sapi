@@ -7,9 +7,14 @@ description = "Bindings to the TPM 2.0 TSS SAPI"
 repository = "https://gitlab.com/starlab-io/tss-sapi.git"
 homepage = "https://gitlab.com/starlab-io/tss-sapi"
 documentation = "https://docs.rs/tss-sapi"
+readme = "README.md"
 keywords = ["tpm", "tss", "sapi"]
+categories = ["api-bindings"]
 build = "build.rs"
 links = "sapi"
+
+[badges]
+gitlab = { repository = "starlab-io/tss-sapi" }
 
 [dependencies]
 error-chain = "0.10.0"
