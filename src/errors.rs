@@ -5,6 +5,10 @@ pub mod tcti {
                 description("general failure")
                 display("general failure")
             }
+            IoError {
+                description("I/O failure")
+                display("I/O failure")
+            }
             NotWrapped(e: u32) {
                 description("an unwrapped TCTI error")
                 display("an unwrapped TCTI error: 0x{:08X}", e)
@@ -31,6 +35,14 @@ pub mod tpm {
             BadAuth {
                 description("authorization failure without DA implications")
                 display("authorization failure without DA implications")
+            }
+            Disabled {
+                description("TPM is disabled")
+                display("TPM is disabled")
+            }
+            Failure {
+                description("commands not accepted because of a TPM failure")
+                display("commands not accepted because of a TPM failure")
             }
             Exclusive {
                 description("command failed because audit sequence required exclusivity")
@@ -102,6 +114,10 @@ pub mod tpm {
             Range {
                 description("value was out of allowed range")
                 display("value was out of allowed range")
+            }
+            Reboot {
+                description("TPM init and startup(clear) is required for TPM to resume operation")
+                display("TPM init and startup(clear) is required for TPM to resume operation")
             }
             Scheme {
                 description("unsupported or incompatible scheme")
