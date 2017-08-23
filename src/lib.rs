@@ -179,9 +179,16 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
                                 sys::TPM_RC_INITIALIZE => {
                                     tss_tpm_err!(errors::tpm::ErrorKind::Initialize)
                                 }
+                                sys::TPM_RC_FAILURE => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Failure)
+                                }
+                                sys::TPM_RC_DISABLED => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::Disabled)
+                                }
                                 sys::TPM_RC_EXCLUSIVE => {
                                     tss_tpm_err!(errors::tpm::ErrorKind::Exclusive)
                                 }
+                                sys::TPM_RC_REBOOT => tss_tpm_err!(errors::tpm::ErrorKind::Reboot),
                                 err => {
                                     Err(ErrorKind::Tpm(errors::tpm::ErrorKind::FormatZero(err))
                                             .into())
@@ -199,6 +206,9 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
                     match val & !sys::TSS2_ERROR_LEVEL_MASK {
                         sys::TSS2_BASE_RC_GENERAL_FAILURE => {
                             tss_tcti_err!(errors::tcti::ErrorKind::GenFail)
+                        }
+                        sys::TSS2_BASE_RC_IO_ERROR => {
+                            tss_tcti_err!(errors::tcti::ErrorKind::IoError)
                         }
                         err => {
                             Err(ErrorKind::Tcti(errors::tcti::ErrorKind::NotWrapped(err)).into())
