@@ -31,6 +31,7 @@ test:
     image: starlabio/tpm2-emulator:1.1
     before_script:
         - tpm_server -rm &
+        - sleep 3 # cause the server needs some time
         - tpm2_startup --clear
     script:
         - ./target/debug/examples/ownership
