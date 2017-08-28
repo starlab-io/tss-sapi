@@ -98,8 +98,11 @@ mod sys {
     }
 }
 
+use enum_primitive::FromPrimitive;
 pub use errors::*;
+use std::default::Default;
 use std::ffi::{CStr, CString};
+use std::fmt;
 use std::mem;
 use std::ptr;
 use sys::ErrorCodes;
@@ -290,6 +293,140 @@ pub enum TpmAlgorithm {
 }
 }
 
+#[derive(Debug)]
+pub struct NvAttributes {
+    pub ppread: bool,
+    pub ppwrite: bool,
+    pub owner_read: bool,
+    pub owner_write: bool,
+    pub auth_read: bool,
+    pub auth_write: bool,
+    pub policy_read: bool,
+    pub policy_write: bool,
+    pub policy_delete: bool,
+    pub read_locked: bool,
+    pub write_locked: bool,
+    pub written: bool,
+    pub write_all: bool,
+    pub write_define: bool,
+    pub read_stclear: bool,
+    pub write_stclear: bool,
+    pub clear_stclear: bool,
+    pub global_lock: bool,
+    pub no_da: bool,
+    pub orderly: bool,
+    pub platform_create: bool,
+}
+
+impl From<sys::TPMA_NV> for NvAttributes {
+    fn from(nv: sys::TPMA_NV) -> Self {
+        // get the attributes converted
+        let nv_attrs = unsafe { nv.__bindgen_anon_1.as_ref() };
+
+        NvAttributes {
+            ppread: nv_attrs.TPMA_NV_PPREAD() > 0,
+            ppwrite: nv_attrs.TPMA_NV_PPWRITE() > 0,
+            owner_read: nv_attrs.TPMA_NV_OWNERREAD() > 0,
+            owner_write: nv_attrs.TPMA_NV_OWNERWRITE() > 0,
+            auth_read: nv_attrs.TPMA_NV_AUTHREAD() > 0,
+            auth_write: nv_attrs.TPMA_NV_AUTHWRITE() > 0,
+            policy_read: nv_attrs.TPMA_NV_POLICYREAD() > 0,
+            policy_write: nv_attrs.TPMA_NV_POLICYWRITE() > 0,
+            policy_delete: nv_attrs.TPMA_NV_POLICY_DELETE() > 0,
+            read_locked: nv_attrs.TPMA_NV_READLOCKED() > 0,
+            write_locked: nv_attrs.TPMA_NV_WRITELOCKED() > 0,
+            written: nv_attrs.TPMA_NV_WRITTEN() > 0,
+            write_all: nv_attrs.TPMA_NV_WRITEALL() > 0,
+            write_define: nv_attrs.TPMA_NV_WRITEDEFINE() > 0,
+            read_stclear: nv_attrs.TPMA_NV_READ_STCLEAR() > 0,
+            write_stclear: nv_attrs.TPMA_NV_WRITE_STCLEAR() > 0,
+            clear_stclear: nv_attrs.TPMA_NV_CLEAR_STCLEAR() > 0,
+            global_lock: nv_attrs.TPMA_NV_GLOBALLOCK() > 0,
+            no_da: nv_attrs.TPMA_NV_NO_DA() > 0,
+            orderly: nv_attrs.TPMA_NV_ORDERLY() > 0,
+            platform_create: nv_attrs.TPMA_NV_PLATFORMCREATE() > 0,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct NvRamArea {
+    pub index: u32,
+    pub size: u16,
+    pub hash: TpmAlgorithm,
+    pub attrs: NvAttributes,
+}
+
+impl NvRamArea {
+    /// look up an NVRAM area
+    pub fn get(ctx: &Context, index: u32) -> Result<NvRamArea> {
+        let mut nv_name = sys::TPM2B_NAME::new();
+        let mut nv_public = sys::TPM2B_NV_PUBLIC::default();
+
+        trace!("Tss2_Sys_NV_ReadPublic({:?}, {}, 0, buffer, 0, name, 0)",
+               ctx,
+               index);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_ReadPublic(ctx.inner,
+                                                index as sys::TPMI_RH_NV_INDEX,
+                                                ptr::null(),
+                                                &mut nv_public,
+                                                &mut nv_name,
+                                                ptr::null_mut())
+                })?;
+
+        let nv = unsafe { nv_public.t.as_ref() }.nvPublic;
+
+        let hash = TpmAlgorithm::from_u32(nv.nameAlg as u32)
+            .ok_or_else(|| ErrorKind::Msg("invalid TPM algorithm".into()))?;
+
+        Ok(NvRamArea {
+               index: nv.nvIndex,
+               size: nv.dataSize,
+               hash: hash,
+               attrs: NvAttributes::from(nv.attributes),
+           })
+    }
+}
+
+impl fmt::Display for NvRamArea {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        writeln!(f,
+                 "NVRAM index      : 0x{:08X} ({})",
+                 self.index,
+                 self.index)?;
+        writeln!(f, "Size             : {} (0x{:X})", self.size, self.size)?;
+        writeln!(f,
+                 "Hash algo        : {:?} (0x{:02X})",
+                 self.hash,
+                 self.hash as u16)?;
+        writeln!(f, "Auth policy      : {}", "FIXME: unknown")?;
+        writeln!(f, "Attributes       :")?;
+        writeln!(f, "  PPREAD         : {}", self.attrs.ppread)?;
+        writeln!(f, "  PPWRITE        : {}", self.attrs.ppwrite)?;
+        writeln!(f, "  OwnerRead      : {}", self.attrs.owner_read)?;
+        writeln!(f, "  OwnerWrite     : {}", self.attrs.owner_write)?;
+        writeln!(f, "  AuthRead       : {}", self.attrs.auth_read)?;
+        writeln!(f, "  AuthWrite      : {}", self.attrs.auth_write)?;
+        writeln!(f, "  PolicyRead     : {}", self.attrs.policy_read)?;
+        writeln!(f, "  PolicyWrit     : {}", self.attrs.policy_write)?;
+        writeln!(f, "  PolicyDelete   : {}", self.attrs.policy_write)?;
+        writeln!(f, "  ReadLocked     : {}", self.attrs.read_locked)?;
+        writeln!(f, "  WriteLocked    : {}", self.attrs.write_locked)?;
+        writeln!(f, "  Written        : {}", self.attrs.written)?;
+        writeln!(f, "  WriteAll       : {}", self.attrs.write_all)?;
+        writeln!(f, "  WriteDefine    : {}", self.attrs.write_define)?;
+        writeln!(f, "  ReadSTClear    : {}", self.attrs.read_stclear)?;
+        writeln!(f, "  WriteSTClear   : {}", self.attrs.write_stclear)?;
+        writeln!(f, "  ClearSTClear   : {}", self.attrs.clear_stclear)?;
+        writeln!(f, "  GlobalLock     : {}", self.attrs.global_lock)?;
+        writeln!(f, "  NoDA           : {}", self.attrs.no_da)?;
+        writeln!(f, "  Orderly        : {}", self.attrs.orderly)?;
+        writeln!(f, "  PlatformCreate : {}", self.attrs.platform_create)?;
+        Ok(())
+    }
+}
+
 #[derive(Clone, Debug)]
 pub enum Startup {
     Clear,
@@ -329,6 +466,7 @@ impl Iterator for TpmProperties {
     }
 }
 
+#[derive(Debug)]
 pub struct Context {
     inner: *mut sys::TSS2_SYS_CONTEXT,
     size: usize,
@@ -503,6 +641,7 @@ impl Context {
     }
 }
 
+#[derive(Debug)]
 struct TctiContext {
     inner: *mut sys::TSS2_TCTI_CONTEXT,
     size: usize,
