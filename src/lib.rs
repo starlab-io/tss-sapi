@@ -224,17 +224,20 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
     }
 }
 
+#[derive(Clone, Debug)]
 pub enum Startup {
     Clear,
     State,
 }
 
+#[derive(Clone, Debug)]
 enum HierarchyAuth {
     Owner,
     Endorsement,
     Lockout,
 }
 
+#[derive(Clone, Debug)]
 enum Capabilities {
     VariableProperties,
 }
@@ -322,9 +325,9 @@ impl Context {
         Ok(())
     }
 
-    fn get_cap(&self, cap: Capabilities) -> Result<sys::TPMU_CAPABILITIES> {
+    fn get_cap(&self, req: Capabilities) -> Result<sys::TPMU_CAPABILITIES> {
 
-        let (cap, prop, count) = match cap {
+        let (cap, prop, count) = match req {
             Capabilities::VariableProperties => {
                 (sys::TPM_CAP_TPM_PROPERTIES, sys::PT_VAR, sys::MAX_TPM_PROPERTIES)
             }
@@ -333,8 +336,9 @@ impl Context {
         let mut more_data: sys::TPMI_YES_NO = unsafe { mem::zeroed() };
         let mut cap_data: sys::TPMS_CAPABILITY_DATA = unsafe { mem::zeroed() };
 
-        trace!("Tss2_Sys_GetCapability({:?}, NULL, {}, {}, {}, more_data, cap, NULL)",
+        trace!("Tss2_Sys_GetCapability({:?}, NULL, ({:?}) {}, {}, {}, more_data, cap, NULL)",
                self.inner,
+               req,
                cap,
                prop,
                count);
@@ -412,6 +416,9 @@ impl Context {
             HierarchyAuth::Lockout => sys::TPM_RH_LOCKOUT,
         };
 
+        trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
+               self.inner,
+               auth_type);
         tss_err(unsafe {
                     sys::Tss2_Sys_HierarchyChangeAuth(self.inner,
                                                       auth_handle,
