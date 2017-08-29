@@ -18,6 +18,9 @@ mod errors;
 #[allow(non_snake_case, non_camel_case_types, dead_code)]
 #[allow(non_upper_case_globals, improper_ctypes)]
 mod sys {
+    use std::default::Default;
+    use std::mem;
+
     include!("bindings.rs");
 
     // error values aren't getting pulled from sapi/tss2_common.h
@@ -42,6 +45,21 @@ mod sys {
     // TPM_PT = typedef UINT32;
     // MAX_TPM_PROPERTIES = ((1024 - 4 - 4) / (4 + 4) = 127
     pub const MAX_TPM_PROPERTIES: UINT32 = 127;
+
+    // TPM2B_NAME must be initialized with the size parameter of the t union
+    // set to the size of the buffer in the struct. The struct is made up
+    // of the buffer + a UINT16 (the size). So it should be equal to the size
+    // of the struct minus a UINT16.
+    impl TPM2B_NAME {
+        pub fn new() -> TPM2B_NAME {
+            let mut field: TPM2B_NAME = Default::default();
+            unsafe {
+                (*field.t.as_mut()).size =
+                    (mem::size_of::<TPM2B_NAME>() - mem::size_of::<UINT16>()) as u16;
+            }
+            field
+        }
+    }
 
     // masks not defined in the spec but defined in tpm2.0-tools/lib/rc-decode.h
     const TPM_RC_7BIT_ERROR_MASK: TSS2_RC = 0x7f;
