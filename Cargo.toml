@@ -17,6 +17,7 @@ links = "sapi"
 gitlab = { repository = "starlab-io/tss-sapi" }
 
 [dependencies]
+enum_primitive = "0.1.1"
 error-chain = "0.10.0"
 log = "0.3"
 
