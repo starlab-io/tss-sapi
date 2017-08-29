@@ -242,6 +242,60 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
     }
 }
 
+/// Provide a handy enum that abstracts TPM algorithms
+#[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[repr(u32)]
+pub enum TpmAlgorithm {
+    RSA = sys::TPM_ALG_RSA,
+    SHA1 = sys::TPM_ALG_SHA1,
+    HMAC = sys::TPM_ALG_HMAC,
+    AES = sys::TPM_ALG_AES,
+    MGF1 = sys::TPM_ALG_MGF1,
+    KEYEDHASH = sys::TPM_ALG_KEYEDHASH,
+    XOR = sys::TPM_ALG_XOR,
+    SHA256 = sys::TPM_ALG_SHA256,
+    SHA384 = sys::TPM_ALG_SHA384,
+    SHA512 = sys::TPM_ALG_SHA512,
+    NULL = sys::TPM_ALG_NULL,
+    SM3_256 = sys::TPM_ALG_SM3_256,
+    SM4 = sys::TPM_ALG_SM4,
+    RSASSA = sys::TPM_ALG_RSASSA,
+    RSAES = sys::TPM_ALG_RSAES,
+    RSAPSS = sys::TPM_ALG_RSAPSS,
+    OAEP = sys::TPM_ALG_OAEP,
+    ECDSA = sys::TPM_ALG_ECDSA,
+    ECDH = sys::TPM_ALG_ECDH,
+    ECDAA = sys::TPM_ALG_ECDAA,
+    SM2 = sys::TPM_ALG_SM2,
+    ECSCHNORR = sys::TPM_ALG_ECSCHNORR,
+    ECMQV = sys::TPM_ALG_ECMQV,
+    KDF1_SP800_56A = sys::TPM_ALG_KDF1_SP800_56A,
+    KDF2 = sys::TPM_ALG_KDF2,
+    KDF1_SP800_108 = sys::TPM_ALG_KDF1_SP800_108,
+    ECC = sys::TPM_ALG_ECC,
+    SYMCIPHER = sys::TPM_ALG_SYMCIPHER,
+    CAMELLIA = sys::TPM_ALG_CAMELLIA,
+    CTR = sys::TPM_ALG_CTR,
+    SHA3_256 = sys::TPM_ALG_SHA3_256,
+    SHA3_384 = sys::TPM_ALG_SHA3_384,
+    SHA3_512 = sys::TPM_ALG_SHA3_512,
+    OFB = sys::TPM_ALG_OFB,
+    CBC = sys::TPM_ALG_CBC,
+    CFB = sys::TPM_ALG_CFB,
+    ECB = sys::TPM_ALG_ECB,
+}
+
+impl TpmAlgorithm {
+    pub fn from_u32(x: u32) -> Option<TpmAlgorithm> {
+        if x > sys::TPM_ALG_ERROR && x <= sys::TPM_ALG_LAST {
+            Some(unsafe { mem::transmute(x) })
+        } else {
+            None
+        }
+    }
+}
+
 #[derive(Clone, Debug)]
 pub enum Startup {
     Clear,
