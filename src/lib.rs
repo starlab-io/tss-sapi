@@ -9,11 +9,12 @@
 #![recursion_limit = "1024"]
 
 #[macro_use]
-extern crate enum_primitive;
+extern crate enum_primitive_derive;
 #[macro_use]
 extern crate error_chain;
 #[macro_use]
 extern crate log;
+extern crate num_traits;
 
 mod errors;
 
@@ -98,8 +99,8 @@ mod sys {
     }
 }
 
-use enum_primitive::FromPrimitive;
 pub use errors::*;
+use num_traits::FromPrimitive;
 use std::default::Default;
 use std::ffi::{CStr, CString};
 use std::fmt;
@@ -247,50 +248,47 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
     }
 }
 
-enum_from_primitive! {
 /// Provide a handy enum that abstracts TPM algorithms
 #[allow(non_camel_case_types)]
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-#[repr(u32)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
 pub enum TpmAlgorithm {
-    RSA = sys::TPM_ALG_RSA,
-    SHA1 = sys::TPM_ALG_SHA1,
-    HMAC = sys::TPM_ALG_HMAC,
-    AES = sys::TPM_ALG_AES,
-    MGF1 = sys::TPM_ALG_MGF1,
-    KEYEDHASH = sys::TPM_ALG_KEYEDHASH,
-    XOR = sys::TPM_ALG_XOR,
-    SHA256 = sys::TPM_ALG_SHA256,
-    SHA384 = sys::TPM_ALG_SHA384,
-    SHA512 = sys::TPM_ALG_SHA512,
-    NULL = sys::TPM_ALG_NULL,
-    SM3_256 = sys::TPM_ALG_SM3_256,
-    SM4 = sys::TPM_ALG_SM4,
-    RSASSA = sys::TPM_ALG_RSASSA,
-    RSAES = sys::TPM_ALG_RSAES,
-    RSAPSS = sys::TPM_ALG_RSAPSS,
-    OAEP = sys::TPM_ALG_OAEP,
-    ECDSA = sys::TPM_ALG_ECDSA,
-    ECDH = sys::TPM_ALG_ECDH,
-    ECDAA = sys::TPM_ALG_ECDAA,
-    SM2 = sys::TPM_ALG_SM2,
-    ECSCHNORR = sys::TPM_ALG_ECSCHNORR,
-    ECMQV = sys::TPM_ALG_ECMQV,
-    KDF1_SP800_56A = sys::TPM_ALG_KDF1_SP800_56A,
-    KDF2 = sys::TPM_ALG_KDF2,
-    KDF1_SP800_108 = sys::TPM_ALG_KDF1_SP800_108,
-    ECC = sys::TPM_ALG_ECC,
-    SYMCIPHER = sys::TPM_ALG_SYMCIPHER,
-    CAMELLIA = sys::TPM_ALG_CAMELLIA,
-    CTR = sys::TPM_ALG_CTR,
-    SHA3_256 = sys::TPM_ALG_SHA3_256,
-    SHA3_384 = sys::TPM_ALG_SHA3_384,
-    SHA3_512 = sys::TPM_ALG_SHA3_512,
-    OFB = sys::TPM_ALG_OFB,
-    CBC = sys::TPM_ALG_CBC,
-    CFB = sys::TPM_ALG_CFB,
-    ECB = sys::TPM_ALG_ECB,
-}
+    RSA = sys::TPM_ALG_RSA as isize,
+    SHA1 = sys::TPM_ALG_SHA1 as isize,
+    HMAC = sys::TPM_ALG_HMAC as isize,
+    AES = sys::TPM_ALG_AES as isize,
+    MGF1 = sys::TPM_ALG_MGF1 as isize,
+    KEYEDHASH = sys::TPM_ALG_KEYEDHASH as isize,
+    XOR = sys::TPM_ALG_XOR as isize,
+    SHA256 = sys::TPM_ALG_SHA256 as isize,
+    SHA384 = sys::TPM_ALG_SHA384 as isize,
+    SHA512 = sys::TPM_ALG_SHA512 as isize,
+    NULL = sys::TPM_ALG_NULL as isize,
+    SM3_256 = sys::TPM_ALG_SM3_256 as isize,
+    SM4 = sys::TPM_ALG_SM4 as isize,
+    RSASSA = sys::TPM_ALG_RSASSA as isize,
+    RSAES = sys::TPM_ALG_RSAES as isize,
+    RSAPSS = sys::TPM_ALG_RSAPSS as isize,
+    OAEP = sys::TPM_ALG_OAEP as isize,
+    ECDSA = sys::TPM_ALG_ECDSA as isize,
+    ECDH = sys::TPM_ALG_ECDH as isize,
+    ECDAA = sys::TPM_ALG_ECDAA as isize,
+    SM2 = sys::TPM_ALG_SM2 as isize,
+    ECSCHNORR = sys::TPM_ALG_ECSCHNORR as isize,
+    ECMQV = sys::TPM_ALG_ECMQV as isize,
+    KDF1_SP800_56A = sys::TPM_ALG_KDF1_SP800_56A as isize,
+    KDF2 = sys::TPM_ALG_KDF2 as isize,
+    KDF1_SP800_108 = sys::TPM_ALG_KDF1_SP800_108 as isize,
+    ECC = sys::TPM_ALG_ECC as isize,
+    SYMCIPHER = sys::TPM_ALG_SYMCIPHER as isize,
+    CAMELLIA = sys::TPM_ALG_CAMELLIA as isize,
+    CTR = sys::TPM_ALG_CTR as isize,
+    SHA3_256 = sys::TPM_ALG_SHA3_256 as isize,
+    SHA3_384 = sys::TPM_ALG_SHA3_384 as isize,
+    SHA3_512 = sys::TPM_ALG_SHA3_512 as isize,
+    OFB = sys::TPM_ALG_OFB as isize,
+    CBC = sys::TPM_ALG_CBC as isize,
+    CFB = sys::TPM_ALG_CFB as isize,
+    ECB = sys::TPM_ALG_ECB as isize,
 }
 
 #[derive(Debug)]
