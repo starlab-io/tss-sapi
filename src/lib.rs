@@ -90,6 +90,13 @@ mod sys {
         }
     }
 
+    impl TPMS_AUTH_COMMAND {
+        pub fn new() -> Self {
+            // creates TPMS_AUTH_COMMAND initialized to an un"owned" password
+            TPMS_AUTH_COMMAND { sessionHandle: TPM_RS_PW, ..Default::default() }
+        }
+    }
+
     // masks not defined in the spec but defined in tpm2.0-tools/lib/rc-decode.h
     const TPM_RC_7BIT_ERROR_MASK: TSS2_RC = 0x7f;
     const TPM_RC_6BIT_ERROR_MASK: TSS2_RC = 0x3f;
@@ -273,6 +280,74 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
         }
     }
 }
+
+/// abstract over TPMS_AUTH_COMMAND and its vector TSS2_SYS_CMD_AUTHS
+struct CmdAuths {
+    inner: sys::TSS2_SYS_CMD_AUTHS,
+    _ptr: Box<*mut sys::TPMS_AUTH_COMMAND>,
+    _data: Vec<sys::TPMS_AUTH_COMMAND>,
+}
+
+impl CmdAuths {
+    pub fn new(mut cmds: Vec<sys::TPMS_AUTH_COMMAND>) -> Result<Self> {
+        // found this limit in tpm2-tss/sysapi/sysapi/authorizations.c
+        ensure!(cmds.len() <= sys::MAX_SESSION_NUM as usize,
+                ErrorKind::Msg("Too many auth commands supplied".into()));
+
+        let mut cmds_ptr = Box::new(cmds.as_mut_ptr());
+
+        let inner = sys::TSS2_SYS_CMD_AUTHS {
+            cmdAuthsCount: cmds.len() as u8,
+            cmdAuths: &mut *cmds_ptr,
+        };
+
+        Ok(CmdAuths {
+               inner: inner,
+               _ptr: cmds_ptr,
+               _data: cmds,
+           })
+    }
+}
+
+impl From<sys::TPMS_AUTH_COMMAND> for CmdAuths {
+    fn from(cmd: sys::TPMS_AUTH_COMMAND) -> Self {
+        CmdAuths::new(vec![cmd]).unwrap()
+    }
+}
+
+/// abstract over TPMS_AUTH_RESPONSE and its vector TSS2_SYS_RSP_AUTHS
+struct RespAuths {
+    inner: sys::TSS2_SYS_RSP_AUTHS,
+    _ptr: Box<*mut sys::TPMS_AUTH_RESPONSE>,
+    _data: Vec<sys::TPMS_AUTH_RESPONSE>,
+}
+
+impl RespAuths {
+    pub fn new(mut resps: Vec<sys::TPMS_AUTH_RESPONSE>) -> Result<Self> {
+        ensure!(resps.len() < u8::max_value() as usize,
+                ErrorKind::Msg("Too many auth responses supplied".into()));
+
+        let mut resps_ptr = Box::new(resps.as_mut_ptr());
+
+        let inner = sys::TSS2_SYS_RSP_AUTHS {
+            rspAuthsCount: resps.len() as u8,
+            rspAuths: &mut *resps_ptr,
+        };
+
+        Ok(RespAuths {
+               inner: inner,
+               _ptr: resps_ptr,
+               _data: resps,
+           })
+    }
+}
+
+impl From<sys::TPMS_AUTH_RESPONSE> for RespAuths {
+    fn from(resp: sys::TPMS_AUTH_RESPONSE) -> Self {
+        RespAuths::new(vec![resp]).unwrap()
+    }
+}
+
 
 /// Provide a handy enum that abstracts TPM algorithms
 #[allow(non_camel_case_types)]
@@ -620,20 +695,12 @@ impl Context {
     }
 
     fn take_ownership_helper(&self, auth_type: HierarchyAuth, passwd: &[u8]) -> Result<()> {
-        let mut cmd = sys::TPMS_AUTH_COMMAND {
-            sessionHandle: sys::TPM_RS_PW,
-            nonce: unsafe { mem::zeroed() },
-            hmac: unsafe { mem::zeroed() },
-            sessionAttributes: unsafe { mem::zeroed() },
-        };
+        // create an auth command with no password
+        let cmd = sys::TPMS_AUTH_COMMAND::new();
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
 
-        let mut cmds: *mut sys::TPMS_AUTH_COMMAND = &mut cmd;
-
-        let session_data = sys::TSS2_SYS_CMD_AUTHS {
-            cmdAuthsCount: 1,
-            cmdAuths: &mut cmds,
-        };
-
+        // create our new password
         let mut new_auth = sys::TPM2B_AUTH::new(passwd);
 
         let auth_handle = match auth_type {
@@ -648,7 +715,7 @@ impl Context {
         tss_err(unsafe {
                     sys::Tss2_Sys_HierarchyChangeAuth(self.inner,
                                                       auth_handle,
-                                                      &session_data,
+                                                      &session_data.inner,
                                                       &mut new_auth,
                                                       ptr::null_mut())
                 })?;
