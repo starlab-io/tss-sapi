@@ -23,6 +23,7 @@ mod errors;
 mod sys {
     use std::default::Default;
     use std::mem;
+    use std::ptr;
 
     include!("bindings.rs");
 
@@ -69,6 +70,25 @@ mod sys {
         );
 
     tpm2b_new!(TPM2B_NAME);
+
+    // add new() method to TPM2B_AUTH that is different from above by taking the
+    // password always
+    impl TPM2B_AUTH {
+        pub fn new(passwd: &[u8]) -> Self {
+
+            let mut new_auth = TPM2B_AUTH::default();
+
+            unsafe {
+                let mut auth = new_auth.t.as_mut();
+                // set the length of our password
+                auth.size = passwd.len() as u16;
+                // copy the password into the password struct
+                ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
+            }
+
+            new_auth
+        }
+    }
 
     // masks not defined in the spec but defined in tpm2.0-tools/lib/rc-decode.h
     const TPM_RC_7BIT_ERROR_MASK: TSS2_RC = 0x7f;
@@ -608,15 +628,7 @@ impl Context {
             cmdAuths: &mut cmds,
         };
 
-        let mut new_auth: sys::TPM2B_AUTH = Default::default();
-
-        unsafe {
-            let mut auth = new_auth.t.as_mut();
-            // set the length of our password
-            auth.size = passwd.len() as u16;
-            // copy the password into the password struct
-            ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
-        }
+        let mut new_auth = sys::TPM2B_AUTH::new(passwd);
 
         let auth_handle = match auth_type {
             HierarchyAuth::Owner => sys::TPM_RH_OWNER,
