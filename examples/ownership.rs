@@ -24,5 +24,10 @@ fn run() -> Result<()> {
     }
 
     // attempt to take ownership of the TPM with the password 'test123'
-    ctx.take_ownership("test123")
+    ctx.take_ownership(tss_sapi::HierarchyAuth::Owner, "test123")
+        .chain_err(|| "Unable to set Owner Auth")?;
+    ctx.take_ownership(tss_sapi::HierarchyAuth::Endorsement, "test123")
+        .chain_err(|| "Unable to set Endorsement Auth")?;
+    ctx.take_ownership(tss_sapi::HierarchyAuth::Lockout, "test123")
+        .chain_err(|| "Unable to set Lockout Auth")
 }

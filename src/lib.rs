@@ -533,7 +533,7 @@ pub enum Startup {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
-enum HierarchyAuth {
+pub enum HierarchyAuth {
     Owner = sys::TPM_RH_OWNER as isize,
     Endorsement = sys::TPM_RH_ENDORSEMENT as isize,
     Lockout = sys::TPM_RH_LOCKOUT as isize,
@@ -694,14 +694,15 @@ impl Context {
            )
     }
 
-    fn take_ownership_helper(&self, auth_type: HierarchyAuth, passwd: &[u8]) -> Result<()> {
+    /// take ownership of the TPM setting the Owner, Endorsement or Lockout passwords to `passwd`
+    pub fn take_ownership(&self, auth_type: HierarchyAuth, passwd: &str) -> Result<()> {
         // create an auth command with no password
         let cmd = sys::TPMS_AUTH_COMMAND::new();
         // populate our session data from the auth command
         let session_data = CmdAuths::from(cmd);
 
         // create our new password
-        let mut new_auth = sys::TPM2B_AUTH::new(passwd);
+        let mut new_auth = sys::TPM2B_AUTH::new(passwd.as_bytes());
 
         trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
                self.inner,
@@ -714,13 +715,6 @@ impl Context {
                                                       ptr::null_mut())
                 })?;
         Ok(())
-    }
-
-    /// take ownership of the TPM setting the Owner, Endorsement and Lockout passwords to `passwd`
-    pub fn take_ownership(&self, passwd: &str) -> Result<()> {
-        self.take_ownership_helper(HierarchyAuth::Owner, passwd.as_bytes())?;
-        self.take_ownership_helper(HierarchyAuth::Endorsement, passwd.as_bytes())?;
-        self.take_ownership_helper(HierarchyAuth::Lockout, passwd.as_bytes())
     }
 }
 
