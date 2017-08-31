@@ -133,7 +133,7 @@ mod sys {
 }
 
 pub use errors::*;
-use num_traits::FromPrimitive;
+use num_traits::{FromPrimitive, ToPrimitive};
 use std::default::Default;
 use std::ffi::{CStr, CString};
 use std::fmt;
@@ -532,11 +532,11 @@ pub enum Startup {
     State,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
 enum HierarchyAuth {
-    Owner,
-    Endorsement,
-    Lockout,
+    Owner = sys::TPM_RH_OWNER as isize,
+    Endorsement = sys::TPM_RH_ENDORSEMENT as isize,
+    Lockout = sys::TPM_RH_LOCKOUT as isize,
 }
 
 #[derive(Clone, Debug)]
@@ -703,18 +703,12 @@ impl Context {
         // create our new password
         let mut new_auth = sys::TPM2B_AUTH::new(passwd);
 
-        let auth_handle = match auth_type {
-            HierarchyAuth::Owner => sys::TPM_RH_OWNER,
-            HierarchyAuth::Endorsement => sys::TPM_RH_ENDORSEMENT,
-            HierarchyAuth::Lockout => sys::TPM_RH_LOCKOUT,
-        };
-
         trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
                self.inner,
                auth_type);
         tss_err(unsafe {
                     sys::Tss2_Sys_HierarchyChangeAuth(self.inner,
-                                                      auth_handle,
+                                                      auth_type.to_u32().unwrap(),
                                                       &session_data.inner,
                                                       &mut new_auth,
                                                       ptr::null_mut())
