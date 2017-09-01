@@ -16,6 +16,8 @@ fn run() -> Result<()> {
 
     // use function from tcti.rs
     let ctx = open_context()?;
+    // optionally set the current password to change ownership
+    //ctx.password("oldpass");
 
     // check if the TPM is already owned
     if ctx.is_owned()? {
