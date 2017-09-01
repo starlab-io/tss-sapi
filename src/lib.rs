@@ -409,7 +409,7 @@ pub enum TpmAlgorithm {
     ECB = sys::TPM_ALG_ECB as isize,
 }
 
-#[derive(Builder, Clone, Debug, Eq, PartialEq)]
+#[derive(Builder, Clone, Debug, Default, Eq, PartialEq)]
 pub struct NvAttributes {
     pub ppread: bool,
     pub ppwrite: bool,
