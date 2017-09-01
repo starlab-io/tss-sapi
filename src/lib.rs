@@ -510,7 +510,7 @@ impl NvRamArea {
                   size: u16,
                   hash: TpmAlgorithm,
                   attrs: NvAttributes)
-                  -> Result<()> {
+                  -> Result<NvRamArea> {
 
         let mut nv = sys::TPM2B_NV_PUBLIC::new();
 
@@ -552,7 +552,12 @@ impl NvRamArea {
 
 
 
-        Ok(())
+        Ok(NvRamArea {
+               index: nvpub.nvIndex,
+               size: nvpub.dataSize,
+               hash: hash,
+               attrs: NvAttributes::from(nvpub.attributes),
+        })
     }
 }
 
