@@ -97,6 +97,14 @@ mod sys {
             // creates TPMS_AUTH_COMMAND initialized to an un"owned" password
             TPMS_AUTH_COMMAND { sessionHandle: TPM_RS_PW, ..Default::default() }
         }
+
+        pub fn password(mut self, passwd: &Option<String>) -> Self {
+            if let &Some(ref pass) = passwd {
+                self.hmac = TPM2B_AUTH::new(pass.as_bytes());
+            }
+
+            self
+        }
     }
 
     impl TSS2_SYS_CMD_AUTHS {
@@ -578,6 +586,7 @@ pub struct Context {
     inner: *mut sys::TSS2_SYS_CONTEXT,
     size: usize,
     _tcti: TctiContext, // need to keep this for the life of this context
+    passwd: Option<String>, // the current authentication password
 }
 
 impl Drop for Context {
@@ -611,6 +620,7 @@ impl Context {
                inner: ptr,
                size: alloc_size,
                _tcti: tcti,
+               passwd: None,
            })
     }
 
@@ -624,6 +634,11 @@ impl Context {
     pub fn socket(host: Option<&str>, port: Option<u16>) -> Result<Context> {
         let tcti = TctiContext::socket(host, port)?;
         Self::_new_context(tcti)
+    }
+
+    /// set the authentication password we will use
+    pub fn password<T: ToString>(&mut self, passwd: T) {
+        self.passwd = Some(passwd.to_string());
     }
 
     pub fn startup(&self, action: Startup) -> Result<()> {
@@ -698,8 +713,8 @@ impl Context {
 
     /// take ownership of the TPM setting the Owner, Endorsement or Lockout passwords to `passwd`
     pub fn take_ownership(&self, auth_type: HierarchyAuth, passwd: &str) -> Result<()> {
-        // create an auth command with no password
-        let cmd = sys::TPMS_AUTH_COMMAND::new();
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.passwd);
         // populate our session data from the auth command
         let session_data = sys::TSS2_SYS_CMD_AUTHS::from(cmd);
 
