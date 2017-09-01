@@ -70,6 +70,7 @@ mod sys {
         );
 
     tpm2b_new!(TPM2B_NAME);
+    tpm2b_new!(TPM2B_NV_PUBLIC);
 
     // add new() method to TPM2B_AUTH that is different from above by taking the
     // password always
@@ -530,6 +531,64 @@ impl NvRamArea {
                size: nv.dataSize,
                hash: hash,
                attrs: NvAttributes::from(nv.attributes),
+           })
+    }
+
+    /// create an NVRAM area
+    pub fn define(ctx: &Context,
+                  index: u32,
+                  size: u16,
+                  hash: TpmAlgorithm,
+                  attrs: NvAttributes)
+                  -> Result<NvRamArea> {
+
+        let mut nv = sys::TPM2B_NV_PUBLIC::new();
+
+        // set our members
+        let nvpub = sys::TPMS_NV_PUBLIC {
+            nvIndex: index,
+            nameAlg: hash.to_u16().unwrap(),
+            attributes: attrs.into(),
+            authPolicy: sys::TPM2B_DIGEST::default(),
+            dataSize: size,
+        };
+        unsafe {
+            (*nv.t.as_mut()).nvPublic = nvpub;
+        }
+
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&ctx.passwd);
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
+
+        // create our NVRAM index password
+        let mut auth = sys::TPM2B_AUTH::default();
+
+        // create our session response
+        let resp = sys::TPMS_AUTH_RESPONSE::default();
+        let mut session_out = RespAuths::from(resp);
+
+        trace!("Tss2_Sys_NV_DefineSpace({:?}, {}, {:?}, NULL index passwd, {:?}, SESSION_OUT)",
+               ctx.inner,
+               "TPM_RH_OWNER",
+               session_data.inner,
+               nv);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_DefineSpace(ctx.inner,
+                                                 sys::TPM_RH_OWNER,
+                                                 &session_data.inner,
+                                                 &mut auth,
+                                                 &mut nv,
+                                                 &mut session_out.inner)
+                })?;
+
+
+
+        Ok(NvRamArea {
+               index: nvpub.nvIndex,
+               size: nvpub.dataSize,
+               hash: hash,
+               attrs: NvAttributes::from(nvpub.attributes),
            })
     }
 }
