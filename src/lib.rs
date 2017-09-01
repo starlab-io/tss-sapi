@@ -133,6 +133,44 @@ mod sys {
         }
     }
 
+    macro_rules! nv_attrs(
+        ($field:expr, $save:ident, $val:path) => (
+            if $field {
+                $save.bindgen_union_field += $val;
+            }
+            )
+        );
+
+    impl From<super::NvAttributes> for TPMA_NV {
+        fn from(attrs: super::NvAttributes) -> Self {
+            let mut built = TPMA_NV::default();
+
+            nv_attrs!(attrs.ppread, built, TPMA_NV_TPMA_NV_PPREAD);
+            nv_attrs!(attrs.ppwrite, built, TPMA_NV_TPMA_NV_PPWRITE);
+            nv_attrs!(attrs.owner_read, built, TPMA_NV_TPMA_NV_OWNERREAD);
+            nv_attrs!(attrs.owner_write, built, TPMA_NV_TPMA_NV_OWNERWRITE);
+            nv_attrs!(attrs.auth_read, built, TPMA_NV_TPMA_NV_AUTHREAD);
+            nv_attrs!(attrs.auth_write, built, TPMA_NV_TPMA_NV_AUTHWRITE);
+            nv_attrs!(attrs.policy_read, built, TPMA_NV_TPMA_NV_POLICYREAD);
+            nv_attrs!(attrs.policy_write, built, TPMA_NV_TPMA_NV_POLICYWRITE);
+            nv_attrs!(attrs.policy_delete, built, TPMA_NV_TPMA_NV_POLICY_DELETE);
+            nv_attrs!(attrs.read_locked, built, TPMA_NV_TPMA_NV_READLOCKED);
+            nv_attrs!(attrs.write_locked, built, TPMA_NV_TPMA_NV_WRITELOCKED);
+            nv_attrs!(attrs.written, built, TPMA_NV_TPMA_NV_WRITTEN);
+            nv_attrs!(attrs.write_all, built, TPMA_NV_TPMA_NV_WRITEALL);
+            nv_attrs!(attrs.write_define, built, TPMA_NV_TPMA_NV_WRITEDEFINE);
+            nv_attrs!(attrs.read_stclear, built, TPMA_NV_TPMA_NV_READ_STCLEAR);
+            nv_attrs!(attrs.write_stclear, built, TPMA_NV_TPMA_NV_WRITE_STCLEAR);
+            nv_attrs!(attrs.clear_stclear, built, TPMA_NV_TPMA_NV_CLEAR_STCLEAR);
+            nv_attrs!(attrs.global_lock, built, TPMA_NV_TPMA_NV_GLOBALLOCK);
+            nv_attrs!(attrs.no_da, built, TPMA_NV_TPMA_NV_NO_DA);
+            nv_attrs!(attrs.orderly, built, TPMA_NV_TPMA_NV_ORDERLY);
+            nv_attrs!(attrs.platform_create, built, TPMA_NV_TPMA_NV_PLATFORMCREATE);
+
+            built
+        }
+    }
+
     // masks not defined in the spec but defined in tpm2.0-tools/lib/rc-decode.h
     const TPM_RC_7BIT_ERROR_MASK: TSS2_RC = 0x7f;
     const TPM_RC_6BIT_ERROR_MASK: TSS2_RC = 0x3f;
@@ -360,7 +398,7 @@ pub enum TpmAlgorithm {
     ECB = sys::TPM_ALG_ECB as isize,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct NvAttributes {
     pub ppread: bool,
     pub ppwrite: bool,
