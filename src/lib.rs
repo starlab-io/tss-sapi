@@ -111,10 +111,12 @@ mod sys {
             ensure!(cmds.len() < u8::max_value() as usize,
                     String::from("Too many auth commands supplied"));
 
-            Ok(TSS2_SYS_CMD_AUTHS {
-                   cmdAuthsCount: cmds.len() as u8,
-                   cmdAuths: &mut cmds.as_mut_ptr(),
-               })
+            let ret = Ok(TSS2_SYS_CMD_AUTHS {
+                             cmdAuthsCount: cmds.len() as u8,
+                             cmdAuths: &mut cmds.as_mut_ptr(),
+                         });
+            mem::forget(cmds);
+            ret
         }
     }
 
@@ -124,21 +126,35 @@ mod sys {
         }
     }
 
+    impl Drop for TSS2_SYS_CMD_AUTHS {
+        fn drop(&mut self) {
+            unsafe { mem::drop(Vec::from_raw_parts(self.cmdAuths, 0, self.cmdAuthsCount as usize)) }
+        }
+    }
+
     impl TSS2_SYS_RSP_AUTHS {
         pub fn new(mut resps: Vec<TPMS_AUTH_RESPONSE>) -> Result<Self, String> {
             ensure!(resps.len() < u8::max_value() as usize,
                     String::from("Too many auth responses supplied"));
 
-            Ok(TSS2_SYS_RSP_AUTHS {
-                   rspAuthsCount: resps.len() as u8,
-                   rspAuths: &mut resps.as_mut_ptr(),
-               })
+            let ret = Ok(TSS2_SYS_RSP_AUTHS {
+                             rspAuthsCount: resps.len() as u8,
+                             rspAuths: &mut resps.as_mut_ptr(),
+                         });
+            mem::forget(resps);
+            ret
         }
     }
 
     impl From<TPMS_AUTH_RESPONSE> for TSS2_SYS_RSP_AUTHS {
         fn from(resp: TPMS_AUTH_RESPONSE) -> Self {
             TSS2_SYS_RSP_AUTHS::new(vec![resp]).unwrap()
+        }
+    }
+
+    impl Drop for TSS2_SYS_RSP_AUTHS {
+        fn drop(&mut self) {
+            unsafe { mem::drop(Vec::from_raw_parts(self.rspAuths, 0, self.rspAuthsCount as usize)) }
         }
     }
 

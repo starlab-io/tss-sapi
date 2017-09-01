@@ -10402,7 +10402,7 @@ pub struct _TSS2_SYS_OPAQUE_CONTEXT_BLOB {
 }
 pub type TSS2_SYS_CONTEXT = _TSS2_SYS_OPAQUE_CONTEXT_BLOB;
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug)]
 pub struct TSS2_SYS_CMD_AUTHS {
     pub cmdAuthsCount: u8,
     pub cmdAuths: *mut *mut TPMS_AUTH_COMMAND,
@@ -10424,14 +10424,11 @@ fn bindgen_test_layout_TSS2_SYS_CMD_AUTHS() {
                 "Alignment of field: " , stringify ! ( TSS2_SYS_CMD_AUTHS ) ,
                 "::" , stringify ! ( cmdAuths ) ));
 }
-impl Clone for TSS2_SYS_CMD_AUTHS {
-    fn clone(&self) -> Self { *self }
-}
 impl Default for TSS2_SYS_CMD_AUTHS {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
-#[derive(Debug, Copy)]
+#[derive(Debug)]
 pub struct TSS2_SYS_RSP_AUTHS {
     pub rspAuthsCount: u8,
     pub rspAuths: *mut *mut TPMS_AUTH_RESPONSE,
@@ -10452,9 +10449,6 @@ fn bindgen_test_layout_TSS2_SYS_RSP_AUTHS() {
                 const _ as usize } , 8usize , concat ! (
                 "Alignment of field: " , stringify ! ( TSS2_SYS_RSP_AUTHS ) ,
                 "::" , stringify ! ( rspAuths ) ));
-}
-impl Clone for TSS2_SYS_RSP_AUTHS {
-    fn clone(&self) -> Self { *self }
 }
 impl Default for TSS2_SYS_RSP_AUTHS {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
