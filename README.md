@@ -1,4 +1,9 @@
-# tss-sapi
+[![Build status](https://gitlab.com/starlab-io/tss-sapi/badges/master/pipeline.svg)](https://gitlab.com/starlab-io/tss-sapi/commits/master)
+[![Rust version]( https://img.shields.io/badge/rust-1.15+-blue.svg)]()
+[![Documentation](https://docs.rs/tss-sapi/badge.svg)](https://docs.rs/tss-sapi)
+[![Latest version](https://img.shields.io/crates/v/tss-sapi.svg)](https://crates.io/crates/tss-sapi)
+[![All downloads](https://img.shields.io/crates/d/tss-sapi.svg)](https://crates.io/crates/tss-sapi)
+[![Downloads of latest version](https://img.shields.io/crates/dv/tss-sapi.svg)](https://crates.io/crates/tss-sapi)
 
 TPM 2.0 TSS (TPM Software Stack) SAPI (System API) Rust Wrapper
 
