@@ -108,7 +108,8 @@ mod sys {
 
     impl TSS2_SYS_CMD_AUTHS {
         pub fn new(mut cmds: Vec<TPMS_AUTH_COMMAND>) -> Result<Self, String> {
-            ensure!(cmds.len() < u8::max_value() as usize,
+            // found this limit in tpm2-tss/sysapi/sysapi/authorizations.c
+            ensure!(cmds.len() <= MAX_SESSION_NUM as usize,
                     String::from("Too many auth commands supplied"));
 
             let ret = Ok(TSS2_SYS_CMD_AUTHS {
