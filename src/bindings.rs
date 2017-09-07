@@ -3446,21 +3446,19 @@ impl Clone for TPMA_OBJECT {
 pub struct TPMA_SESSION {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_SESSION__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT8>,
-    pub bindgen_union_field: u32,
+    pub bindgen_union_field: u8,
 }
 #[repr(C)]
 #[derive(Debug, Default, Copy)]
 pub struct TPMA_SESSION__bindgen_ty_1 {
     pub _bitfield_1: u8,
-    pub __bindgen_padding_0: [u8; 3usize],
-    pub __bindgen_align: [u32; 0usize],
 }
 #[test]
 fn bindgen_test_layout_TPMA_SESSION__bindgen_ty_1() {
-    assert_eq!(::std::mem::size_of::<TPMA_SESSION__bindgen_ty_1>() , 4usize ,
+    assert_eq!(::std::mem::size_of::<TPMA_SESSION__bindgen_ty_1>() , 1usize ,
                concat ! (
                "Size of: " , stringify ! ( TPMA_SESSION__bindgen_ty_1 ) ));
-    assert_eq! (::std::mem::align_of::<TPMA_SESSION__bindgen_ty_1>() , 4usize
+    assert_eq! (::std::mem::align_of::<TPMA_SESSION__bindgen_ty_1>() , 1usize
                 , concat ! (
                 "Alignment of " , stringify ! ( TPMA_SESSION__bindgen_ty_1 )
                 ));
@@ -3628,9 +3626,9 @@ impl TPMA_SESSION__bindgen_ty_1 {
 }
 #[test]
 fn bindgen_test_layout_TPMA_SESSION() {
-    assert_eq!(::std::mem::size_of::<TPMA_SESSION>() , 4usize , concat ! (
+    assert_eq!(::std::mem::size_of::<TPMA_SESSION>() , 1usize , concat ! (
                "Size of: " , stringify ! ( TPMA_SESSION ) ));
-    assert_eq! (::std::mem::align_of::<TPMA_SESSION>() , 4usize , concat ! (
+    assert_eq! (::std::mem::align_of::<TPMA_SESSION>() , 1usize , concat ! (
                 "Alignment of " , stringify ! ( TPMA_SESSION ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMA_SESSION ) ) . val as * const _ as
@@ -6538,7 +6536,7 @@ pub struct TPMS_AUTH_COMMAND {
 }
 #[test]
 fn bindgen_test_layout_TPMS_AUTH_COMMAND() {
-    assert_eq!(::std::mem::size_of::<TPMS_AUTH_COMMAND>() , 144usize , concat
+    assert_eq!(::std::mem::size_of::<TPMS_AUTH_COMMAND>() , 140usize , concat
                ! ( "Size of: " , stringify ! ( TPMS_AUTH_COMMAND ) ));
     assert_eq! (::std::mem::align_of::<TPMS_AUTH_COMMAND>() , 4usize , concat
                 ! ( "Alignment of " , stringify ! ( TPMS_AUTH_COMMAND ) ));
@@ -6554,12 +6552,12 @@ fn bindgen_test_layout_TPMS_AUTH_COMMAND() {
                 "::" , stringify ! ( nonce ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_COMMAND ) ) . sessionAttributes
-                as * const _ as usize } , 72usize , concat ! (
+                as * const _ as usize } , 70usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_COMMAND ) ,
                 "::" , stringify ! ( sessionAttributes ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_COMMAND ) ) . hmac as * const _
-                as usize } , 76usize , concat ! (
+                as usize } , 72usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_COMMAND ) ,
                 "::" , stringify ! ( hmac ) ));
 }
@@ -6578,9 +6576,9 @@ pub struct TPMS_AUTH_RESPONSE {
 }
 #[test]
 fn bindgen_test_layout_TPMS_AUTH_RESPONSE() {
-    assert_eq!(::std::mem::size_of::<TPMS_AUTH_RESPONSE>() , 140usize , concat
+    assert_eq!(::std::mem::size_of::<TPMS_AUTH_RESPONSE>() , 134usize , concat
                ! ( "Size of: " , stringify ! ( TPMS_AUTH_RESPONSE ) ));
-    assert_eq! (::std::mem::align_of::<TPMS_AUTH_RESPONSE>() , 4usize , concat
+    assert_eq! (::std::mem::align_of::<TPMS_AUTH_RESPONSE>() , 2usize , concat
                 ! ( "Alignment of " , stringify ! ( TPMS_AUTH_RESPONSE ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_RESPONSE ) ) . nonce as * const
@@ -6589,13 +6587,13 @@ fn bindgen_test_layout_TPMS_AUTH_RESPONSE() {
                 "::" , stringify ! ( nonce ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_RESPONSE ) ) .
-                sessionAttributes as * const _ as usize } , 68usize , concat !
+                sessionAttributes as * const _ as usize } , 66usize , concat !
                 (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_RESPONSE ) ,
                 "::" , stringify ! ( sessionAttributes ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_RESPONSE ) ) . hmac as * const
-                _ as usize } , 72usize , concat ! (
+                _ as usize } , 68usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_RESPONSE ) ,
                 "::" , stringify ! ( hmac ) ));
 }
