@@ -35,3 +35,5 @@ test:
         - tpm2_startup --clear
     script:
         - ./target/debug/examples/ownership
+        - ./target/debug/examples/nvdefine
+        - ./target/debug/examples/nvinfo
