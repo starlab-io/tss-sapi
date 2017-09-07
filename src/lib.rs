@@ -498,6 +498,11 @@ impl Context {
 
         let ptr = malloc::<sys::TSS2_SYS_CONTEXT>(alloc_size);
 
+        trace!("Tss2_Sys_Initialize({:?}, {:?}, {:?}, {:?})",
+               ptr,
+               alloc_size,
+               tcti.inner,
+               abi);
         tss_err(unsafe { sys::Tss2_Sys_Initialize(ptr, alloc_size, tcti.inner, &mut abi) })?;
 
         Ok(Context {
@@ -525,6 +530,7 @@ impl Context {
             Startup::Clear => sys::TPM_SU_CLEAR,
         };
 
+        trace!("Tss2_Sys_Startup({:?}, {:?})", self.inner, action);
         tss_err(unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) })?;
         Ok(())
     }
@@ -687,6 +693,7 @@ impl TctiContext {
 
         let ptr = malloc::<sys::TSS2_TCTI_CONTEXT>(alloc_size);
 
+        trace!("InitDeviceTcti({:?}, {:?}, {:?})", ptr, alloc_size, config);
         tss_err(unsafe { sys::InitDeviceTcti(ptr, &mut alloc_size, &config) })?;
 
         Ok(TctiContext {
@@ -724,6 +731,10 @@ impl TctiContext {
 
         let ptr = malloc::<sys::TSS2_TCTI_CONTEXT>(alloc_size);
 
+        trace!("InitSocketTcti({:?}, {:?}, {:?}, 0)",
+               ptr,
+               alloc_size,
+               config);
         tss_err(unsafe { sys::InitSocketTcti(ptr, &mut alloc_size, &config, 0) })?;
 
         Ok(TctiContext {
