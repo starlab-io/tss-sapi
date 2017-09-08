@@ -15,6 +15,7 @@ extern crate error_chain;
 #[macro_use]
 extern crate log;
 extern crate num_traits;
+extern crate try_from;
 
 mod errors;
 pub mod utils;
@@ -25,6 +26,7 @@ mod sys {
     use std::default::Default;
     use std::mem;
     use std::ptr;
+    use try_from::TryFrom;
 
     include!("bindings.rs");
 
@@ -73,40 +75,41 @@ mod sys {
     tpm2b_new!(TPM2B_NAME);
     tpm2b_new!(TPM2B_NV_PUBLIC);
 
-    // add new() method to TPM2B_AUTH that is different from above by taking the
-    // password always
-    impl TPM2B_AUTH {
-        pub fn new(passwd: &[u8]) -> Self {
+    // of the buffer + a UINT16 (the size). So it should be equal to the size
+    // of the struct minus a UINT16.
+    macro_rules! tpm2b_try_from(
+        ($kind:ty, $lifetime:tt, $from:ty) => (
+            impl<$lifetime> TryFrom<$from> for $kind {
+                type Err = super::Error;
 
-            let mut new_auth = TPM2B_AUTH::default();
+                fn try_from(data: $from) -> Result<$kind, Self::Err> {
+                    let max = mem::size_of::<$kind>() - mem::size_of::<UINT16>();
+                    ensure!(max >= data.len(),
+                        super::ErrorKind::BadSize(format!("supplied data was {} bytes which \
+                                            is larger than the available {} bytes",
+                                            data.len(),
+                                            max)));
 
-            unsafe {
-                let mut auth = new_auth.t.as_mut();
-                // set the length of our password
-                auth.size = passwd.len() as u16;
-                // copy the password into the password struct
-                ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
+                    let mut field: $kind = Default::default();
+                    unsafe {
+                        let mut thing = field.t.as_mut();
+                        // set the length of incoming data
+                        thing.size = data.len() as u16;
+                        // copy the password into the password struct
+                        ptr::copy(data.as_ptr(), thing.buffer.as_mut_ptr(), data.len());
+                    }
+                    Ok(field)
+                }
             }
+            )
+        );
 
-            new_auth
-        }
-    }
+    // add try_from() method to TPM2B_AUTH that attempts to convert from
+    // a buffer which is a password
+    tpm2b_try_from!(TPM2B_AUTH, 'a, &'a[u8]);
 
-    // create a new NV buffer
-    impl<'a> From<&'a [u8]> for TPM2B_MAX_NV_BUFFER {
-        fn from(data: &[u8]) -> Self {
-            let mut ret = TPM2B_MAX_NV_BUFFER::default();
-
-            unsafe {
-                let mut buf = ret.t.as_mut();
-                // set the length
-                buf.size = data.len() as u16;
-                ptr::copy(data.as_ptr(), buf.buffer.as_mut_ptr(), data.len());
-            }
-
-            ret
-        }
-    }
+    // create a new NV buffer from supplied data
+    tpm2b_try_from!(TPM2B_MAX_NV_BUFFER, 'a, &'a[u8]);
 
     impl TPMS_AUTH_COMMAND {
         pub fn new() -> Self {
@@ -114,12 +117,12 @@ mod sys {
             TPMS_AUTH_COMMAND { sessionHandle: TPM_RS_PW, ..Default::default() }
         }
 
-        pub fn password(mut self, passwd: &Option<String>) -> Self {
+        pub fn password(mut self, passwd: &Option<String>) -> super::Result<Self> {
             if let &Some(ref pass) = passwd {
-                self.hmac = TPM2B_AUTH::new(pass.as_bytes());
+                self.hmac = TPM2B_AUTH::try_from(pass.as_bytes())?;
             }
 
-            self
+            Ok(self)
         }
     }
 
@@ -204,6 +207,7 @@ use std::fmt;
 use std::mem;
 use std::ptr;
 use sys::ErrorCodes;
+use try_from::TryFrom;
 
 fn malloc<T>(size: usize) -> *mut T {
     // use a Vec as our allocator
@@ -576,7 +580,7 @@ impl<'ctx> NvRamArea<'ctx> {
         }
 
         // create an auth command with our existing authentication password
-        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&ctx.passwd);
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&ctx.passwd)?;
         // populate our session data from the auth command
         let session_data = CmdAuths::from(cmd);
 
@@ -618,7 +622,7 @@ impl<'ctx> NvRamArea<'ctx> {
                    offset: u16,
                    data: &[u8])
                    -> Result<()> {
-        let mut buf = sys::TPM2B_MAX_NV_BUFFER::from(data);
+        let mut buf = sys::TPM2B_MAX_NV_BUFFER::try_from(data)?;
 
         trace!("Tss2_Sys_NV_Write({:?}, {}, {}, {:?}, {:?}, {}, SESSION_OUT)",
                self.ctx.inner,
@@ -647,7 +651,7 @@ impl<'ctx> NvRamArea<'ctx> {
                                            data.len(),
                                            self.size)));
         // create an auth command with our existing authentication password
-        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd);
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)?;
         // populate our session data
         let session_data = CmdAuths::from(cmd);
         let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
@@ -879,12 +883,12 @@ impl Context {
     /// take ownership of the TPM setting the Owner, Endorsement or Lockout passwords to `passwd`
     pub fn take_ownership(&self, auth_type: HierarchyAuth, passwd: &str) -> Result<()> {
         // create an auth command with our existing authentication password
-        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.passwd);
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.passwd)?;
         // populate our session data from the auth command
         let session_data = CmdAuths::from(cmd);
 
         // create our new password
-        let mut new_auth = sys::TPM2B_AUTH::new(passwd.as_bytes());
+        let mut new_auth = sys::TPM2B_AUTH::try_from(passwd.as_bytes())?;
 
         trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
                self.inner,

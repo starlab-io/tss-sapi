@@ -21,6 +21,7 @@ enum-primitive-derive = "0.1.2"
 error-chain = "0.10.0"
 log = "0.3"
 num-traits = "0.1"
+try_from = "0.2.2"
 
 #[build-dependencies]
 #bindgen = "=0.25.3"
