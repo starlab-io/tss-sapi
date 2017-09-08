@@ -1,6 +1,31 @@
 use std::env;
+use super::errors::*;
+use super::Context;
 
-pub fn open_context() -> Result<Context> {
+/// Open a `Context` over a socket or the raw device based on the environment.
+///
+/// The TPM2 tools project relies on several environment variables to determine how
+/// to open the TPM2 context. If the environment variable `TPM2TOOLS_TCTI_NAME` is not
+/// present or has the value of "device" set, then a context is created pointing at
+/// a local device, with the device name pulled from the `TPM2TOOLS_DEVICE_FILE`
+/// environment variable.
+///
+/// If `TPM2TOOLS_TCTI_NAME` has the value "socket" set, then a context
+/// is created using a socket. The `TPM2TOOLS_SOCKET_ADDRESS` environment variable
+/// specifies the host to connect to and must be present. The `TPM2TOOLS_SOCKET_PORT`
+/// environment variable specifies the port to connect to and is optional.
+///
+/// # Examples
+///
+/// ```
+/// use tss_sapi::utils;
+///
+/// # fn foo() -> tss_sapi::Result<()> {
+/// let context = utils::open_context_from_env()?;
+/// # Ok(())
+/// # }
+/// ```
+pub fn open_context_from_env() -> Result<Context> {
     // assume the device if the environment variable was not supplied
     let tcti = env::var("TPM2TOOLS_TCTI_NAME").unwrap_or_else(|_| String::from("device"));
 
