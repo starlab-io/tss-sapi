@@ -5,16 +5,13 @@ extern crate tss_sapi;
 
 use tss_sapi::*;
 
-include!("tcti.rsinclude");
-
 quick_main!(run);
 
 fn run() -> Result<()> {
 
     pretty_env_logger::init().unwrap();
 
-    // use function from tcti.rs
-    let ctx = open_context()?;
+    let ctx = utils::open_context_from_env()?;
 
     // load the NVRAM index we are interested in
     let index = 0x1500016;

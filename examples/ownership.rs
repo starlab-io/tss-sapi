@@ -5,9 +5,6 @@ extern crate tss_sapi;
 
 use tss_sapi::*;
 
-// can't use modules in examples
-include!("tcti.rsinclude");
-
 quick_main!(run);
 
 fn run() -> Result<()> {
@@ -15,7 +12,7 @@ fn run() -> Result<()> {
     pretty_env_logger::init().unwrap();
 
     // use function from tcti.rs
-    let ctx = open_context()?;
+    let ctx = utils::open_context_from_env()?;
     // optionally set the current password to change ownership
     //ctx.password("oldpass");
 
