@@ -497,14 +497,15 @@ impl From<sys::TPMA_NV> for NvAttributes {
 }
 
 #[derive(Debug)]
-pub struct NvRamArea {
+pub struct NvRamArea<'ctx> {
     pub index: u32,
     pub size: u16,
     pub hash: TpmAlgorithm,
     pub attrs: NvAttributes,
+    ctx: &'ctx Context,
 }
 
-impl NvRamArea {
+impl<'ctx> NvRamArea<'ctx> {
     /// look up an NVRAM area
     pub fn get(ctx: &Context, index: u32) -> Result<NvRamArea> {
         let mut nv_name = sys::TPM2B_NAME::new();
@@ -532,6 +533,7 @@ impl NvRamArea {
                size: nv.dataSize,
                hash: hash,
                attrs: NvAttributes::from(nv.attributes),
+               ctx: ctx,
            })
     }
 
@@ -590,11 +592,12 @@ impl NvRamArea {
                size: nvpub.dataSize,
                hash: hash,
                attrs: NvAttributes::from(nvpub.attributes),
+               ctx: ctx,
            })
     }
 }
 
-impl fmt::Display for NvRamArea {
+impl<'ctx> fmt::Display for NvRamArea<'ctx> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         writeln!(f,
                  "NVRAM index      : 0x{:08X} ({})",
