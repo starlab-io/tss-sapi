@@ -17,6 +17,7 @@ extern crate log;
 extern crate num_traits;
 
 mod errors;
+pub mod utils;
 
 #[allow(non_snake_case, non_camel_case_types, dead_code)]
 #[allow(non_upper_case_globals, improper_ctypes)]
