@@ -9,11 +9,12 @@
 #![recursion_limit = "1024"]
 
 #[macro_use]
-extern crate enum_primitive;
+extern crate enum_primitive_derive;
 #[macro_use]
 extern crate error_chain;
 #[macro_use]
 extern crate log;
+extern crate num_traits;
 
 mod errors;
 
@@ -22,6 +23,7 @@ mod errors;
 mod sys {
     use std::default::Default;
     use std::mem;
+    use std::ptr;
 
     include!("bindings.rs");
 
@@ -48,18 +50,97 @@ mod sys {
     // MAX_TPM_PROPERTIES = ((1024 - 4 - 4) / (4 + 4) = 127
     pub const MAX_TPM_PROPERTIES: UINT32 = 127;
 
-    // TPM2B_NAME must be initialized with the size parameter of the t union
+    // TPM2B types must be initialized with the size parameter of the t union
     // set to the size of the buffer in the struct. The struct is made up
     // of the buffer + a UINT16 (the size). So it should be equal to the size
     // of the struct minus a UINT16.
-    impl TPM2B_NAME {
-        pub fn new() -> TPM2B_NAME {
-            let mut field = TPM2B_NAME::default();
-            unsafe {
-                (*field.t.as_mut()).size =
-                    (mem::size_of::<TPM2B_NAME>() - mem::size_of::<UINT16>()) as u16;
+    macro_rules! tpm2b_new(
+        ($kind:ty) => (
+            impl $kind {
+                pub fn new() -> $kind {
+                    let mut field: $kind = Default::default();
+                    unsafe {
+                        (*field.b.as_mut()).size =
+                            (mem::size_of::<$kind>() - mem::size_of::<UINT16>()) as u16;
+                    }
+                    field
+                }
             }
-            field
+            )
+        );
+
+    tpm2b_new!(TPM2B_NAME);
+    tpm2b_new!(TPM2B_NV_PUBLIC);
+
+    // add new() method to TPM2B_AUTH that is different from above by taking the
+    // password always
+    impl TPM2B_AUTH {
+        pub fn new(passwd: &[u8]) -> Self {
+
+            let mut new_auth = TPM2B_AUTH::default();
+
+            unsafe {
+                let mut auth = new_auth.t.as_mut();
+                // set the length of our password
+                auth.size = passwd.len() as u16;
+                // copy the password into the password struct
+                ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
+            }
+
+            new_auth
+        }
+    }
+
+    impl TPMS_AUTH_COMMAND {
+        pub fn new() -> Self {
+            // creates TPMS_AUTH_COMMAND initialized to an un"owned" password
+            TPMS_AUTH_COMMAND { sessionHandle: TPM_RS_PW, ..Default::default() }
+        }
+
+        pub fn password(mut self, passwd: &Option<String>) -> Self {
+            if let &Some(ref pass) = passwd {
+                self.hmac = TPM2B_AUTH::new(pass.as_bytes());
+            }
+
+            self
+        }
+    }
+
+    macro_rules! nv_attrs(
+        ($field:expr, $save:ident, $val:path) => (
+            if $field {
+                $save.bindgen_union_field += $val;
+            }
+            )
+        );
+
+    impl From<super::NvAttributes> for TPMA_NV {
+        fn from(attrs: super::NvAttributes) -> Self {
+            let mut built = TPMA_NV::default();
+
+            nv_attrs!(attrs.ppread, built, TPMA_NV_TPMA_NV_PPREAD);
+            nv_attrs!(attrs.ppwrite, built, TPMA_NV_TPMA_NV_PPWRITE);
+            nv_attrs!(attrs.owner_read, built, TPMA_NV_TPMA_NV_OWNERREAD);
+            nv_attrs!(attrs.owner_write, built, TPMA_NV_TPMA_NV_OWNERWRITE);
+            nv_attrs!(attrs.auth_read, built, TPMA_NV_TPMA_NV_AUTHREAD);
+            nv_attrs!(attrs.auth_write, built, TPMA_NV_TPMA_NV_AUTHWRITE);
+            nv_attrs!(attrs.policy_read, built, TPMA_NV_TPMA_NV_POLICYREAD);
+            nv_attrs!(attrs.policy_write, built, TPMA_NV_TPMA_NV_POLICYWRITE);
+            nv_attrs!(attrs.policy_delete, built, TPMA_NV_TPMA_NV_POLICY_DELETE);
+            nv_attrs!(attrs.read_locked, built, TPMA_NV_TPMA_NV_READLOCKED);
+            nv_attrs!(attrs.write_locked, built, TPMA_NV_TPMA_NV_WRITELOCKED);
+            nv_attrs!(attrs.written, built, TPMA_NV_TPMA_NV_WRITTEN);
+            nv_attrs!(attrs.write_all, built, TPMA_NV_TPMA_NV_WRITEALL);
+            nv_attrs!(attrs.write_define, built, TPMA_NV_TPMA_NV_WRITEDEFINE);
+            nv_attrs!(attrs.read_stclear, built, TPMA_NV_TPMA_NV_READ_STCLEAR);
+            nv_attrs!(attrs.write_stclear, built, TPMA_NV_TPMA_NV_WRITE_STCLEAR);
+            nv_attrs!(attrs.clear_stclear, built, TPMA_NV_TPMA_NV_CLEAR_STCLEAR);
+            nv_attrs!(attrs.global_lock, built, TPMA_NV_TPMA_NV_GLOBALLOCK);
+            nv_attrs!(attrs.no_da, built, TPMA_NV_TPMA_NV_NO_DA);
+            nv_attrs!(attrs.orderly, built, TPMA_NV_TPMA_NV_ORDERLY);
+            nv_attrs!(attrs.platform_create, built, TPMA_NV_TPMA_NV_PLATFORMCREATE);
+
+            built
         }
     }
 
@@ -98,8 +179,8 @@ mod sys {
     }
 }
 
-use enum_primitive::FromPrimitive;
 pub use errors::*;
+use num_traits::{FromPrimitive, ToPrimitive};
 use std::default::Default;
 use std::ffi::{CStr, CString};
 use std::fmt;
@@ -247,53 +328,118 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
     }
 }
 
-enum_from_primitive! {
-/// Provide a handy enum that abstracts TPM algorithms
-#[allow(non_camel_case_types)]
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-#[repr(u32)]
-pub enum TpmAlgorithm {
-    RSA = sys::TPM_ALG_RSA,
-    SHA1 = sys::TPM_ALG_SHA1,
-    HMAC = sys::TPM_ALG_HMAC,
-    AES = sys::TPM_ALG_AES,
-    MGF1 = sys::TPM_ALG_MGF1,
-    KEYEDHASH = sys::TPM_ALG_KEYEDHASH,
-    XOR = sys::TPM_ALG_XOR,
-    SHA256 = sys::TPM_ALG_SHA256,
-    SHA384 = sys::TPM_ALG_SHA384,
-    SHA512 = sys::TPM_ALG_SHA512,
-    NULL = sys::TPM_ALG_NULL,
-    SM3_256 = sys::TPM_ALG_SM3_256,
-    SM4 = sys::TPM_ALG_SM4,
-    RSASSA = sys::TPM_ALG_RSASSA,
-    RSAES = sys::TPM_ALG_RSAES,
-    RSAPSS = sys::TPM_ALG_RSAPSS,
-    OAEP = sys::TPM_ALG_OAEP,
-    ECDSA = sys::TPM_ALG_ECDSA,
-    ECDH = sys::TPM_ALG_ECDH,
-    ECDAA = sys::TPM_ALG_ECDAA,
-    SM2 = sys::TPM_ALG_SM2,
-    ECSCHNORR = sys::TPM_ALG_ECSCHNORR,
-    ECMQV = sys::TPM_ALG_ECMQV,
-    KDF1_SP800_56A = sys::TPM_ALG_KDF1_SP800_56A,
-    KDF2 = sys::TPM_ALG_KDF2,
-    KDF1_SP800_108 = sys::TPM_ALG_KDF1_SP800_108,
-    ECC = sys::TPM_ALG_ECC,
-    SYMCIPHER = sys::TPM_ALG_SYMCIPHER,
-    CAMELLIA = sys::TPM_ALG_CAMELLIA,
-    CTR = sys::TPM_ALG_CTR,
-    SHA3_256 = sys::TPM_ALG_SHA3_256,
-    SHA3_384 = sys::TPM_ALG_SHA3_384,
-    SHA3_512 = sys::TPM_ALG_SHA3_512,
-    OFB = sys::TPM_ALG_OFB,
-    CBC = sys::TPM_ALG_CBC,
-    CFB = sys::TPM_ALG_CFB,
-    ECB = sys::TPM_ALG_ECB,
-}
+/// abstract over TPMS_AUTH_COMMAND and its vector TSS2_SYS_CMD_AUTHS
+struct CmdAuths {
+    inner: sys::TSS2_SYS_CMD_AUTHS,
+    _ptr: Box<*mut sys::TPMS_AUTH_COMMAND>,
+    _data: Vec<sys::TPMS_AUTH_COMMAND>,
 }
 
-#[derive(Debug)]
+impl CmdAuths {
+    pub fn new(mut cmds: Vec<sys::TPMS_AUTH_COMMAND>) -> Result<Self> {
+        // found this limit in tpm2-tss/sysapi/sysapi/authorizations.c
+        ensure!(cmds.len() <= sys::MAX_SESSION_NUM as usize,
+                ErrorKind::Msg("Too many auth commands supplied".into()));
+
+        let mut cmds_ptr = Box::new(cmds.as_mut_ptr());
+
+        let inner = sys::TSS2_SYS_CMD_AUTHS {
+            cmdAuthsCount: cmds.len() as u8,
+            cmdAuths: &mut *cmds_ptr,
+        };
+
+        Ok(CmdAuths {
+               inner: inner,
+               _ptr: cmds_ptr,
+               _data: cmds,
+           })
+    }
+}
+
+impl From<sys::TPMS_AUTH_COMMAND> for CmdAuths {
+    fn from(cmd: sys::TPMS_AUTH_COMMAND) -> Self {
+        CmdAuths::new(vec![cmd]).unwrap()
+    }
+}
+
+/// abstract over TPMS_AUTH_RESPONSE and its vector TSS2_SYS_RSP_AUTHS
+struct RespAuths {
+    inner: sys::TSS2_SYS_RSP_AUTHS,
+    _ptr: Box<*mut sys::TPMS_AUTH_RESPONSE>,
+    _data: Vec<sys::TPMS_AUTH_RESPONSE>,
+}
+
+impl RespAuths {
+    pub fn new(mut resps: Vec<sys::TPMS_AUTH_RESPONSE>) -> Result<Self> {
+        ensure!(resps.len() < u8::max_value() as usize,
+                ErrorKind::Msg("Too many auth responses supplied".into()));
+
+        let mut resps_ptr = Box::new(resps.as_mut_ptr());
+
+        let inner = sys::TSS2_SYS_RSP_AUTHS {
+            rspAuthsCount: resps.len() as u8,
+            rspAuths: &mut *resps_ptr,
+        };
+
+        Ok(RespAuths {
+               inner: inner,
+               _ptr: resps_ptr,
+               _data: resps,
+           })
+    }
+}
+
+impl From<sys::TPMS_AUTH_RESPONSE> for RespAuths {
+    fn from(resp: sys::TPMS_AUTH_RESPONSE) -> Self {
+        RespAuths::new(vec![resp]).unwrap()
+    }
+}
+
+
+/// Provide a handy enum that abstracts TPM algorithms
+#[allow(non_camel_case_types)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
+pub enum TpmAlgorithm {
+    RSA = sys::TPM_ALG_RSA as isize,
+    SHA1 = sys::TPM_ALG_SHA1 as isize,
+    HMAC = sys::TPM_ALG_HMAC as isize,
+    AES = sys::TPM_ALG_AES as isize,
+    MGF1 = sys::TPM_ALG_MGF1 as isize,
+    KEYEDHASH = sys::TPM_ALG_KEYEDHASH as isize,
+    XOR = sys::TPM_ALG_XOR as isize,
+    SHA256 = sys::TPM_ALG_SHA256 as isize,
+    SHA384 = sys::TPM_ALG_SHA384 as isize,
+    SHA512 = sys::TPM_ALG_SHA512 as isize,
+    NULL = sys::TPM_ALG_NULL as isize,
+    SM3_256 = sys::TPM_ALG_SM3_256 as isize,
+    SM4 = sys::TPM_ALG_SM4 as isize,
+    RSASSA = sys::TPM_ALG_RSASSA as isize,
+    RSAES = sys::TPM_ALG_RSAES as isize,
+    RSAPSS = sys::TPM_ALG_RSAPSS as isize,
+    OAEP = sys::TPM_ALG_OAEP as isize,
+    ECDSA = sys::TPM_ALG_ECDSA as isize,
+    ECDH = sys::TPM_ALG_ECDH as isize,
+    ECDAA = sys::TPM_ALG_ECDAA as isize,
+    SM2 = sys::TPM_ALG_SM2 as isize,
+    ECSCHNORR = sys::TPM_ALG_ECSCHNORR as isize,
+    ECMQV = sys::TPM_ALG_ECMQV as isize,
+    KDF1_SP800_56A = sys::TPM_ALG_KDF1_SP800_56A as isize,
+    KDF2 = sys::TPM_ALG_KDF2 as isize,
+    KDF1_SP800_108 = sys::TPM_ALG_KDF1_SP800_108 as isize,
+    ECC = sys::TPM_ALG_ECC as isize,
+    SYMCIPHER = sys::TPM_ALG_SYMCIPHER as isize,
+    CAMELLIA = sys::TPM_ALG_CAMELLIA as isize,
+    CTR = sys::TPM_ALG_CTR as isize,
+    SHA3_256 = sys::TPM_ALG_SHA3_256 as isize,
+    SHA3_384 = sys::TPM_ALG_SHA3_384 as isize,
+    SHA3_512 = sys::TPM_ALG_SHA3_512 as isize,
+    OFB = sys::TPM_ALG_OFB as isize,
+    CBC = sys::TPM_ALG_CBC as isize,
+    CFB = sys::TPM_ALG_CFB as isize,
+    ECB = sys::TPM_ALG_ECB as isize,
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct NvAttributes {
     pub ppread: bool,
     pub ppwrite: bool,
@@ -387,6 +533,64 @@ impl NvRamArea {
                attrs: NvAttributes::from(nv.attributes),
            })
     }
+
+    /// create an NVRAM area
+    pub fn define(ctx: &Context,
+                  index: u32,
+                  size: u16,
+                  hash: TpmAlgorithm,
+                  attrs: NvAttributes)
+                  -> Result<NvRamArea> {
+
+        let mut nv = sys::TPM2B_NV_PUBLIC::new();
+
+        // set our members
+        let nvpub = sys::TPMS_NV_PUBLIC {
+            nvIndex: index,
+            nameAlg: hash.to_u16().unwrap(),
+            attributes: attrs.into(),
+            authPolicy: sys::TPM2B_DIGEST::default(),
+            dataSize: size,
+        };
+        unsafe {
+            (*nv.t.as_mut()).nvPublic = nvpub;
+        }
+
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&ctx.passwd);
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
+
+        // create our NVRAM index password
+        let mut auth = sys::TPM2B_AUTH::default();
+
+        // create our session response
+        let resp = sys::TPMS_AUTH_RESPONSE::default();
+        let mut session_out = RespAuths::from(resp);
+
+        trace!("Tss2_Sys_NV_DefineSpace({:?}, {}, {:?}, NULL index passwd, {:?}, SESSION_OUT)",
+               ctx.inner,
+               "TPM_RH_OWNER",
+               session_data.inner,
+               nv);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_DefineSpace(ctx.inner,
+                                                 sys::TPM_RH_OWNER,
+                                                 &session_data.inner,
+                                                 &mut auth,
+                                                 &mut nv,
+                                                 &mut session_out.inner)
+                })?;
+
+
+
+        Ok(NvRamArea {
+               index: nvpub.nvIndex,
+               size: nvpub.dataSize,
+               hash: hash,
+               attrs: NvAttributes::from(nvpub.attributes),
+           })
+    }
 }
 
 impl fmt::Display for NvRamArea {
@@ -433,11 +637,11 @@ pub enum Startup {
     State,
 }
 
-#[derive(Clone, Debug)]
-enum HierarchyAuth {
-    Owner,
-    Endorsement,
-    Lockout,
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
+pub enum HierarchyAuth {
+    Owner = sys::TPM_RH_OWNER as isize,
+    Endorsement = sys::TPM_RH_ENDORSEMENT as isize,
+    Lockout = sys::TPM_RH_LOCKOUT as isize,
 }
 
 #[derive(Clone, Debug)]
@@ -471,6 +675,7 @@ pub struct Context {
     inner: *mut sys::TSS2_SYS_CONTEXT,
     size: usize,
     _tcti: TctiContext, // need to keep this for the life of this context
+    passwd: Option<String>, // the current authentication password
 }
 
 impl Drop for Context {
@@ -498,12 +703,18 @@ impl Context {
 
         let ptr = malloc::<sys::TSS2_SYS_CONTEXT>(alloc_size);
 
+        trace!("Tss2_Sys_Initialize({:?}, {:?}, {:?}, {:?})",
+               ptr,
+               alloc_size,
+               tcti.inner,
+               abi);
         tss_err(unsafe { sys::Tss2_Sys_Initialize(ptr, alloc_size, tcti.inner, &mut abi) })?;
 
         Ok(Context {
                inner: ptr,
                size: alloc_size,
                _tcti: tcti,
+               passwd: None,
            })
     }
 
@@ -519,12 +730,18 @@ impl Context {
         Self::_new_context(tcti)
     }
 
+    /// set the authentication password we will use
+    pub fn password<T: ToString>(&mut self, passwd: T) {
+        self.passwd = Some(passwd.to_string());
+    }
+
     pub fn startup(&self, action: Startup) -> Result<()> {
         let action = match action {
             Startup::State => sys::TPM_SU_STATE,
             Startup::Clear => sys::TPM_SU_CLEAR,
         };
 
+        trace!("Tss2_Sys_Startup({:?}, {:?})", self.inner, action);
         tss_err(unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) })?;
         Ok(())
     }
@@ -589,55 +806,27 @@ impl Context {
            )
     }
 
-    fn take_ownership_helper(&self, auth_type: HierarchyAuth, passwd: &[u8]) -> Result<()> {
-        let mut cmd = sys::TPMS_AUTH_COMMAND {
-            sessionHandle: sys::TPM_RS_PW,
-            nonce: unsafe { mem::zeroed() },
-            hmac: unsafe { mem::zeroed() },
-            sessionAttributes: unsafe { mem::zeroed() },
-        };
+    /// take ownership of the TPM setting the Owner, Endorsement or Lockout passwords to `passwd`
+    pub fn take_ownership(&self, auth_type: HierarchyAuth, passwd: &str) -> Result<()> {
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.passwd);
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
 
-        let mut cmds: *mut sys::TPMS_AUTH_COMMAND = &mut cmd;
-
-        let session_data = sys::TSS2_SYS_CMD_AUTHS {
-            cmdAuthsCount: 1,
-            cmdAuths: &mut cmds,
-        };
-
-        let mut new_auth: sys::TPM2B_AUTH = Default::default();
-
-        unsafe {
-            let mut auth = new_auth.t.as_mut();
-            // set the length of our password
-            auth.size = passwd.len() as u16;
-            // copy the password into the password struct
-            ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
-        }
-
-        let auth_handle = match auth_type {
-            HierarchyAuth::Owner => sys::TPM_RH_OWNER,
-            HierarchyAuth::Endorsement => sys::TPM_RH_ENDORSEMENT,
-            HierarchyAuth::Lockout => sys::TPM_RH_LOCKOUT,
-        };
+        // create our new password
+        let mut new_auth = sys::TPM2B_AUTH::new(passwd.as_bytes());
 
         trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
                self.inner,
                auth_type);
         tss_err(unsafe {
                     sys::Tss2_Sys_HierarchyChangeAuth(self.inner,
-                                                      auth_handle,
-                                                      &session_data,
+                                                      auth_type.to_u32().unwrap(),
+                                                      &session_data.inner,
                                                       &mut new_auth,
                                                       ptr::null_mut())
                 })?;
         Ok(())
-    }
-
-    /// take ownership of the TPM setting the Owner, Endorsement and Lockout passwords to `passwd`
-    pub fn take_ownership(&self, passwd: &str) -> Result<()> {
-        self.take_ownership_helper(HierarchyAuth::Owner, passwd.as_bytes())?;
-        self.take_ownership_helper(HierarchyAuth::Endorsement, passwd.as_bytes())?;
-        self.take_ownership_helper(HierarchyAuth::Lockout, passwd.as_bytes())
     }
 }
 
@@ -687,6 +876,7 @@ impl TctiContext {
 
         let ptr = malloc::<sys::TSS2_TCTI_CONTEXT>(alloc_size);
 
+        trace!("InitDeviceTcti({:?}, {:?}, {:?})", ptr, alloc_size, config);
         tss_err(unsafe { sys::InitDeviceTcti(ptr, &mut alloc_size, &config) })?;
 
         Ok(TctiContext {
@@ -724,6 +914,10 @@ impl TctiContext {
 
         let ptr = malloc::<sys::TSS2_TCTI_CONTEXT>(alloc_size);
 
+        trace!("InitSocketTcti({:?}, {:?}, {:?}, 0)",
+               ptr,
+               alloc_size,
+               config);
         tss_err(unsafe { sys::InitSocketTcti(ptr, &mut alloc_size, &config, 0) })?;
 
         Ok(TctiContext {

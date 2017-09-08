@@ -17,7 +17,7 @@ fn run() -> Result<()> {
     let ctx = open_context()?;
 
     // load the NVRAM index we are interested in
-    let index = 0x1c00002;
+    let index = 0x1500016;
     let nv_data = NvRamArea::get(&ctx, index)
         .chain_err(|| format!("Failed to read NVRAM area at 0x{:08X}", index))?;
 
