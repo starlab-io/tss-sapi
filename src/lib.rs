@@ -92,6 +92,22 @@ mod sys {
         }
     }
 
+    // create a new NV buffer
+    impl<'a> From<&'a [u8]> for TPM2B_MAX_NV_BUFFER {
+        fn from(data: &[u8]) -> Self {
+            let mut ret = TPM2B_MAX_NV_BUFFER::default();
+
+            unsafe {
+                let mut buf = ret.t.as_mut();
+                // set the length
+                buf.size = data.len() as u16;
+                ptr::copy(data.as_ptr(), buf.buffer.as_mut_ptr(), data.len());
+            }
+
+            ret
+        }
+    }
+
     impl TPMS_AUTH_COMMAND {
         pub fn new() -> Self {
             // creates TPMS_AUTH_COMMAND initialized to an un"owned" password
@@ -594,6 +610,56 @@ impl<'ctx> NvRamArea<'ctx> {
                attrs: NvAttributes::from(nvpub.attributes),
                ctx: ctx,
            })
+    }
+
+    fn write_chunk(&self,
+                   session_data: &CmdAuths,
+                   session_out: &mut RespAuths,
+                   offset: u16,
+                   data: &[u8])
+                   -> Result<()> {
+        let mut buf = sys::TPM2B_MAX_NV_BUFFER::from(data);
+
+        trace!("Tss2_Sys_NV_Write({:?}, {}, {}, {:?}, {:?}, {}, SESSION_OUT)",
+               self.ctx.inner,
+               "TPM_RH_OWNER",
+               self.index,
+               session_data.inner,
+               data,
+               offset);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_Write(self.ctx.inner,
+                                           sys::TPM_RH_OWNER,
+                                           self.index,
+                                           &session_data.inner,
+                                           &mut buf,
+                                           offset,
+                                           &mut session_out.inner)
+                })
+    }
+
+    /// write to a specific NVRAM area
+    pub fn write(&self, offset: usize, data: &[u8]) -> Result<()> {
+        ensure!((offset + data.len()) <= self.size as usize,
+                ErrorKind::BadSize(format!("offset {} + write size {} greater \
+                                           than NVRAM area size {}",
+                                           offset,
+                                           data.len(),
+                                           self.size)));
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd);
+        // populate our session data
+        let session_data = CmdAuths::from(cmd);
+        let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
+
+        let chunk_size = sys::MAX_NV_BUFFER_SIZE;
+        let mut pos = offset;
+        for chunk in data.chunks(chunk_size as usize) {
+            self.write_chunk(&session_data, &mut session_out, pos as u16, chunk)?;
+            pos += chunk_size as usize;
+        }
+
+        Ok(())
     }
 }
 

@@ -169,6 +169,10 @@ error_chain! {
             description("unknown app level error")
             display("unknown app level error: 0x{:08X}", e)
         }
+        BadSize(e: String) {
+            description("invalid size provided")
+            display("invalid size provided: {}", e)
+        }
         FeatureError(e: u32) {
             description("unknown feature error")
             display("unknown app level error: 0x{:08X}", e)
