@@ -3,6 +3,7 @@ extern crate error_chain;
 extern crate pretty_env_logger;
 extern crate tss_sapi;
 
+use std::io::Write;
 use tss_sapi::*;
 
 quick_main!(run);
@@ -18,11 +19,11 @@ fn run() -> Result<()> {
     // the NVRAM index
     let index = 0x1500016;
 
-    let nv_data = NvRamArea::get(&ctx, index)
+    let mut nv_data = NvRamArea::get(&ctx, index)
         .chain_err(|| format!("Failed to get NVRAM area at 0x{:08X}", index))?;
 
     // write 0xFF to the first 32 bytes
-    nv_data.write(0, &[0xff; 32])?;
+    nv_data.write(&[0xff; 32])?;
 
     Ok(())
 }
