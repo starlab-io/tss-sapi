@@ -204,6 +204,7 @@ use num_traits::{FromPrimitive, ToPrimitive};
 use std::default::Default;
 use std::ffi::{CStr, CString};
 use std::fmt;
+use std::io;
 use std::mem;
 use std::ptr;
 use sys::ErrorCodes;
@@ -523,6 +524,7 @@ pub struct NvRamArea<'ctx> {
     pub hash: TpmAlgorithm,
     pub attrs: NvAttributes,
     ctx: &'ctx Context,
+    pos: u64,
 }
 
 impl<'ctx> NvRamArea<'ctx> {
@@ -554,6 +556,7 @@ impl<'ctx> NvRamArea<'ctx> {
                hash: hash,
                attrs: NvAttributes::from(nv.attributes),
                ctx: ctx,
+               pos: 0,
            })
     }
 
@@ -613,6 +616,7 @@ impl<'ctx> NvRamArea<'ctx> {
                hash: hash,
                attrs: NvAttributes::from(nvpub.attributes),
                ctx: ctx,
+               pos: 0,
            })
     }
 
@@ -640,30 +644,6 @@ impl<'ctx> NvRamArea<'ctx> {
                                            offset,
                                            &mut session_out.inner)
                 })
-    }
-
-    /// write to a specific NVRAM area
-    pub fn write(&self, offset: usize, data: &[u8]) -> Result<()> {
-        ensure!((offset + data.len()) <= self.size as usize,
-                ErrorKind::BadSize(format!("offset {} + write size {} greater \
-                                           than NVRAM area size {}",
-                                           offset,
-                                           data.len(),
-                                           self.size)));
-        // create an auth command with our existing authentication password
-        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)?;
-        // populate our session data
-        let session_data = CmdAuths::from(cmd);
-        let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
-
-        let chunk_size = sys::MAX_NV_BUFFER_SIZE;
-        let mut pos = offset;
-        for chunk in data.chunks(chunk_size as usize) {
-            self.write_chunk(&session_data, &mut session_out, pos as u16, chunk)?;
-            pos += chunk_size as usize;
-        }
-
-        Ok(())
     }
 }
 
@@ -702,6 +682,74 @@ impl<'ctx> fmt::Display for NvRamArea<'ctx> {
         writeln!(f, "  Orderly        : {}", self.attrs.orderly)?;
         writeln!(f, "  PlatformCreate : {}", self.attrs.platform_create)?;
         Ok(())
+    }
+}
+
+impl<'a> io::Write for NvRamArea<'a> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        ensure!((self.pos as usize + buf.len()) <= self.size as usize,
+                io::Error::new(io::ErrorKind::InvalidInput,
+                               format!("offset {} + write size {} greater \
+                                           than NVRAM area size {}",
+                                       self.pos,
+                                       buf.len(),
+                                       self.size)));
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)
+            .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+        // populate our session data
+        let session_data = CmdAuths::from(cmd);
+        let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
+
+        let chunk_size = sys::MAX_NV_BUFFER_SIZE;
+        for chunk in buf.chunks(chunk_size as usize) {
+            self.write_chunk(&session_data, &mut session_out, self.pos as u16, chunk)
+                .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+            self.pos += chunk_size as u64;
+        }
+
+        Ok(buf.len())
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
+
+impl<'a> io::Seek for NvRamArea<'a> {
+    fn seek(&mut self, pos: io::SeekFrom) -> io::Result<u64> {
+        let (base, offset) = match pos {
+            io::SeekFrom::Start(val) => {
+                self.pos = val;
+                return Ok(val);
+            }
+            io::SeekFrom::End(val) => (self.size as u64, val),
+            io::SeekFrom::Current(val) => (self.pos as u64, val),
+        };
+
+        let new_pos = if offset > 0 {
+            base.checked_add(offset as u64)
+        } else {
+            base.checked_sub((offset.wrapping_neg()) as u64)
+        };
+
+        match new_pos {
+            Some(n) if n <= self.size as u64 => {
+                self.pos = n;
+                Ok(n)
+            }
+            Some(n) => {
+                Err(io::Error::new(io::ErrorKind::InvalidInput,
+                                   format!("unable to seek to {}, which is past end \
+                                           of NVRAM area at {}",
+                                           n,
+                                           self.size)))
+            }
+            None => {
+                Err(io::Error::new(io::ErrorKind::InvalidInput,
+                                   "invalid seek to a negative or overflow position"))
+            }
+        }
     }
 }
 
