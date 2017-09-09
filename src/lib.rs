@@ -74,6 +74,7 @@ mod sys {
 
     tpm2b_new!(TPM2B_NAME);
     tpm2b_new!(TPM2B_NV_PUBLIC);
+    tpm2b_new!(TPM2B_MAX_NV_BUFFER);
 
     // of the buffer + a UINT16 (the size). So it should be equal to the size
     // of the struct minus a UINT16.
@@ -201,6 +202,7 @@ mod sys {
 
 pub use errors::*;
 use num_traits::{FromPrimitive, ToPrimitive};
+use std::cmp;
 use std::default::Default;
 use std::ffi::{CStr, CString};
 use std::fmt;
@@ -645,6 +647,39 @@ impl<'ctx> NvRamArea<'ctx> {
                                            &mut session_out.inner)
                 })
     }
+
+    fn read_chunk(&self,
+                  session_data: &CmdAuths,
+                  session_out: &mut RespAuths,
+                  offset: u16,
+                  read_req: u16)
+                  -> Result<sys::TPM2B_MAX_NV_BUFFER> {
+
+        let mut buf = sys::TPM2B_MAX_NV_BUFFER::new();
+
+        let read_size = cmp::min(sys::MAX_NV_BUFFER_SIZE as u16, read_req);
+
+        trace!("Tss2_Sys_NV_Read({:?}, {}, {}, {:?}, {}, {}, buf, SESSION_OUT)",
+               self.ctx.inner,
+               "TPM_RH_OWNER",
+               self.index,
+               session_data.inner,
+               read_size,
+               offset);
+
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_Read(self.ctx.inner,
+                                          sys::TPM_RH_OWNER,
+                                          self.index,
+                                          &session_data.inner,
+                                          read_size,
+                                          offset,
+                                          &mut buf,
+                                          &mut session_out.inner)
+                })?;
+
+        Ok(buf)
+    }
 }
 
 impl<'ctx> fmt::Display for NvRamArea<'ctx> {
@@ -750,6 +785,40 @@ impl<'a> io::Seek for NvRamArea<'a> {
                                    "invalid seek to a negative or overflow position"))
             }
         }
+    }
+}
+
+impl<'a> io::Read for NvRamArea<'a> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)
+            .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+        // populate our session data
+        let session_data = CmdAuths::from(cmd);
+        let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
+
+        let mut total = 0;
+        let mut to_read = self.size - self.pos as u16;
+        trace!("reading {} bytes from index 0x{:08X}", to_read, self.index);
+        while to_read > 0 {
+            let chunk = self.read_chunk(&session_data, &mut session_out, self.pos as u16, to_read)
+                .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+            let chunk_size = unsafe { chunk.t.as_ref().size };
+            let mut chunk_slice = &unsafe { chunk.t.as_ref().buffer }[..chunk_size as usize];
+            let n = io::Read::read(&mut chunk_slice, buf)?;
+            trace!("read {} bytes from index 0x{:08X} at pos {}",
+                   chunk_size,
+                   self.index,
+                   self.pos);
+            if n == 0 {
+                break;
+            }
+            self.pos += n as u64;
+            to_read -= n as u16;
+            total += n;
+        }
+
+        Ok(total as usize)
     }
 }
 
