@@ -39,4 +39,5 @@ test:
         - ./target/debug/examples/nvinfo
         - ./target/debug/examples/nvwrite
         - ./target/debug/examples/nvread
+        - ./target/debug/examples/nvreadlock
         - ./target/debug/examples/nvrelease

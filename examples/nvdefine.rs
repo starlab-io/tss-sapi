@@ -22,6 +22,7 @@ fn run() -> Result<()> {
         owner_read: true,
         owner_write: true,
         policy_write: true,
+        read_stclear: true,
         ..Default::default()
     };
 

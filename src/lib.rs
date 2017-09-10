@@ -650,6 +650,30 @@ impl<'ctx> NvRamArea<'ctx> {
                 })
     }
 
+    /// read lock an NVRAM area
+    pub fn readlock(&self) -> Result<()> {
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)?;
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
+
+        trace!("Tss2_Sys_NV_ReadLock({:?}, {:?}, 0x{:08X}, {:?}, NULL)",
+               self.ctx,
+               self.ctx.auth_type,
+               self.index,
+               session_data.inner);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_ReadLock(self.ctx.inner,
+                                              self.ctx
+                                                  .auth_type
+                                                  .to_u32()
+                                                  .unwrap(),
+                                              self.index,
+                                              &session_data.inner,
+                                              ptr::null_mut())
+                })
+    }
+
     fn write_chunk(&self,
                    session_data: &CmdAuths,
                    session_out: &mut RespAuths,
