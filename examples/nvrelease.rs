@@ -13,7 +13,7 @@ fn run() -> Result<()> {
 
     let mut ctx = utils::open_context_from_env()?;
     // set the current owner password
-    ctx.password("test123");
+    ctx.password(AuthType::Owner, "test123");
 
     // delete the NVRAM index
     let index = 0x1500016;

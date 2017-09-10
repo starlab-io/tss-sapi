@@ -596,14 +596,14 @@ impl<'ctx> NvRamArea<'ctx> {
         let resp = sys::TPMS_AUTH_RESPONSE::default();
         let mut session_out = RespAuths::from(resp);
 
-        trace!("Tss2_Sys_NV_DefineSpace({:?}, {}, {:?}, NULL index passwd, {:?}, SESSION_OUT)",
+        trace!("Tss2_Sys_NV_DefineSpace({:?}, {:?}, {:?}, NULL index passwd, {:?}, SESSION_OUT)",
                ctx.inner,
-               "TPM_RH_OWNER",
+               ctx.auth_type,
                session_data.inner,
                nv);
         tss_err(unsafe {
                     sys::Tss2_Sys_NV_DefineSpace(ctx.inner,
-                                                 sys::TPM_RH_OWNER,
+                                                 ctx.auth_type.to_u32().unwrap(),
                                                  &session_data.inner,
                                                  &mut auth,
                                                  &mut nv,
@@ -629,14 +629,17 @@ impl<'ctx> NvRamArea<'ctx> {
         // populate our session data from the auth command
         let session_data = CmdAuths::from(cmd);
 
-        trace!("Tss2_Sys_NV_UndefineSpace({:?}, {}, 0x{:08X}, {:?}, NULL)",
+        trace!("Tss2_Sys_NV_UndefineSpace({:?}, {:?}, 0x{:08X}, {:?}, NULL)",
                self.ctx,
-               "TPM_RH_OWNER",
+               self.ctx.auth_type,
                self.index,
                session_data.inner);
         tss_err(unsafe {
                     sys::Tss2_Sys_NV_UndefineSpace(self.ctx.inner,
-                                                   sys::TPM_RH_OWNER,
+                                                   self.ctx
+                                                       .auth_type
+                                                       .to_u32()
+                                                       .unwrap(),
                                                    self.index,
                                                    &session_data.inner,
                                                    ptr::null_mut())
@@ -651,16 +654,19 @@ impl<'ctx> NvRamArea<'ctx> {
                    -> Result<()> {
         let mut buf = sys::TPM2B_MAX_NV_BUFFER::try_from(data)?;
 
-        trace!("Tss2_Sys_NV_Write({:?}, {}, {}, {:?}, {:?}, {}, SESSION_OUT)",
+        trace!("Tss2_Sys_NV_Write({:?}, {:?}, {}, {:?}, {:?}, {}, SESSION_OUT)",
                self.ctx.inner,
-               "TPM_RH_OWNER",
+               self.ctx.auth_type,
                self.index,
                session_data.inner,
                data,
                offset);
         tss_err(unsafe {
                     sys::Tss2_Sys_NV_Write(self.ctx.inner,
-                                           sys::TPM_RH_OWNER,
+                                           self.ctx
+                                               .auth_type
+                                               .to_u32()
+                                               .unwrap(),
                                            self.index,
                                            &session_data.inner,
                                            &mut buf,
@@ -680,9 +686,9 @@ impl<'ctx> NvRamArea<'ctx> {
 
         let read_size = cmp::min(sys::MAX_NV_BUFFER_SIZE as u16, read_req);
 
-        trace!("Tss2_Sys_NV_Read({:?}, {}, {}, {:?}, {}, {}, buf, SESSION_OUT)",
+        trace!("Tss2_Sys_NV_Read({:?}, {:?}, {}, {:?}, {}, {}, buf, SESSION_OUT)",
                self.ctx.inner,
-               "TPM_RH_OWNER",
+               self.ctx.auth_type,
                self.index,
                session_data.inner,
                read_size,
@@ -690,7 +696,10 @@ impl<'ctx> NvRamArea<'ctx> {
 
         tss_err(unsafe {
                     sys::Tss2_Sys_NV_Read(self.ctx.inner,
-                                          sys::TPM_RH_OWNER,
+                                          self.ctx
+                                              .auth_type
+                                              .to_u32()
+                                              .unwrap(),
                                           self.index,
                                           &session_data.inner,
                                           read_size,
@@ -856,6 +865,12 @@ pub enum HierarchyAuth {
     Lockout = sys::TPM_RH_LOCKOUT as isize,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Primitive)]
+pub enum AuthType {
+    Owner = sys::TPM_RH_OWNER as isize,
+    Platform = sys::TPM_RH_PLATFORM as isize,
+}
+
 #[derive(Clone, Debug)]
 enum Capabilities {
     VariableProperties,
@@ -888,6 +903,7 @@ pub struct Context {
     size: usize,
     _tcti: TctiContext, // need to keep this for the life of this context
     passwd: Option<String>, // the current authentication password
+    auth_type: AuthType,
 }
 
 impl Drop for Context {
@@ -927,6 +943,7 @@ impl Context {
                size: alloc_size,
                _tcti: tcti,
                passwd: None,
+               auth_type: AuthType::Owner,
            })
     }
 
@@ -943,8 +960,9 @@ impl Context {
     }
 
     /// set the authentication password we will use
-    pub fn password<T: ToString>(&mut self, passwd: T) {
+    pub fn password<T: ToString>(&mut self, auth_type: AuthType, passwd: T) {
         self.passwd = Some(passwd.to_string());
+        self.auth_type = auth_type;
     }
 
     pub fn startup(&self, action: Startup) -> Result<()> {
