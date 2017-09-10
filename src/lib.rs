@@ -622,6 +622,27 @@ impl<'ctx> NvRamArea<'ctx> {
            })
     }
 
+    /// delete an NVRAM area
+    pub fn undefine(self) -> Result<()> {
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)?;
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
+
+        trace!("Tss2_Sys_NV_UndefineSpace({:?}, {}, 0x{:08X}, {:?}, 0)",
+            self.ctx,
+            "TPM_RH_OWNER",
+            self.index,
+            session_data.inner);
+        tss_err(unsafe {
+            sys::Tss2_Sys_NV_UndefineSpace(self.ctx.inner,
+                                           sys::TPM_RH_OWNER,
+                                           self.index,
+                                           &session_data.inner,
+                                           ptr::null_mut())
+        })
+    }
+
     fn write_chunk(&self,
                    session_data: &CmdAuths,
                    session_out: &mut RespAuths,
