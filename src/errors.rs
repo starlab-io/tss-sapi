@@ -103,6 +103,22 @@ pub mod tpm {
                 description("invalid nonce size")
                 display("invalid nonce size")
             }
+            NvDefined {
+                description("NV Index or persistend object already defined")
+                display("NV Index or persistend object already defined")
+            }
+            NvLocked {
+                description("NV access is locked")
+                display("NV access is locked")
+            }
+            NvSpace {
+                description("insufficient space for NV allocation")
+                display("insufficient space for NV allocation")
+            }
+            NvUnavailable {
+                description("command requires writing of NV and NV is not accessible")
+                display("command requires writing of NV and NV is not accessible")
+            }
             PhysicalPresence {
                 description("auth requires assertion of physical presense")
                 display("auth requires assertion of physical presense")
