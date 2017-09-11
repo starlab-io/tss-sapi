@@ -15,6 +15,7 @@ extern crate error_chain;
 #[macro_use]
 extern crate log;
 extern crate num_traits;
+extern crate try_from;
 
 mod errors;
 pub mod utils;
@@ -25,6 +26,7 @@ mod sys {
     use std::default::Default;
     use std::mem;
     use std::ptr;
+    use try_from::TryFrom;
 
     include!("bindings.rs");
 
@@ -72,25 +74,43 @@ mod sys {
 
     tpm2b_new!(TPM2B_NAME);
     tpm2b_new!(TPM2B_NV_PUBLIC);
+    tpm2b_new!(TPM2B_MAX_NV_BUFFER);
 
-    // add new() method to TPM2B_AUTH that is different from above by taking the
-    // password always
-    impl TPM2B_AUTH {
-        pub fn new(passwd: &[u8]) -> Self {
+    // of the buffer + a UINT16 (the size). So it should be equal to the size
+    // of the struct minus a UINT16.
+    macro_rules! tpm2b_try_from(
+        ($kind:ty, $lifetime:tt, $from:ty) => (
+            impl<$lifetime> TryFrom<$from> for $kind {
+                type Err = super::Error;
 
-            let mut new_auth = TPM2B_AUTH::default();
+                fn try_from(data: $from) -> Result<$kind, Self::Err> {
+                    let max = mem::size_of::<$kind>() - mem::size_of::<UINT16>();
+                    ensure!(max >= data.len(),
+                        super::ErrorKind::BadSize(format!("supplied data was {} bytes which \
+                                            is larger than the available {} bytes",
+                                            data.len(),
+                                            max)));
 
-            unsafe {
-                let mut auth = new_auth.t.as_mut();
-                // set the length of our password
-                auth.size = passwd.len() as u16;
-                // copy the password into the password struct
-                ptr::copy(passwd.as_ptr(), auth.buffer.as_mut_ptr(), passwd.len());
+                    let mut field: $kind = Default::default();
+                    unsafe {
+                        let mut thing = field.t.as_mut();
+                        // set the length of incoming data
+                        thing.size = data.len() as u16;
+                        // copy the password into the password struct
+                        ptr::copy(data.as_ptr(), thing.buffer.as_mut_ptr(), data.len());
+                    }
+                    Ok(field)
+                }
             }
+            )
+        );
 
-            new_auth
-        }
-    }
+    // add try_from() method to TPM2B_AUTH that attempts to convert from
+    // a buffer which is a password
+    tpm2b_try_from!(TPM2B_AUTH, 'a, &'a[u8]);
+
+    // create a new NV buffer from supplied data
+    tpm2b_try_from!(TPM2B_MAX_NV_BUFFER, 'a, &'a[u8]);
 
     impl TPMS_AUTH_COMMAND {
         pub fn new() -> Self {
@@ -98,12 +118,12 @@ mod sys {
             TPMS_AUTH_COMMAND { sessionHandle: TPM_RS_PW, ..Default::default() }
         }
 
-        pub fn password(mut self, passwd: &Option<String>) -> Self {
+        pub fn password(mut self, passwd: &Option<String>) -> super::Result<Self> {
             if let &Some(ref pass) = passwd {
-                self.hmac = TPM2B_AUTH::new(pass.as_bytes());
+                self.hmac = TPM2B_AUTH::try_from(pass.as_bytes())?;
             }
 
-            self
+            Ok(self)
         }
     }
 
@@ -182,12 +202,15 @@ mod sys {
 
 pub use errors::*;
 use num_traits::{FromPrimitive, ToPrimitive};
+use std::cmp;
 use std::default::Default;
 use std::ffi::{CStr, CString};
 use std::fmt;
+use std::io;
 use std::mem;
 use std::ptr;
 use sys::ErrorCodes;
+use try_from::TryFrom;
 
 fn malloc<T>(size: usize) -> *mut T {
     // use a Vec as our allocator
@@ -497,14 +520,16 @@ impl From<sys::TPMA_NV> for NvAttributes {
 }
 
 #[derive(Debug)]
-pub struct NvRamArea {
+pub struct NvRamArea<'ctx> {
     pub index: u32,
     pub size: u16,
     pub hash: TpmAlgorithm,
     pub attrs: NvAttributes,
+    ctx: &'ctx Context,
+    pos: u64,
 }
 
-impl NvRamArea {
+impl<'ctx> NvRamArea<'ctx> {
     /// look up an NVRAM area
     pub fn get(ctx: &Context, index: u32) -> Result<NvRamArea> {
         let mut nv_name = sys::TPM2B_NAME::new();
@@ -532,6 +557,8 @@ impl NvRamArea {
                size: nv.dataSize,
                hash: hash,
                attrs: NvAttributes::from(nv.attributes),
+               ctx: ctx,
+               pos: 0,
            })
     }
 
@@ -558,7 +585,7 @@ impl NvRamArea {
         }
 
         // create an auth command with our existing authentication password
-        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&ctx.passwd);
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&ctx.passwd)?;
         // populate our session data from the auth command
         let session_data = CmdAuths::from(cmd);
 
@@ -590,11 +617,93 @@ impl NvRamArea {
                size: nvpub.dataSize,
                hash: hash,
                attrs: NvAttributes::from(nvpub.attributes),
+               ctx: ctx,
+               pos: 0,
            })
+    }
+
+    /// delete an NVRAM area
+    pub fn undefine(self) -> Result<()> {
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)?;
+        // populate our session data from the auth command
+        let session_data = CmdAuths::from(cmd);
+
+        trace!("Tss2_Sys_NV_UndefineSpace({:?}, {}, 0x{:08X}, {:?}, NULL)",
+               self.ctx,
+               "TPM_RH_OWNER",
+               self.index,
+               session_data.inner);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_UndefineSpace(self.ctx.inner,
+                                                   sys::TPM_RH_OWNER,
+                                                   self.index,
+                                                   &session_data.inner,
+                                                   ptr::null_mut())
+                })
+    }
+
+    fn write_chunk(&self,
+                   session_data: &CmdAuths,
+                   session_out: &mut RespAuths,
+                   offset: u16,
+                   data: &[u8])
+                   -> Result<()> {
+        let mut buf = sys::TPM2B_MAX_NV_BUFFER::try_from(data)?;
+
+        trace!("Tss2_Sys_NV_Write({:?}, {}, {}, {:?}, {:?}, {}, SESSION_OUT)",
+               self.ctx.inner,
+               "TPM_RH_OWNER",
+               self.index,
+               session_data.inner,
+               data,
+               offset);
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_Write(self.ctx.inner,
+                                           sys::TPM_RH_OWNER,
+                                           self.index,
+                                           &session_data.inner,
+                                           &mut buf,
+                                           offset,
+                                           &mut session_out.inner)
+                })
+    }
+
+    fn read_chunk(&self,
+                  session_data: &CmdAuths,
+                  session_out: &mut RespAuths,
+                  offset: u16,
+                  read_req: u16)
+                  -> Result<sys::TPM2B_MAX_NV_BUFFER> {
+
+        let mut buf = sys::TPM2B_MAX_NV_BUFFER::new();
+
+        let read_size = cmp::min(sys::MAX_NV_BUFFER_SIZE as u16, read_req);
+
+        trace!("Tss2_Sys_NV_Read({:?}, {}, {}, {:?}, {}, {}, buf, SESSION_OUT)",
+               self.ctx.inner,
+               "TPM_RH_OWNER",
+               self.index,
+               session_data.inner,
+               read_size,
+               offset);
+
+        tss_err(unsafe {
+                    sys::Tss2_Sys_NV_Read(self.ctx.inner,
+                                          sys::TPM_RH_OWNER,
+                                          self.index,
+                                          &session_data.inner,
+                                          read_size,
+                                          offset,
+                                          &mut buf,
+                                          &mut session_out.inner)
+                })?;
+
+        Ok(buf)
     }
 }
 
-impl fmt::Display for NvRamArea {
+impl<'ctx> fmt::Display for NvRamArea<'ctx> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         writeln!(f,
                  "NVRAM index      : 0x{:08X} ({})",
@@ -629,6 +738,108 @@ impl fmt::Display for NvRamArea {
         writeln!(f, "  Orderly        : {}", self.attrs.orderly)?;
         writeln!(f, "  PlatformCreate : {}", self.attrs.platform_create)?;
         Ok(())
+    }
+}
+
+impl<'a> io::Write for NvRamArea<'a> {
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        ensure!((self.pos as usize + buf.len()) <= self.size as usize,
+                io::Error::new(io::ErrorKind::InvalidInput,
+                               format!("offset {} + write size {} greater \
+                                           than NVRAM area size {}",
+                                       self.pos,
+                                       buf.len(),
+                                       self.size)));
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)
+            .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+        // populate our session data
+        let session_data = CmdAuths::from(cmd);
+        let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
+
+        let chunk_size = sys::MAX_NV_BUFFER_SIZE;
+        for chunk in buf.chunks(chunk_size as usize) {
+            self.write_chunk(&session_data, &mut session_out, self.pos as u16, chunk)
+                .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+            self.pos += chunk.len() as u64;
+        }
+
+        Ok(buf.len())
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
+
+impl<'a> io::Seek for NvRamArea<'a> {
+    fn seek(&mut self, pos: io::SeekFrom) -> io::Result<u64> {
+        let (base, offset) = match pos {
+            io::SeekFrom::Start(val) => {
+                self.pos = val;
+                return Ok(val);
+            }
+            io::SeekFrom::End(val) => (self.size as u64, val),
+            io::SeekFrom::Current(val) => (self.pos as u64, val),
+        };
+
+        let new_pos = if offset > 0 {
+            base.checked_add(offset as u64)
+        } else {
+            base.checked_sub((offset.wrapping_neg()) as u64)
+        };
+
+        match new_pos {
+            Some(n) if n <= self.size as u64 => {
+                self.pos = n;
+                Ok(n)
+            }
+            Some(n) => {
+                Err(io::Error::new(io::ErrorKind::InvalidInput,
+                                   format!("unable to seek to {}, which is past end \
+                                           of NVRAM area at {}",
+                                           n,
+                                           self.size)))
+            }
+            None => {
+                Err(io::Error::new(io::ErrorKind::InvalidInput,
+                                   "invalid seek to a negative or overflow position"))
+            }
+        }
+    }
+}
+
+impl<'a> io::Read for NvRamArea<'a> {
+    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        // create an auth command with our existing authentication password
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.ctx.passwd)
+            .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+        // populate our session data
+        let session_data = CmdAuths::from(cmd);
+        let mut session_out = RespAuths::from(sys::TPMS_AUTH_RESPONSE::default());
+
+        let mut total = 0;
+        let mut to_read = self.size - self.pos as u16;
+        trace!("reading {} bytes from index 0x{:08X}", to_read, self.index);
+        while to_read > 0 {
+            let chunk = self.read_chunk(&session_data, &mut session_out, self.pos as u16, to_read)
+                .map_err(|e| io::Error::new(io::ErrorKind::Other, e.to_string()))?;
+            let chunk_size = unsafe { chunk.t.as_ref().size };
+            let mut chunk_slice = &unsafe { chunk.t.as_ref().buffer }[..chunk_size as usize];
+            let n = io::Read::read(&mut chunk_slice, buf)?;
+            trace!("read {} bytes from index 0x{:08X} at pos {}",
+                   chunk_size,
+                   self.index,
+                   self.pos);
+            if n == 0 {
+                break;
+            }
+            self.pos += n as u64;
+            to_read -= n as u16;
+            total += n;
+        }
+
+        Ok(total as usize)
     }
 }
 
@@ -810,12 +1021,12 @@ impl Context {
     /// take ownership of the TPM setting the Owner, Endorsement or Lockout passwords to `passwd`
     pub fn take_ownership(&self, auth_type: HierarchyAuth, passwd: &str) -> Result<()> {
         // create an auth command with our existing authentication password
-        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.passwd);
+        let cmd = sys::TPMS_AUTH_COMMAND::new().password(&self.passwd)?;
         // populate our session data from the auth command
         let session_data = CmdAuths::from(cmd);
 
         // create our new password
-        let mut new_auth = sys::TPM2B_AUTH::new(passwd.as_bytes());
+        let mut new_auth = sys::TPM2B_AUTH::try_from(passwd.as_bytes())?;
 
         trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
                self.inner,

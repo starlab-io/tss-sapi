@@ -37,3 +37,6 @@ test:
         - ./target/debug/examples/ownership
         - ./target/debug/examples/nvdefine
         - ./target/debug/examples/nvinfo
+        - ./target/debug/examples/nvwrite
+        - ./target/debug/examples/nvread
+        - ./target/debug/examples/nvrelease
