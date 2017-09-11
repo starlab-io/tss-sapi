@@ -563,12 +563,13 @@ impl<'ctx> NvRamArea<'ctx> {
     }
 
     /// create an NVRAM area
-    pub fn define(ctx: &Context,
-                  index: u32,
-                  size: u16,
-                  hash: TpmAlgorithm,
-                  attrs: NvAttributes)
-                  -> Result<NvRamArea> {
+    pub fn define<'a>(ctx: &'ctx Context,
+                      index: u32,
+                      size: u16,
+                      hash: TpmAlgorithm,
+                      attrs: NvAttributes,
+                      nv_passwd: Option<&'a str>)
+                      -> Result<NvRamArea<'ctx>> {
 
         let mut nv = sys::TPM2B_NV_PUBLIC::new();
 
@@ -590,7 +591,10 @@ impl<'ctx> NvRamArea<'ctx> {
         let session_data = CmdAuths::from(cmd);
 
         // create our NVRAM index password
-        let mut auth = sys::TPM2B_AUTH::default();
+        let mut auth = match nv_passwd {
+            Some(pass) => sys::TPM2B_AUTH::try_from(pass.as_bytes())?,
+            None => sys::TPM2B_AUTH::default(),
+        };
 
         // create our session response
         let resp = sys::TPMS_AUTH_RESPONSE::default();

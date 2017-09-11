@@ -25,7 +25,7 @@ fn run() -> Result<()> {
         ..Default::default()
     };
 
-    let nv_data = NvRamArea::define(&ctx, index, size, TpmAlgorithm::SHA1, attrs)
+    let nv_data = NvRamArea::define(&ctx, index, size, TpmAlgorithm::SHA1, attrs, None)
         .chain_err(|| format!("Failed to create NVRAM area at 0x{:08X}", index))?;
 
     println!("{}", nv_data);
