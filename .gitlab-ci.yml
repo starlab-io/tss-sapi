@@ -26,6 +26,18 @@ build:
         paths:
             - target/debug/examples/
 
+build-device-only:
+    stage: build
+    image: starlabio/tpm2-emulator:1.1
+    dependencies: []
+    before_script:
+        - curl -sSf rustup-install.sh https://sh.rustup.rs > rustup-install.sh
+        - sh rustup-install.sh -y
+        - source $HOME/.cargo/env
+        - rustup default 1.15.1-x86_64-unknown-linux-gnu
+    script:
+        - cargo build --no-default-features --features tcti-device
+
 test:
     stage: test
     image: starlabio/tpm2-emulator:1.1

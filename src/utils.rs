@@ -30,6 +30,7 @@ pub fn open_context_from_env() -> Result<Context> {
     let tcti = env::var("TPM2TOOLS_TCTI_NAME").unwrap_or_else(|_| String::from("device"));
 
     match tcti.as_str() {
+        #[cfg(feature = "tcti-socket")]
         "socket" => {
             let addr = env::var("TPM2TOOLS_SOCKET_ADDRESS").ok();
             let port = match env::var("TPM2TOOLS_SOCKET_PORT").ok() {
@@ -43,6 +44,7 @@ pub fn open_context_from_env() -> Result<Context> {
             Context::socket(addr.as_ref().map(|v| v.as_ref()), port)
                 .chain_err(|| format!("Unable to connect to {:?}:{:?}", addr, port))
         }
+        #[cfg(feature = "tcti-device")]
         "device" => {
             let dev = env::var("TPM2TOOLS_DEVICE_FILE").ok();
 
