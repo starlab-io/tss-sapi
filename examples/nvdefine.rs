@@ -13,7 +13,7 @@ fn run() -> Result<()> {
 
     let mut ctx = utils::open_context_from_env()?;
     // set the current owner password
-    ctx.password("test123");
+    ctx.password(AuthType::Owner, "test123");
 
     // create the NVRAM index, along with its data
     let index = 0x1500016;
@@ -22,10 +22,11 @@ fn run() -> Result<()> {
         owner_read: true,
         owner_write: true,
         policy_write: true,
+        read_stclear: true,
         ..Default::default()
     };
 
-    let nv_data = NvRamArea::define(&ctx, index, size, TpmAlgorithm::SHA1, attrs)
+    let nv_data = NvRamArea::define(&ctx, index, size, TpmAlgorithm::SHA1, attrs, None)
         .chain_err(|| format!("Failed to create NVRAM area at 0x{:08X}", index))?;
 
     println!("{}", nv_data);
