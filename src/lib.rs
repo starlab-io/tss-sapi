@@ -614,7 +614,7 @@ impl<'ctx> NvRamArea<'ctx> {
         let mut session_out = RespAuths::from(resp);
 
         trace!("Tss2_Sys_NV_DefineSpace({:?}, {:?}, {:?}, NULL index passwd, {:?}, SESSION_OUT)",
-               ctx.inner,
+               ctx,
                ctx.auth_type,
                session_data.inner,
                nv);
@@ -696,7 +696,7 @@ impl<'ctx> NvRamArea<'ctx> {
         let mut buf = sys::TPM2B_MAX_NV_BUFFER::try_from(data)?;
 
         trace!("Tss2_Sys_NV_Write({:?}, {:?}, {}, {:?}, {:?}, {}, SESSION_OUT)",
-               self.ctx.inner,
+               self.ctx,
                self.ctx.auth_type,
                self.index,
                session_data.inner,
@@ -728,7 +728,7 @@ impl<'ctx> NvRamArea<'ctx> {
         let read_size = cmp::min(sys::MAX_NV_BUFFER_SIZE as u16, read_req);
 
         trace!("Tss2_Sys_NV_Read({:?}, {:?}, {}, {:?}, {}, {}, buf, SESSION_OUT)",
-               self.ctx.inner,
+               self.ctx,
                self.ctx.auth_type,
                self.index,
                session_data.inner,
@@ -949,7 +949,7 @@ pub struct Context {
 
 impl Drop for Context {
     fn drop(&mut self) {
-        trace!("Tss2_Sys_Finalize({:?})", self.inner);
+        trace!("Tss2_Sys_Finalize({:?})", self);
         unsafe {
             sys::Tss2_Sys_Finalize(self.inner);
         }
@@ -1012,7 +1012,7 @@ impl Context {
             Startup::Clear => sys::TPM_SU_CLEAR,
         };
 
-        trace!("Tss2_Sys_Startup({:?}, {:?})", self.inner, action);
+        trace!("Tss2_Sys_Startup({:?}, {:?})", self, action);
         tss_err(unsafe { sys::Tss2_Sys_Startup(self.inner, action as u16) })?;
         Ok(())
     }
@@ -1029,7 +1029,7 @@ impl Context {
         let mut cap_data: sys::TPMS_CAPABILITY_DATA = unsafe { mem::zeroed() };
 
         trace!("Tss2_Sys_GetCapability({:?}, NULL, ({:?}) {}, {}, {}, more_data, cap, NULL)",
-               self.inner,
+               self,
                req,
                cap,
                prop,
@@ -1088,7 +1088,7 @@ impl Context {
         let mut new_auth = sys::TPM2B_AUTH::try_from(passwd.as_bytes())?;
 
         trace!("Tss2_Sys_HierarchyChangeAuth({:?}, {:?}, SESSION_DATA, NEW_AUTH, NULL)",
-               self.inner,
+               self,
                auth_type);
         tss_err(unsafe {
                     sys::Tss2_Sys_HierarchyChangeAuth(self.inner,
@@ -1121,7 +1121,7 @@ impl Drop for TctiContext {
         //    sys::Tss2_Tcti_Finalize(self.inner);
         //}
 
-        trace!("TctiContext free({:?})", self.inner);
+        trace!("TctiContext free({:?})", self);
         free(self.inner, self.size);
     }
 }
