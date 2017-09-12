@@ -103,6 +103,10 @@ pub mod tpm {
                 description("invalid nonce size")
                 display("invalid nonce size")
             }
+            NvAuthorization {
+                description("NV access authorization fails in command actions")
+                display("NV access authorization fails in command actions")
+            }
             NvDefined {
                 description("NV Index or persistend object already defined")
                 display("NV Index or persistend object already defined")
