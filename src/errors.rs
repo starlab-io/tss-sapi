@@ -160,8 +160,8 @@ pub mod tpm {
                 display("incorrect structure tag")
             }
             Type {
-                description("the handle is not correct for the use")
-                display("the handle is not correct for the use")
+                description("the type of the value is not appropriate for the use")
+                display("the type of the value is not appropriate for the use")
             }
             Value {
                 description("value is out of range or is not correct for the context")
