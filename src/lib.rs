@@ -200,7 +200,8 @@ mod sys {
     }
 }
 
-pub use errors::*;
+pub use errors::{Error, ErrorKind, Result};
+pub use errors::tpm::ErrorKind as TpmErrorKind;
 use num_traits::{FromPrimitive, ToPrimitive};
 use std::cmp;
 use std::default::Default;
