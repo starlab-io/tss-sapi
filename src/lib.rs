@@ -317,6 +317,9 @@ fn tss_err(err: sys::TSS2_RC) -> Result<()> {
                                 sys::TPM_RC_EXCLUSIVE => {
                                     tss_tpm_err!(errors::tpm::ErrorKind::Exclusive)
                                 }
+                                sys::TPM_RC_NV_AUTHORIZATION => {
+                                    tss_tpm_err!(errors::tpm::ErrorKind::NvAuthorization)
+                                }
                                 sys::TPM_RC_NV_DEFINED => {
                                     tss_tpm_err!(errors::tpm::ErrorKind::NvDefined)
                                 }
