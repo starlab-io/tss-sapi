@@ -11,7 +11,7 @@ format:
 
 build:
     stage: build
-    image: starlabio/tpm2-emulator:1.1
+    image: starlabio/tpm-emulator:2.0
     dependencies: []
     before_script:
         - curl -sSf rustup-install.sh https://sh.rustup.rs > rustup-install.sh
@@ -28,7 +28,7 @@ build:
 
 build-device-only:
     stage: build
-    image: starlabio/tpm2-emulator:1.1
+    image: starlabio/tpm-emulator:2.0
     dependencies: []
     before_script:
         - curl -sSf rustup-install.sh https://sh.rustup.rs > rustup-install.sh
@@ -40,7 +40,7 @@ build-device-only:
 
 test:
     stage: test
-    image: starlabio/tpm2-emulator:1.1
+    image: starlabio/tpm-emulator:2.0
     before_script:
         - tpm_server -rm &
         - sleep 3 # cause the server needs some time
