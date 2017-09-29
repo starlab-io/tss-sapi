@@ -57,6 +57,13 @@ impl <T> ::std::fmt::Debug for __BindgenUnionField<T> {
         fmt.write_str("__BindgenUnionField")
     }
 }
+impl <T> ::std::hash::Hash for __BindgenUnionField<T> {
+    fn hash<H: ::std::hash::Hasher>(&self, _state: &mut H) { }
+}
+impl <T> ::std::cmp::PartialEq for __BindgenUnionField<T> {
+    fn eq(&self, _other: &__BindgenUnionField<T>) -> bool { true }
+}
+impl <T> ::std::cmp::Eq for __BindgenUnionField<T> { }
 pub const _STDINT_H: ::std::os::raw::c_uint = 1;
 pub const _FEATURES_H: ::std::os::raw::c_uint = 1;
 pub const _DEFAULT_SOURCE: ::std::os::raw::c_uint = 1;
@@ -140,6 +147,7 @@ pub const __ENUM_IDTYPE_T: ::std::os::raw::c_uint = 1;
 pub const __W_CONTINUED: ::std::os::raw::c_uint = 65535;
 pub const __WCOREFLAG: ::std::os::raw::c_uint = 128;
 pub const __ldiv_t_defined: ::std::os::raw::c_uint = 1;
+pub const __lldiv_t_defined: ::std::os::raw::c_uint = 1;
 pub const RAND_MAX: ::std::os::raw::c_uint = 2147483647;
 pub const EXIT_FAILURE: ::std::os::raw::c_uint = 1;
 pub const EXIT_SUCCESS: ::std::os::raw::c_uint = 0;
@@ -184,6 +192,7 @@ pub const __SIZEOF_PTHREAD_BARRIER_T: ::std::os::raw::c_uint = 32;
 pub const __SIZEOF_PTHREAD_BARRIERATTR_T: ::std::os::raw::c_uint = 4;
 pub const __have_pthread_attr_t: ::std::os::raw::c_uint = 1;
 pub const __PTHREAD_MUTEX_HAVE_PREV: ::std::os::raw::c_uint = 1;
+pub const __PTHREAD_RWLOCK_INT_FLAGS_SHARED: ::std::os::raw::c_uint = 1;
 pub const _ALLOCA_H: ::std::os::raw::c_uint = 1;
 pub const _STRING_H: ::std::os::raw::c_uint = 1;
 pub const _XLOCALE_H: ::std::os::raw::c_uint = 1;
@@ -2514,9 +2523,7 @@ pub type INT32 = i32;
 pub type UINT64 = u64;
 pub type INT64 = i64;
 pub type TSS2_RC = UINT32;
-/**
- * ABI runetime negotiation structure.
- */
+/// ABI runetime negotiation structure.
 #[repr(C)]
 #[derive(Debug, Default, Copy)]
 pub struct TSS2_ABI_VERSION {
@@ -2592,6 +2599,7 @@ pub struct TPM2B_MAX_HASH_BLOCK {
     pub bindgen_union_field: [u16; 65usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_MAX_HASH_BLOCK__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 128usize],
@@ -2618,6 +2626,9 @@ fn bindgen_test_layout_TPM2B_MAX_HASH_BLOCK__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_MAX_HASH_BLOCK__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_MAX_HASH_BLOCK__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_MAX_HASH_BLOCK__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -2754,165 +2765,327 @@ impl Clone for TPMA_ALGORITHM__bindgen_ty_1 {
 impl TPMA_ALGORITHM__bindgen_ty_1 {
     #[inline]
     pub fn asymmetric(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_asymmetric(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn symmetric(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_symmetric(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u32;
+        let mask = 2u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn hash(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4u64 as u32;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_hash(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u32;
+        let mask = 4u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn object(&self) -> ::std::os::raw::c_uint {
-        let mask = 8usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 8u64 as u32;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_object(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8usize as u32;
+        let mask = 8u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 240usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 240u64 as u32;
         let val = (unit_field_val & mask) >> 4usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 240usize as u32;
+        let mask = 240u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 4usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn signing(&self) -> ::std::os::raw::c_uint {
-        let mask = 256usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 256u64 as u32;
         let val = (unit_field_val & mask) >> 8usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_signing(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 256usize as u32;
+        let mask = 256u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 8usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn encrypting(&self) -> ::std::os::raw::c_uint {
-        let mask = 512usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 512u64 as u32;
         let val = (unit_field_val & mask) >> 9usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_encrypting(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 512usize as u32;
+        let mask = 512u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 9usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn method(&self) -> ::std::os::raw::c_uint {
-        let mask = 1024usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1024u64 as u32;
         let val = (unit_field_val & mask) >> 10usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_method(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1024usize as u32;
+        let mask = 1024u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 10usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved2(&self) -> ::std::os::raw::c_uint {
-        let mask = 4294965248usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4294965248u64 as u32;
         let val = (unit_field_val & mask) >> 11usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved2(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4294965248usize as u32;
+        let mask = 4294965248u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 11usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(asymmetric: ::std::os::raw::c_uint,
@@ -2935,30 +3108,27 @@ impl TPMA_ALGORITHM__bindgen_ty_1 {
                                                 ({ 0 } |
                                                      ((asymmetric as u32 as
                                                            u32) << 0usize) &
-                                                         (1usize as u32))
+                                                         (1u64 as u32))
                                             } |
                                                 ((symmetric as u32 as u32) <<
-                                                     1usize) &
-                                                    (2usize as u32))
+                                                     1usize) & (2u64 as u32))
                                        } |
                                            ((hash as u32 as u32) << 2usize) &
-                                               (4usize as u32))
+                                               (4u64 as u32))
                                   } |
                                       ((object as u32 as u32) << 3usize) &
-                                          (8usize as u32))
+                                          (8u64 as u32))
                              } |
                                  ((reserved1 as u32 as u32) << 4usize) &
-                                     (240usize as u32))
+                                     (240u64 as u32))
                         } |
                             ((signing as u32 as u32) << 8usize) &
-                                (256usize as u32))
+                                (256u64 as u32))
                    } |
                        ((encrypting as u32 as u32) << 9usize) &
-                           (512usize as u32))
-              } | ((method as u32 as u32) << 10usize) & (1024usize as u32))
-         } |
-             ((reserved2 as u32 as u32) << 11usize) &
-                 (4294965248usize as u32))
+                           (512u64 as u32))
+              } | ((method as u32 as u32) << 10usize) & (1024u64 as u32))
+         } | ((reserved2 as u32 as u32) << 11usize) & (4294965248u64 as u32))
     }
 }
 #[test]
@@ -3005,291 +3175,579 @@ impl Clone for TPMA_OBJECT__bindgen_ty_1 {
 impl TPMA_OBJECT__bindgen_ty_1 {
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn fixedTPM(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_fixedTPM(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u32;
+        let mask = 2u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn stClear(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4u64 as u32;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_stClear(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u32;
+        let mask = 4u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved2(&self) -> ::std::os::raw::c_uint {
-        let mask = 8usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 8u64 as u32;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved2(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8usize as u32;
+        let mask = 8u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn fixedParent(&self) -> ::std::os::raw::c_uint {
-        let mask = 16usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 16u64 as u32;
         let val = (unit_field_val & mask) >> 4usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_fixedParent(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 16usize as u32;
+        let mask = 16u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 4usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn sensitiveDataOrigin(&self) -> ::std::os::raw::c_uint {
-        let mask = 32usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 32u64 as u32;
         let val = (unit_field_val & mask) >> 5usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_sensitiveDataOrigin(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 32usize as u32;
+        let mask = 32u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 5usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn userWithAuth(&self) -> ::std::os::raw::c_uint {
-        let mask = 64usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 64u64 as u32;
         let val = (unit_field_val & mask) >> 6usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_userWithAuth(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 64usize as u32;
+        let mask = 64u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 6usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn adminWithPolicy(&self) -> ::std::os::raw::c_uint {
-        let mask = 128usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 128u64 as u32;
         let val = (unit_field_val & mask) >> 7usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_adminWithPolicy(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 128usize as u32;
+        let mask = 128u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 7usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved3(&self) -> ::std::os::raw::c_uint {
-        let mask = 768usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 768u64 as u32;
         let val = (unit_field_val & mask) >> 8usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved3(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 768usize as u32;
+        let mask = 768u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 8usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn noDA(&self) -> ::std::os::raw::c_uint {
-        let mask = 1024usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1024u64 as u32;
         let val = (unit_field_val & mask) >> 10usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_noDA(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1024usize as u32;
+        let mask = 1024u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 10usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn encryptedDuplication(&self) -> ::std::os::raw::c_uint {
-        let mask = 2048usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2048u64 as u32;
         let val = (unit_field_val & mask) >> 11usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_encryptedDuplication(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2048usize as u32;
+        let mask = 2048u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 11usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved4(&self) -> ::std::os::raw::c_uint {
-        let mask = 61440usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 61440u64 as u32;
         let val = (unit_field_val & mask) >> 12usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved4(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 61440usize as u32;
+        let mask = 61440u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 12usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn restricted(&self) -> ::std::os::raw::c_uint {
-        let mask = 65536usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 65536u64 as u32;
         let val = (unit_field_val & mask) >> 16usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_restricted(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 65536usize as u32;
+        let mask = 65536u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 16usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn decrypt(&self) -> ::std::os::raw::c_uint {
-        let mask = 131072usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 131072u64 as u32;
         let val = (unit_field_val & mask) >> 17usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_decrypt(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 131072usize as u32;
+        let mask = 131072u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 17usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn sign(&self) -> ::std::os::raw::c_uint {
-        let mask = 262144usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 262144u64 as u32;
         let val = (unit_field_val & mask) >> 18usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_sign(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 262144usize as u32;
+        let mask = 262144u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 18usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved5(&self) -> ::std::os::raw::c_uint {
-        let mask = 4294443008usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4294443008u64 as u32;
         let val = (unit_field_val & mask) >> 19usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved5(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4294443008usize as u32;
+        let mask = 4294443008u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 19usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(reserved1: ::std::os::raw::c_uint,
@@ -3335,7 +3793,7 @@ impl TPMA_OBJECT__bindgen_ty_1 {
                                                                                              <<
                                                                                              0usize)
                                                                                             &
-                                                                                            (1usize
+                                                                                            (1u64
                                                                                                  as
                                                                                                  u32))
                                                                                }
@@ -3348,7 +3806,7 @@ impl TPMA_OBJECT__bindgen_ty_1 {
                                                                                         <<
                                                                                         1usize)
                                                                                        &
-                                                                                       (2usize
+                                                                                       (2u64
                                                                                             as
                                                                                             u32))
                                                                           } |
@@ -3360,7 +3818,7 @@ impl TPMA_OBJECT__bindgen_ty_1 {
                                                                                    <<
                                                                                    2usize)
                                                                                   &
-                                                                                  (4usize
+                                                                                  (4u64
                                                                                        as
                                                                                        u32))
                                                                      } |
@@ -3372,7 +3830,7 @@ impl TPMA_OBJECT__bindgen_ty_1 {
                                                                               <<
                                                                               3usize)
                                                                              &
-                                                                             (8usize
+                                                                             (8u64
                                                                                   as
                                                                                   u32))
                                                                 } |
@@ -3384,7 +3842,7 @@ impl TPMA_OBJECT__bindgen_ty_1 {
                                                                          <<
                                                                          4usize)
                                                                         &
-                                                                        (16usize
+                                                                        (16u64
                                                                              as
                                                                              u32))
                                                            } |
@@ -3392,41 +3850,38 @@ impl TPMA_OBJECT__bindgen_ty_1 {
                                                                      as u32 as
                                                                      u32) <<
                                                                     5usize) &
-                                                                   (32usize as
+                                                                   (32u64 as
                                                                         u32))
                                                       } |
                                                           ((userWithAuth as
                                                                 u32 as u32) <<
                                                                6usize) &
-                                                              (64usize as
-                                                                   u32))
+                                                              (64u64 as u32))
                                                  } |
                                                      ((adminWithPolicy as u32
                                                            as u32) << 7usize)
-                                                         & (128usize as u32))
+                                                         & (128u64 as u32))
                                             } |
                                                 ((reserved3 as u32 as u32) <<
                                                      8usize) &
-                                                    (768usize as u32))
+                                                    (768u64 as u32))
                                        } |
                                            ((noDA as u32 as u32) << 10usize) &
-                                               (1024usize as u32))
+                                               (1024u64 as u32))
                                   } |
                                       ((encryptedDuplication as u32 as u32) <<
-                                           11usize) & (2048usize as u32))
+                                           11usize) & (2048u64 as u32))
                              } |
                                  ((reserved4 as u32 as u32) << 12usize) &
-                                     (61440usize as u32))
+                                     (61440u64 as u32))
                         } |
                             ((restricted as u32 as u32) << 16usize) &
-                                (65536usize as u32))
+                                (65536u64 as u32))
                    } |
                        ((decrypt as u32 as u32) << 17usize) &
-                           (131072usize as u32))
-              } | ((sign as u32 as u32) << 18usize) & (262144usize as u32))
-         } |
-             ((reserved5 as u32 as u32) << 19usize) &
-                 (4294443008usize as u32))
+                           (131072u64 as u32))
+              } | ((sign as u32 as u32) << 18usize) & (262144u64 as u32))
+         } | ((reserved5 as u32 as u32) << 19usize) & (4294443008u64 as u32))
     }
 }
 #[test]
@@ -3474,129 +3929,255 @@ impl Clone for TPMA_SESSION__bindgen_ty_1 {
 impl TPMA_SESSION__bindgen_ty_1 {
     #[inline]
     pub fn continueSession(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 1u64 as u8;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_continueSession(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u8;
+        let mask = 1u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn auditExclusive(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 2u64 as u8;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_auditExclusive(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u8;
+        let mask = 2u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn auditReset(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 4u64 as u8;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_auditReset(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u8;
+        let mask = 4u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 24usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 24u64 as u8;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 24usize as u8;
+        let mask = 24u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn decrypt(&self) -> ::std::os::raw::c_uint {
-        let mask = 32usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 32u64 as u8;
         let val = (unit_field_val & mask) >> 5usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_decrypt(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 32usize as u8;
+        let mask = 32u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 5usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn encrypt(&self) -> ::std::os::raw::c_uint {
-        let mask = 64usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 64u64 as u8;
         let val = (unit_field_val & mask) >> 6usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_encrypt(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 64usize as u8;
+        let mask = 64u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 6usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn audit(&self) -> ::std::os::raw::c_uint {
-        let mask = 128usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 128u64 as u8;
         let val = (unit_field_val & mask) >> 7usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_audit(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 128usize as u8;
+        let mask = 128u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 7usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(continueSession: ::std::os::raw::c_uint,
@@ -3614,19 +4195,19 @@ impl TPMA_SESSION__bindgen_ty_1 {
                                  ({
                                       ({ 0 } |
                                            ((continueSession as u32 as u8) <<
-                                                0usize) & (1usize as u8))
+                                                0usize) & (1u64 as u8))
                                   } |
                                       ((auditExclusive as u32 as u8) <<
-                                           1usize) & (2usize as u8))
+                                           1usize) & (2u64 as u8))
                              } |
                                  ((auditReset as u32 as u8) << 2usize) &
-                                     (4usize as u8))
+                                     (4u64 as u8))
                         } |
                             ((reserved1 as u32 as u8) << 3usize) &
-                                (24usize as u8))
-                   } | ((decrypt as u32 as u8) << 5usize) & (32usize as u8))
-              } | ((encrypt as u32 as u8) << 6usize) & (64usize as u8))
-         } | ((audit as u32 as u8) << 7usize) & (128usize as u8))
+                                (24u64 as u8))
+                   } | ((decrypt as u32 as u8) << 5usize) & (32u64 as u8))
+              } | ((encrypt as u32 as u8) << 6usize) & (64u64 as u8))
+         } | ((audit as u32 as u8) << 7usize) & (128u64 as u8))
     }
 }
 #[test]
@@ -3674,111 +4255,219 @@ impl Clone for TPMA_LOCALITY__bindgen_ty_1 {
 impl TPMA_LOCALITY__bindgen_ty_1 {
     #[inline]
     pub fn TPM_LOC_ZERO(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 1u64 as u8;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPM_LOC_ZERO(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u8;
+        let mask = 1u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn TPM_LOC_ONE(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 2u64 as u8;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPM_LOC_ONE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u8;
+        let mask = 2u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn TPM_LOC_TWO(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 4u64 as u8;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPM_LOC_TWO(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u8;
+        let mask = 4u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn TPM_LOC_THREE(&self) -> ::std::os::raw::c_uint {
-        let mask = 8usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 8u64 as u8;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPM_LOC_THREE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8usize as u8;
+        let mask = 8u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn TPM_LOC_FOUR(&self) -> ::std::os::raw::c_uint {
-        let mask = 16usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 16u64 as u8;
         let val = (unit_field_val & mask) >> 4usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPM_LOC_FOUR(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 16usize as u8;
+        let mask = 16u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 4usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn Extended(&self) -> ::std::os::raw::c_uint {
-        let mask = 224usize as u8;
-        let unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
+        let mask = 224u64 as u8;
         let val = (unit_field_val & mask) >> 5usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_Extended(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 224usize as u8;
+        let mask = 224u64 as u8;
         let val = val as u32 as u8;
-        let mut unit_field_val: u8 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u8 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u8 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 5usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u8>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(TPM_LOC_ZERO: ::std::os::raw::c_uint,
@@ -3794,18 +4483,18 @@ impl TPMA_LOCALITY__bindgen_ty_1 {
                             ({
                                  ({ 0 } |
                                       ((TPM_LOC_ZERO as u32 as u8) << 0usize)
-                                          & (1usize as u8))
+                                          & (1u64 as u8))
                              } |
                                  ((TPM_LOC_ONE as u32 as u8) << 1usize) &
-                                     (2usize as u8))
+                                     (2u64 as u8))
                         } |
                             ((TPM_LOC_TWO as u32 as u8) << 2usize) &
-                                (4usize as u8))
+                                (4u64 as u8))
                    } |
                        ((TPM_LOC_THREE as u32 as u8) << 3usize) &
-                           (8usize as u8))
-              } | ((TPM_LOC_FOUR as u32 as u8) << 4usize) & (16usize as u8))
-         } | ((Extended as u32 as u8) << 5usize) & (224usize as u8))
+                           (8u64 as u8))
+              } | ((TPM_LOC_FOUR as u32 as u8) << 4usize) & (16u64 as u8))
+         } | ((Extended as u32 as u8) << 5usize) & (224u64 as u8))
     }
 }
 #[test]
@@ -3852,147 +4541,291 @@ impl Clone for TPMA_PERMANENT__bindgen_ty_1 {
 impl TPMA_PERMANENT__bindgen_ty_1 {
     #[inline]
     pub fn ownerAuthSet(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_ownerAuthSet(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn endorsementAuthSet(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_endorsementAuthSet(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u32;
+        let mask = 2u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn lockoutAuthSet(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4u64 as u32;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_lockoutAuthSet(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u32;
+        let mask = 4u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 248usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 248u64 as u32;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 248usize as u32;
+        let mask = 248u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn disableClear(&self) -> ::std::os::raw::c_uint {
-        let mask = 256usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 256u64 as u32;
         let val = (unit_field_val & mask) >> 8usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_disableClear(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 256usize as u32;
+        let mask = 256u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 8usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn inLockout(&self) -> ::std::os::raw::c_uint {
-        let mask = 512usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 512u64 as u32;
         let val = (unit_field_val & mask) >> 9usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_inLockout(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 512usize as u32;
+        let mask = 512u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 9usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn tpmGeneratedEPS(&self) -> ::std::os::raw::c_uint {
-        let mask = 1024usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1024u64 as u32;
         let val = (unit_field_val & mask) >> 10usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_tpmGeneratedEPS(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1024usize as u32;
+        let mask = 1024u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 10usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved2(&self) -> ::std::os::raw::c_uint {
-        let mask = 4294965248usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4294965248u64 as u32;
         let val = (unit_field_val & mask) >> 11usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved2(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4294965248usize as u32;
+        let mask = 4294965248u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 11usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(ownerAuthSet: ::std::os::raw::c_uint,
@@ -4013,28 +4846,26 @@ impl TPMA_PERMANENT__bindgen_ty_1 {
                                            ({ 0 } |
                                                 ((ownerAuthSet as u32 as u32)
                                                      << 0usize) &
-                                                    (1usize as u32))
+                                                    (1u64 as u32))
                                        } |
                                            ((endorsementAuthSet as u32 as u32)
-                                                << 1usize) & (2usize as u32))
+                                                << 1usize) & (2u64 as u32))
                                   } |
                                       ((lockoutAuthSet as u32 as u32) <<
-                                           2usize) & (4usize as u32))
+                                           2usize) & (4u64 as u32))
                              } |
                                  ((reserved1 as u32 as u32) << 3usize) &
-                                     (248usize as u32))
+                                     (248u64 as u32))
                         } |
                             ((disableClear as u32 as u32) << 8usize) &
-                                (256usize as u32))
+                                (256u64 as u32))
                    } |
                        ((inLockout as u32 as u32) << 9usize) &
-                           (512usize as u32))
+                           (512u64 as u32))
               } |
                   ((tpmGeneratedEPS as u32 as u32) << 10usize) &
-                      (1024usize as u32))
-         } |
-             ((reserved2 as u32 as u32) << 11usize) &
-                 (4294965248usize as u32))
+                      (1024u64 as u32))
+         } | ((reserved2 as u32 as u32) << 11usize) & (4294965248u64 as u32))
     }
 }
 #[test]
@@ -4082,111 +4913,219 @@ impl Clone for TPMA_STARTUP_CLEAR__bindgen_ty_1 {
 impl TPMA_STARTUP_CLEAR__bindgen_ty_1 {
     #[inline]
     pub fn phEnable(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_phEnable(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn shEnable(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_shEnable(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u32;
+        let mask = 2u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn ehEnable(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4u64 as u32;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_ehEnable(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u32;
+        let mask = 4u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn phEnableNV(&self) -> ::std::os::raw::c_uint {
-        let mask = 8usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 8u64 as u32;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_phEnableNV(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8usize as u32;
+        let mask = 8u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 2147483632usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2147483632u64 as u32;
         let val = (unit_field_val & mask) >> 4usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2147483632usize as u32;
+        let mask = 2147483632u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 4usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn orderly(&self) -> ::std::os::raw::c_uint {
-        let mask = 2147483648usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2147483648u64 as u32;
         let val = (unit_field_val & mask) >> 31usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_orderly(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2147483648usize as u32;
+        let mask = 2147483648u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 31usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(phEnable: ::std::os::raw::c_uint,
@@ -4202,20 +5141,18 @@ impl TPMA_STARTUP_CLEAR__bindgen_ty_1 {
                             ({
                                  ({ 0 } |
                                       ((phEnable as u32 as u32) << 0usize) &
-                                          (1usize as u32))
+                                          (1u64 as u32))
                              } |
                                  ((shEnable as u32 as u32) << 1usize) &
-                                     (2usize as u32))
+                                     (2u64 as u32))
                         } |
                             ((ehEnable as u32 as u32) << 2usize) &
-                                (4usize as u32))
-                   } |
-                       ((phEnableNV as u32 as u32) << 3usize) &
-                           (8usize as u32))
+                                (4u64 as u32))
+                   } | ((phEnableNV as u32 as u32) << 3usize) & (8u64 as u32))
               } |
                   ((reserved1 as u32 as u32) << 4usize) &
-                      (2147483632usize as u32))
-         } | ((orderly as u32 as u32) << 31usize) & (2147483648usize as u32))
+                      (2147483632u64 as u32))
+         } | ((orderly as u32 as u32) << 31usize) & (2147483648u64 as u32))
     }
 }
 #[test]
@@ -4262,75 +5199,147 @@ impl Clone for TPMA_MEMORY__bindgen_ty_1 {
 impl TPMA_MEMORY__bindgen_ty_1 {
     #[inline]
     pub fn sharedRAM(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_sharedRAM(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn sharedNV(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_sharedNV(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u32;
+        let mask = 2u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn objectCopiedToRam(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4u64 as u32;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_objectCopiedToRam(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u32;
+        let mask = 4u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 4294967288usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4294967288u64 as u32;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4294967288usize as u32;
+        let mask = 4294967288u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(sharedRAM: ::std::os::raw::c_uint,
@@ -4342,12 +5351,12 @@ impl TPMA_MEMORY__bindgen_ty_1 {
                   ({
                        ({ 0 } |
                             ((sharedRAM as u32 as u32) << 0usize) &
-                                (1usize as u32))
-                   } | ((sharedNV as u32 as u32) << 1usize) & (2usize as u32))
+                                (1u64 as u32))
+                   } | ((sharedNV as u32 as u32) << 1usize) & (2u64 as u32))
               } |
                   ((objectCopiedToRam as u32 as u32) << 2usize) &
-                      (4usize as u32))
-         } | ((reserved1 as u32 as u32) << 3usize) & (4294967288usize as u32))
+                      (4u64 as u32))
+         } | ((reserved1 as u32 as u32) << 3usize) & (4294967288u64 as u32))
     }
 }
 #[test]
@@ -4393,165 +5402,327 @@ impl Clone for TPMA_CC__bindgen_ty_1 {
 impl TPMA_CC__bindgen_ty_1 {
     #[inline]
     pub fn commandIndex(&self) -> ::std::os::raw::c_uint {
-        let mask = 65535usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 65535u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_commandIndex(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 65535usize as u32;
+        let mask = 65535u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 4128768usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4128768u64 as u32;
         let val = (unit_field_val & mask) >> 16usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4128768usize as u32;
+        let mask = 4128768u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 16usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn nv(&self) -> ::std::os::raw::c_uint {
-        let mask = 4194304usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4194304u64 as u32;
         let val = (unit_field_val & mask) >> 22usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_nv(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4194304usize as u32;
+        let mask = 4194304u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 22usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn extensive(&self) -> ::std::os::raw::c_uint {
-        let mask = 8388608usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 8388608u64 as u32;
         let val = (unit_field_val & mask) >> 23usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_extensive(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8388608usize as u32;
+        let mask = 8388608u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 23usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn flushed(&self) -> ::std::os::raw::c_uint {
-        let mask = 16777216usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 16777216u64 as u32;
         let val = (unit_field_val & mask) >> 24usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_flushed(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 16777216usize as u32;
+        let mask = 16777216u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 24usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn cHandles(&self) -> ::std::os::raw::c_uint {
-        let mask = 234881024usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 234881024u64 as u32;
         let val = (unit_field_val & mask) >> 25usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_cHandles(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 234881024usize as u32;
+        let mask = 234881024u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 25usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn rHandle(&self) -> ::std::os::raw::c_uint {
-        let mask = 268435456usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 268435456u64 as u32;
         let val = (unit_field_val & mask) >> 28usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_rHandle(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 268435456usize as u32;
+        let mask = 268435456u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 28usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn V(&self) -> ::std::os::raw::c_uint {
-        let mask = 536870912usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 536870912u64 as u32;
         let val = (unit_field_val & mask) >> 29usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_V(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 536870912usize as u32;
+        let mask = 536870912u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 29usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn Res(&self) -> ::std::os::raw::c_uint {
-        let mask = 3221225472usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 3221225472u64 as u32;
         let val = (unit_field_val & mask) >> 30usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_Res(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 3221225472usize as u32;
+        let mask = 3221225472u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 30usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(commandIndex: ::std::os::raw::c_uint,
@@ -4574,28 +5745,28 @@ impl TPMA_CC__bindgen_ty_1 {
                                                 ({ 0 } |
                                                      ((commandIndex as u32 as
                                                            u32) << 0usize) &
-                                                         (65535usize as u32))
+                                                         (65535u64 as u32))
                                             } |
                                                 ((reserved1 as u32 as u32) <<
                                                      16usize) &
-                                                    (4128768usize as u32))
+                                                    (4128768u64 as u32))
                                        } |
                                            ((nv as u32 as u32) << 22usize) &
-                                               (4194304usize as u32))
+                                               (4194304u64 as u32))
                                   } |
                                       ((extensive as u32 as u32) << 23usize) &
-                                          (8388608usize as u32))
+                                          (8388608u64 as u32))
                              } |
                                  ((flushed as u32 as u32) << 24usize) &
-                                     (16777216usize as u32))
+                                     (16777216u64 as u32))
                         } |
                             ((cHandles as u32 as u32) << 25usize) &
-                                (234881024usize as u32))
+                                (234881024u64 as u32))
                    } |
                        ((rHandle as u32 as u32) << 28usize) &
-                           (268435456usize as u32))
-              } | ((V as u32 as u32) << 29usize) & (536870912usize as u32))
-         } | ((Res as u32 as u32) << 30usize) & (3221225472usize as u32))
+                           (268435456u64 as u32))
+              } | ((V as u32 as u32) << 29usize) & (536870912u64 as u32))
+         } | ((Res as u32 as u32) << 30usize) & (3221225472u64 as u32))
     }
 }
 #[test]
@@ -4641,47 +5812,81 @@ impl Clone for TPMA_MODES__bindgen_ty_1 {
 impl TPMA_MODES__bindgen_ty_1 {
     #[inline]
     pub fn FIPS_140_2(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_FIPS_140_2(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 4294967294usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4294967294u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4294967294usize as u32;
+        let mask = 4294967294u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(FIPS_140_2: ::std::os::raw::c_uint,
                           reserved1: ::std::os::raw::c_uint) -> u32 {
-        ({
-             ({ 0 } |
-                  ((FIPS_140_2 as u32 as u32) << 0usize) & (1usize as u32))
-         } | ((reserved1 as u32 as u32) << 1usize) & (4294967294usize as u32))
+        ({ ({ 0 } | ((FIPS_140_2 as u32 as u32) << 0usize) & (1u64 as u32)) }
+             | ((reserved1 as u32 as u32) << 1usize) & (4294967294u64 as u32))
     }
 }
 #[test]
@@ -4729,7 +5934,7 @@ pub type TPMI_ALG_SIG_SCHEME = TPM_ALG_ID;
 pub type TPMI_ECC_KEY_EXCHANGE = TPM_ALG_ID;
 pub type TPMI_ST_COMMAND_TAG = TPM_ST;
 #[repr(C)]
-#[derive(Debug, Default, Copy)]
+#[derive(Debug, Default)]
 pub struct TPMS_EMPTY {
     pub empty: __IncompleteArrayField<BYTE>,
 }
@@ -4744,9 +5949,6 @@ fn bindgen_test_layout_TPMS_EMPTY() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_EMPTY ) , "::" ,
                 stringify ! ( empty ) ));
-}
-impl Clone for TPMS_EMPTY {
-    fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
 #[derive(Debug, Default, Copy)]
@@ -4863,6 +6065,7 @@ pub struct TPM2B_DIGEST {
     pub bindgen_union_field: [u16; 33usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_DIGEST__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 64usize],
@@ -4887,6 +6090,9 @@ fn bindgen_test_layout_TPM2B_DIGEST__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_DIGEST__bindgen_ty_1 ) , "::" , stringify ! ( buffer )
                 ));
+}
+impl Clone for TPM2B_DIGEST__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_DIGEST__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -4922,6 +6128,7 @@ pub struct TPM2B_DATA {
     pub bindgen_union_field: [u16; 34usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_DATA__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 66usize],
@@ -4944,6 +6151,9 @@ fn bindgen_test_layout_TPM2B_DATA__bindgen_ty_1() {
                 * const _ as usize } , 2usize , concat ! (
                 "Alignment of field: " , stringify ! (
                 TPM2B_DATA__bindgen_ty_1 ) , "::" , stringify ! ( buffer ) ));
+}
+impl Clone for TPM2B_DATA__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_DATA__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -4982,6 +6192,7 @@ pub struct TPM2B_EVENT {
     pub bindgen_union_field: [u16; 513usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_EVENT__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 1024usize],
@@ -5006,6 +6217,9 @@ fn bindgen_test_layout_TPM2B_EVENT__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_EVENT__bindgen_ty_1 ) , "::" , stringify ! ( buffer )
                 ));
+}
+impl Clone for TPM2B_EVENT__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_EVENT__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -5041,6 +6255,7 @@ pub struct TPM2B_MAX_BUFFER {
     pub bindgen_union_field: [u16; 513usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_MAX_BUFFER__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 1024usize],
@@ -5067,6 +6282,9 @@ fn bindgen_test_layout_TPM2B_MAX_BUFFER__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_MAX_BUFFER__bindgen_ty_1 ) , "::" , stringify ! ( buffer
                 ) ));
+}
+impl Clone for TPM2B_MAX_BUFFER__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_MAX_BUFFER__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -5102,6 +6320,7 @@ pub struct TPM2B_MAX_NV_BUFFER {
     pub bindgen_union_field: [u16; 513usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_MAX_NV_BUFFER__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 1024usize],
@@ -5128,6 +6347,9 @@ fn bindgen_test_layout_TPM2B_MAX_NV_BUFFER__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_MAX_NV_BUFFER__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_MAX_NV_BUFFER__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_MAX_NV_BUFFER__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -5248,6 +6470,7 @@ pub struct TPM2B_NAME {
     pub bindgen_union_field: [u16; 35usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_NAME__bindgen_ty_1 {
     pub size: UINT16,
     pub name: [BYTE; 68usize],
@@ -5270,6 +6493,9 @@ fn bindgen_test_layout_TPM2B_NAME__bindgen_ty_1() {
                 const _ as usize } , 2usize , concat ! (
                 "Alignment of field: " , stringify ! (
                 TPM2B_NAME__bindgen_ty_1 ) , "::" , stringify ! ( name ) ));
+}
+impl Clone for TPM2B_NAME__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_NAME__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -5583,6 +6809,7 @@ impl Clone for TPMS_TAGGED_PCR_SELECT {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_CC {
     pub count: UINT32,
     pub commandCodes: [TPM_CC; 114usize],
@@ -5604,10 +6831,14 @@ fn bindgen_test_layout_TPML_CC() {
                 "Alignment of field: " , stringify ! ( TPML_CC ) , "::" ,
                 stringify ! ( commandCodes ) ));
 }
+impl Clone for TPML_CC {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_CC {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_CCA {
     pub count: UINT32,
     pub commandAttributes: [TPMA_CC; 114usize],
@@ -5629,10 +6860,14 @@ fn bindgen_test_layout_TPML_CCA() {
                 "Alignment of field: " , stringify ! ( TPML_CCA ) , "::" ,
                 stringify ! ( commandAttributes ) ));
 }
+impl Clone for TPML_CCA {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_CCA {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_ALG {
     pub count: UINT32,
     pub algorithms: [TPM_ALG_ID; 64usize],
@@ -5654,10 +6889,14 @@ fn bindgen_test_layout_TPML_ALG() {
                 "Alignment of field: " , stringify ! ( TPML_ALG ) , "::" ,
                 stringify ! ( algorithms ) ));
 }
+impl Clone for TPML_ALG {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_ALG {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_HANDLE {
     pub count: UINT32,
     pub handle: [TPM_HANDLE; 254usize],
@@ -5678,6 +6917,9 @@ fn bindgen_test_layout_TPML_HANDLE() {
                 usize } , 4usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPML_HANDLE ) , "::" ,
                 stringify ! ( handle ) ));
+}
+impl Clone for TPML_HANDLE {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPML_HANDLE {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -5748,6 +6990,7 @@ pub struct TPM2B_DIGEST_VALUES {
     pub bindgen_union_field: [u16; 169usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_DIGEST_VALUES__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 336usize],
@@ -5774,6 +7017,9 @@ fn bindgen_test_layout_TPM2B_DIGEST_VALUES__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_DIGEST_VALUES__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_DIGEST_VALUES__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_DIGEST_VALUES__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -5830,6 +7076,7 @@ impl Clone for TPML_PCR_SELECTION {
     fn clone(&self) -> Self { *self }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_ALG_PROPERTY {
     pub count: UINT32,
     pub algProperties: [TPMS_ALG_PROPERTY; 68usize],
@@ -5851,10 +7098,14 @@ fn bindgen_test_layout_TPML_ALG_PROPERTY() {
                 "Alignment of field: " , stringify ! ( TPML_ALG_PROPERTY ) ,
                 "::" , stringify ! ( algProperties ) ));
 }
+impl Clone for TPML_ALG_PROPERTY {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_ALG_PROPERTY {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_TAGGED_TPM_PROPERTY {
     pub count: UINT32,
     pub tpmProperty: [TPMS_TAGGED_PROPERTY; 127usize],
@@ -5879,10 +7130,14 @@ fn bindgen_test_layout_TPML_TAGGED_TPM_PROPERTY() {
                 TPML_TAGGED_TPM_PROPERTY ) , "::" , stringify ! ( tpmProperty
                 ) ));
 }
+impl Clone for TPML_TAGGED_TPM_PROPERTY {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_TAGGED_TPM_PROPERTY {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_TAGGED_PCR_PROPERTY {
     pub count: UINT32,
     pub pcrProperty: [TPMS_TAGGED_PCR_SELECT; 127usize],
@@ -5907,10 +7162,14 @@ fn bindgen_test_layout_TPML_TAGGED_PCR_PROPERTY() {
                 TPML_TAGGED_PCR_PROPERTY ) , "::" , stringify ! ( pcrProperty
                 ) ));
 }
+impl Clone for TPML_TAGGED_PCR_PROPERTY {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_TAGGED_PCR_PROPERTY {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_ECC_CURVE {
     pub count: UINT32,
     pub eccCurves: [TPM_ECC_CURVE; 508usize],
@@ -5932,10 +7191,14 @@ fn bindgen_test_layout_TPML_ECC_CURVE() {
                 "Alignment of field: " , stringify ! ( TPML_ECC_CURVE ) , "::"
                 , stringify ! ( eccCurves ) ));
 }
+impl Clone for TPML_ECC_CURVE {
+    fn clone(&self) -> Self { *self }
+}
 impl Default for TPML_ECC_CURVE {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPML_INTEL_PTT_PROPERTY {
     pub count: UINT32,
     pub property: [UINT32; 254usize],
@@ -5958,6 +7221,9 @@ fn bindgen_test_layout_TPML_INTEL_PTT_PROPERTY() {
                 * const _ as usize } , 4usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPML_INTEL_PTT_PROPERTY
                 ) , "::" , stringify ! ( property ) ));
+}
+impl Clone for TPML_INTEL_PTT_PROPERTY {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPML_INTEL_PTT_PROPERTY {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -6489,6 +7755,7 @@ pub struct TPM2B_ATTEST {
     pub bindgen_union_field: [u16; 641usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_ATTEST__bindgen_ty_1 {
     pub size: UINT16,
     pub attestationData: [BYTE; 1280usize],
@@ -6513,6 +7780,9 @@ fn bindgen_test_layout_TPM2B_ATTEST__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_ATTEST__bindgen_ty_1 ) , "::" , stringify ! (
                 attestationData ) ));
+}
+impl Clone for TPM2B_ATTEST__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_ATTEST__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -6844,6 +8114,7 @@ pub struct TPM2B_SENSITIVE_DATA {
     pub bindgen_union_field: [u16; 65usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_SENSITIVE_DATA__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 128usize],
@@ -6870,6 +8141,9 @@ fn bindgen_test_layout_TPM2B_SENSITIVE_DATA__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_SENSITIVE_DATA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_SENSITIVE_DATA__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_SENSITIVE_DATA__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -7454,6 +8728,7 @@ pub struct TPM2B_PUBLIC_KEY_RSA {
     pub bindgen_union_field: [u16; 129usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 256usize],
@@ -7480,6 +8755,9 @@ fn bindgen_test_layout_TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_PUBLIC_KEY_RSA__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -7518,6 +8796,7 @@ pub struct TPM2B_PRIVATE_KEY_RSA {
     pub bindgen_union_field: [u16; 65usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 128usize],
@@ -7544,6 +8823,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_PRIVATE_KEY_RSA__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -7581,6 +8863,7 @@ pub struct TPM2B_ECC_PARAMETER {
     pub bindgen_union_field: [u16; 25usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_ECC_PARAMETER__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 48usize],
@@ -7607,6 +8890,9 @@ fn bindgen_test_layout_TPM2B_ECC_PARAMETER__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_ECC_PARAMETER__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_ECC_PARAMETER__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_ECC_PARAMETER__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -8046,6 +9332,7 @@ pub struct TPM2B_ENCRYPTED_SECRET {
     pub bindgen_union_field: [u16; 129usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_ENCRYPTED_SECRET__bindgen_ty_1 {
     pub size: UINT16,
     pub secret: [BYTE; 256usize],
@@ -8072,6 +9359,9 @@ fn bindgen_test_layout_TPM2B_ENCRYPTED_SECRET__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_ENCRYPTED_SECRET__bindgen_ty_1 ) , "::" , stringify ! (
                 secret ) ));
+}
+impl Clone for TPM2B_ENCRYPTED_SECRET__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_ENCRYPTED_SECRET__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -8462,6 +9752,7 @@ pub struct TPM2B_PRIVATE_VENDOR_SPECIFIC {
     pub bindgen_union_field: [u16; 321usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 640usize],
@@ -8490,6 +9781,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1 ) , "::" ,
                 stringify ! ( buffer ) ));
+}
+impl Clone for TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_PRIVATE_VENDOR_SPECIFIC__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -8718,6 +10012,7 @@ pub struct TPM2B_PRIVATE {
     pub bindgen_union_field: [u16; 456usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_PRIVATE__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 910usize],
@@ -8743,6 +10038,9 @@ fn bindgen_test_layout_TPM2B_PRIVATE__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_PRIVATE__bindgen_ty_1 ) , "::" , stringify ! ( buffer )
                 ));
+}
+impl Clone for TPM2B_PRIVATE__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_PRIVATE__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -8807,6 +10105,7 @@ pub struct TPM2B_ID_OBJECT {
     pub bindgen_union_field: [u16; 67usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_ID_OBJECT__bindgen_ty_1 {
     pub size: UINT16,
     pub credential: [BYTE; 132usize],
@@ -8832,6 +10131,9 @@ fn bindgen_test_layout_TPM2B_ID_OBJECT__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_ID_OBJECT__bindgen_ty_1 ) , "::" , stringify ! (
                 credential ) ));
+}
+impl Clone for TPM2B_ID_OBJECT__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_ID_OBJECT__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -8888,47 +10190,83 @@ impl Clone for TPM_NV_INDEX__bindgen_ty_1 {
 impl TPM_NV_INDEX__bindgen_ty_1 {
     #[inline]
     pub fn index(&self) -> ::std::os::raw::c_uint {
-        let mask = 16777215usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 16777215u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_index(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 16777215usize as u32;
+        let mask = 16777215u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn RH_NV(&self) -> ::std::os::raw::c_uint {
-        let mask = 4278190080usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4278190080u64 as u32;
         let val = (unit_field_val & mask) >> 24usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_RH_NV(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4278190080usize as u32;
+        let mask = 4278190080u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 24usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(index: ::std::os::raw::c_uint,
                           RH_NV: ::std::os::raw::c_uint) -> u32 {
         ({
              ({ 0 } |
-                  ((index as u32 as u32) << 0usize) & (16777215usize as u32))
-         } | ((RH_NV as u32 as u32) << 24usize) & (4278190080usize as u32))
+                  ((index as u32 as u32) << 0usize) & (16777215u64 as u32))
+         } | ((RH_NV as u32 as u32) << 24usize) & (4278190080u64 as u32))
     }
 }
 #[test]
@@ -9006,436 +10344,868 @@ impl Clone for TPMA_NV__bindgen_ty_1 {
 impl TPMA_NV__bindgen_ty_1 {
     #[inline]
     pub fn TPMA_NV_PPWRITE(&self) -> ::std::os::raw::c_uint {
-        let mask = 1usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1u64 as u32;
         let val = (unit_field_val & mask) >> 0usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_PPWRITE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1usize as u32;
+        let mask = 1u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 0usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_OWNERWRITE(&self) -> ::std::os::raw::c_uint {
-        let mask = 2usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2u64 as u32;
         let val = (unit_field_val & mask) >> 1usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_OWNERWRITE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2usize as u32;
+        let mask = 2u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 1usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_AUTHWRITE(&self) -> ::std::os::raw::c_uint {
-        let mask = 4usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4u64 as u32;
         let val = (unit_field_val & mask) >> 2usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_AUTHWRITE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4usize as u32;
+        let mask = 4u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 2usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_POLICYWRITE(&self) -> ::std::os::raw::c_uint {
-        let mask = 8usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 8u64 as u32;
         let val = (unit_field_val & mask) >> 3usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_POLICYWRITE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8usize as u32;
+        let mask = 8u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 3usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPM_NT(&self) -> ::std::os::raw::c_uint {
-        let mask = 240usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 240u64 as u32;
         let val = (unit_field_val & mask) >> 4usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPM_NT(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 240usize as u32;
+        let mask = 240u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 4usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved1(&self) -> ::std::os::raw::c_uint {
-        let mask = 768usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 768u64 as u32;
         let val = (unit_field_val & mask) >> 8usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved1(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 768usize as u32;
+        let mask = 768u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 8usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_POLICY_DELETE(&self) -> ::std::os::raw::c_uint {
-        let mask = 1024usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1024u64 as u32;
         let val = (unit_field_val & mask) >> 10usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_POLICY_DELETE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 1024usize as u32;
+        let mask = 1024u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 10usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_WRITELOCKED(&self) -> ::std::os::raw::c_uint {
-        let mask = 2048usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2048u64 as u32;
         let val = (unit_field_val & mask) >> 11usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_WRITELOCKED(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2048usize as u32;
+        let mask = 2048u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 11usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_WRITEALL(&self) -> ::std::os::raw::c_uint {
-        let mask = 4096usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 4096u64 as u32;
         let val = (unit_field_val & mask) >> 12usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_WRITEALL(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 4096usize as u32;
+        let mask = 4096u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 12usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_WRITEDEFINE(&self) -> ::std::os::raw::c_uint {
-        let mask = 8192usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 8192u64 as u32;
         let val = (unit_field_val & mask) >> 13usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_WRITEDEFINE(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 8192usize as u32;
+        let mask = 8192u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 13usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_WRITE_STCLEAR(&self) -> ::std::os::raw::c_uint {
-        let mask = 16384usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 16384u64 as u32;
         let val = (unit_field_val & mask) >> 14usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_WRITE_STCLEAR(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 16384usize as u32;
+        let mask = 16384u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 14usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_GLOBALLOCK(&self) -> ::std::os::raw::c_uint {
-        let mask = 32768usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 32768u64 as u32;
         let val = (unit_field_val & mask) >> 15usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_GLOBALLOCK(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 32768usize as u32;
+        let mask = 32768u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 15usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_PPREAD(&self) -> ::std::os::raw::c_uint {
-        let mask = 65536usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 65536u64 as u32;
         let val = (unit_field_val & mask) >> 16usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_PPREAD(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 65536usize as u32;
+        let mask = 65536u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 16usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_OWNERREAD(&self) -> ::std::os::raw::c_uint {
-        let mask = 131072usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 131072u64 as u32;
         let val = (unit_field_val & mask) >> 17usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_OWNERREAD(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 131072usize as u32;
+        let mask = 131072u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 17usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_AUTHREAD(&self) -> ::std::os::raw::c_uint {
-        let mask = 262144usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 262144u64 as u32;
         let val = (unit_field_val & mask) >> 18usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_AUTHREAD(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 262144usize as u32;
+        let mask = 262144u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 18usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_POLICYREAD(&self) -> ::std::os::raw::c_uint {
-        let mask = 524288usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 524288u64 as u32;
         let val = (unit_field_val & mask) >> 19usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_POLICYREAD(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 524288usize as u32;
+        let mask = 524288u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 19usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn reserved2(&self) -> ::std::os::raw::c_uint {
-        let mask = 32505856usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 32505856u64 as u32;
         let val = (unit_field_val & mask) >> 20usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_reserved2(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 32505856usize as u32;
+        let mask = 32505856u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 20usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_NO_DA(&self) -> ::std::os::raw::c_uint {
-        let mask = 33554432usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 33554432u64 as u32;
         let val = (unit_field_val & mask) >> 25usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_NO_DA(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 33554432usize as u32;
+        let mask = 33554432u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 25usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_ORDERLY(&self) -> ::std::os::raw::c_uint {
-        let mask = 67108864usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 67108864u64 as u32;
         let val = (unit_field_val & mask) >> 26usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_ORDERLY(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 67108864usize as u32;
+        let mask = 67108864u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 26usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_CLEAR_STCLEAR(&self) -> ::std::os::raw::c_uint {
-        let mask = 134217728usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 134217728u64 as u32;
         let val = (unit_field_val & mask) >> 27usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_CLEAR_STCLEAR(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 134217728usize as u32;
+        let mask = 134217728u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 27usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_READLOCKED(&self) -> ::std::os::raw::c_uint {
-        let mask = 268435456usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 268435456u64 as u32;
         let val = (unit_field_val & mask) >> 28usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_READLOCKED(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 268435456usize as u32;
+        let mask = 268435456u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 28usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_WRITTEN(&self) -> ::std::os::raw::c_uint {
-        let mask = 536870912usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 536870912u64 as u32;
         let val = (unit_field_val & mask) >> 29usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_WRITTEN(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 536870912usize as u32;
+        let mask = 536870912u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 29usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_PLATFORMCREATE(&self) -> ::std::os::raw::c_uint {
-        let mask = 1073741824usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 1073741824u64 as u32;
         let val = (unit_field_val & mask) >> 30usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_PLATFORMCREATE(&mut self,
                                       val: ::std::os::raw::c_uint) {
-        let mask = 1073741824usize as u32;
+        let mask = 1073741824u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 30usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn TPMA_NV_READ_STCLEAR(&self) -> ::std::os::raw::c_uint {
-        let mask = 2147483648usize as u32;
-        let unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
+        let mask = 2147483648u64 as u32;
         let val = (unit_field_val & mask) >> 31usize;
         unsafe { ::std::mem::transmute(val as u32) }
     }
     #[inline]
     pub fn set_TPMA_NV_READ_STCLEAR(&mut self, val: ::std::os::raw::c_uint) {
-        let mask = 2147483648usize as u32;
+        let mask = 2147483648u64 as u32;
         let val = val as u32 as u32;
-        let mut unit_field_val: u32 =
-            unsafe { ::std::mem::transmute(self._bitfield_1) };
+        let mut unit_field_val: u32 = unsafe { ::std::mem::uninitialized() };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&self._bitfield_1 as *const _ as
+                                                *const u8,
+                                            &mut unit_field_val as *mut u32 as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>())
+        };
         unit_field_val &= !mask;
         unit_field_val |= (val << 31usize) & mask;
-        self._bitfield_1 = unsafe { ::std::mem::transmute(unit_field_val) };
+        unsafe {
+            ::std::ptr::copy_nonoverlapping(&unit_field_val as *const _ as
+                                                *const u8,
+                                            &mut self._bitfield_1 as *mut _ as
+                                                *mut u8,
+                                            ::std::mem::size_of::<u32>());
+        }
     }
     #[inline]
     pub fn new_bitfield_1(TPMA_NV_PPWRITE: ::std::os::raw::c_uint,
@@ -9498,7 +11268,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                                                      <<
                                                                                                                                      0usize)
                                                                                                                                     &
-                                                                                                                                    (1usize
+                                                                                                                                    (1u64
                                                                                                                                          as
                                                                                                                                          u32))
                                                                                                                        }
@@ -9511,7 +11281,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                                                 <<
                                                                                                                                 1usize)
                                                                                                                                &
-                                                                                                                               (2usize
+                                                                                                                               (2u64
                                                                                                                                     as
                                                                                                                                     u32))
                                                                                                                   }
@@ -9524,7 +11294,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                                            <<
                                                                                                                            2usize)
                                                                                                                           &
-                                                                                                                          (4usize
+                                                                                                                          (4u64
                                                                                                                                as
                                                                                                                                u32))
                                                                                                              }
@@ -9537,7 +11307,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                                       <<
                                                                                                                       3usize)
                                                                                                                      &
-                                                                                                                     (8usize
+                                                                                                                     (8u64
                                                                                                                           as
                                                                                                                           u32))
                                                                                                         }
@@ -9550,7 +11320,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                                  <<
                                                                                                                  4usize)
                                                                                                                 &
-                                                                                                                (240usize
+                                                                                                                (240u64
                                                                                                                      as
                                                                                                                      u32))
                                                                                                    }
@@ -9563,7 +11333,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                             <<
                                                                                                             8usize)
                                                                                                            &
-                                                                                                           (768usize
+                                                                                                           (768u64
                                                                                                                 as
                                                                                                                 u32))
                                                                                               }
@@ -9576,7 +11346,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                        <<
                                                                                                        10usize)
                                                                                                       &
-                                                                                                      (1024usize
+                                                                                                      (1024u64
                                                                                                            as
                                                                                                            u32))
                                                                                          }
@@ -9589,7 +11359,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                                   <<
                                                                                                   11usize)
                                                                                                  &
-                                                                                                 (2048usize
+                                                                                                 (2048u64
                                                                                                       as
                                                                                                       u32))
                                                                                     }
@@ -9602,7 +11372,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                              <<
                                                                                              12usize)
                                                                                             &
-                                                                                            (4096usize
+                                                                                            (4096u64
                                                                                                  as
                                                                                                  u32))
                                                                                }
@@ -9615,7 +11385,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                         <<
                                                                                         13usize)
                                                                                        &
-                                                                                       (8192usize
+                                                                                       (8192u64
                                                                                             as
                                                                                             u32))
                                                                           } |
@@ -9627,7 +11397,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                                    <<
                                                                                    14usize)
                                                                                   &
-                                                                                  (16384usize
+                                                                                  (16384u64
                                                                                        as
                                                                                        u32))
                                                                      } |
@@ -9639,7 +11409,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                               <<
                                                                               15usize)
                                                                              &
-                                                                             (32768usize
+                                                                             (32768u64
                                                                                   as
                                                                                   u32))
                                                                 } |
@@ -9651,7 +11421,7 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                          <<
                                                                          16usize)
                                                                         &
-                                                                        (65536usize
+                                                                        (65536u64
                                                                              as
                                                                              u32))
                                                            } |
@@ -9659,46 +11429,46 @@ impl TPMA_NV__bindgen_ty_1 {
                                                                      as u32 as
                                                                      u32) <<
                                                                     17usize) &
-                                                                   (131072usize
+                                                                   (131072u64
                                                                         as
                                                                         u32))
                                                       } |
                                                           ((TPMA_NV_AUTHREAD
                                                                 as u32 as u32)
                                                                << 18usize) &
-                                                              (262144usize as
+                                                              (262144u64 as
                                                                    u32))
                                                  } |
                                                      ((TPMA_NV_POLICYREAD as
                                                            u32 as u32) <<
                                                           19usize) &
-                                                         (524288usize as u32))
+                                                         (524288u64 as u32))
                                             } |
                                                 ((reserved2 as u32 as u32) <<
                                                      20usize) &
-                                                    (32505856usize as u32))
+                                                    (32505856u64 as u32))
                                        } |
                                            ((TPMA_NV_NO_DA as u32 as u32) <<
                                                 25usize) &
-                                               (33554432usize as u32))
+                                               (33554432u64 as u32))
                                   } |
                                       ((TPMA_NV_ORDERLY as u32 as u32) <<
-                                           26usize) & (67108864usize as u32))
+                                           26usize) & (67108864u64 as u32))
                              } |
                                  ((TPMA_NV_CLEAR_STCLEAR as u32 as u32) <<
-                                      27usize) & (134217728usize as u32))
+                                      27usize) & (134217728u64 as u32))
                         } |
                             ((TPMA_NV_READLOCKED as u32 as u32) << 28usize) &
-                                (268435456usize as u32))
+                                (268435456u64 as u32))
                    } |
                        ((TPMA_NV_WRITTEN as u32 as u32) << 29usize) &
-                           (536870912usize as u32))
+                           (536870912u64 as u32))
               } |
                   ((TPMA_NV_PLATFORMCREATE as u32 as u32) << 30usize) &
-                      (1073741824usize as u32))
+                      (1073741824u64 as u32))
          } |
              ((TPMA_NV_READ_STCLEAR as u32 as u32) << 31usize) &
-                 (2147483648usize as u32))
+                 (2147483648u64 as u32))
     }
 }
 #[test]
@@ -9832,6 +11602,7 @@ pub struct TPM2B_CONTEXT_SENSITIVE {
     pub bindgen_union_field: [u16; 1025usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 2048usize],
@@ -9858,6 +11629,9 @@ fn bindgen_test_layout_TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_CONTEXT_SENSITIVE__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
@@ -9924,6 +11698,7 @@ pub struct TPM2B_CONTEXT_DATA {
     pub bindgen_union_field: [u16; 1059usize],
 }
 #[repr(C)]
+#[derive(Copy)]
 pub struct TPM2B_CONTEXT_DATA__bindgen_ty_1 {
     pub size: UINT16,
     pub buffer: [BYTE; 2116usize],
@@ -9950,6 +11725,9 @@ fn bindgen_test_layout_TPM2B_CONTEXT_DATA__bindgen_ty_1() {
                 "Alignment of field: " , stringify ! (
                 TPM2B_CONTEXT_DATA__bindgen_ty_1 ) , "::" , stringify ! (
                 buffer ) ));
+}
+impl Clone for TPM2B_CONTEXT_DATA__bindgen_ty_1 {
+    fn clone(&self) -> Self { *self }
 }
 impl Default for TPM2B_CONTEXT_DATA__bindgen_ty_1 {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
