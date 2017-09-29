@@ -214,8 +214,12 @@ pub const TSS2_LEVEL_IMPLEMENTATION_SPECIFIC_SHIFT: ::std::os::raw::c_uint =
     11;
 pub const TSS2_LEVEL_IMPLEMENTATION_SPECIFIC_OFFSET: ::std::os::raw::c_uint =
     63488;
+pub const TRUE: ::std::os::raw::c_uint = 1;
+pub const FALSE: ::std::os::raw::c_uint = 0;
 pub const YES: ::std::os::raw::c_uint = 1;
 pub const NO: ::std::os::raw::c_uint = 0;
+pub const SET: ::std::os::raw::c_uint = 1;
+pub const CLEAR: ::std::os::raw::c_uint = 0;
 pub const BIG_ENDIAN_TPM: ::std::os::raw::c_uint = 0;
 pub const LITTLE_ENDIAN_TPM: ::std::os::raw::c_uint = 1;
 pub const NO_AUTO_ALIGN: ::std::os::raw::c_uint = 0;
@@ -274,47 +278,44 @@ pub const CRT_FORMAT_RSA: ::std::os::raw::c_uint = 1;
 pub const VENDOR_COMMAND_COUNT: ::std::os::raw::c_uint = 0;
 pub const PRIVATE_VENDOR_SPECIFIC_BYTES: ::std::os::raw::c_uint = 640;
 pub const MAX_VENDOR_BUFFER_SIZE: ::std::os::raw::c_uint = 1024;
-pub const TPM_ALG_ERROR: ::std::os::raw::c_uint = 0;
-pub const TPM_ALG_RSA: ::std::os::raw::c_uint = 1;
-pub const TPM_ALG_SHA: ::std::os::raw::c_uint = 4;
-pub const TPM_ALG_SHA1: ::std::os::raw::c_uint = 4;
-pub const TPM_ALG_HMAC: ::std::os::raw::c_uint = 5;
-pub const TPM_ALG_AES: ::std::os::raw::c_uint = 6;
-pub const TPM_ALG_MGF1: ::std::os::raw::c_uint = 7;
-pub const TPM_ALG_KEYEDHASH: ::std::os::raw::c_uint = 8;
-pub const TPM_ALG_XOR: ::std::os::raw::c_uint = 10;
-pub const TPM_ALG_SHA256: ::std::os::raw::c_uint = 11;
-pub const TPM_ALG_SHA384: ::std::os::raw::c_uint = 12;
-pub const TPM_ALG_SHA512: ::std::os::raw::c_uint = 13;
-pub const TPM_ALG_NULL: ::std::os::raw::c_uint = 16;
-pub const TPM_ALG_SM3_256: ::std::os::raw::c_uint = 18;
-pub const TPM_ALG_SM4: ::std::os::raw::c_uint = 19;
-pub const TPM_ALG_RSASSA: ::std::os::raw::c_uint = 20;
-pub const TPM_ALG_RSAES: ::std::os::raw::c_uint = 21;
-pub const TPM_ALG_RSAPSS: ::std::os::raw::c_uint = 22;
-pub const TPM_ALG_OAEP: ::std::os::raw::c_uint = 23;
-pub const TPM_ALG_ECDSA: ::std::os::raw::c_uint = 24;
-pub const TPM_ALG_ECDH: ::std::os::raw::c_uint = 25;
-pub const TPM_ALG_ECDAA: ::std::os::raw::c_uint = 26;
-pub const TPM_ALG_SM2: ::std::os::raw::c_uint = 27;
-pub const TPM_ALG_ECSCHNORR: ::std::os::raw::c_uint = 28;
-pub const TPM_ALG_ECMQV: ::std::os::raw::c_uint = 29;
-pub const TPM_ALG_KDF1_SP800_56A: ::std::os::raw::c_uint = 32;
-pub const TPM_ALG_KDF2: ::std::os::raw::c_uint = 33;
-pub const TPM_ALG_KDF1_SP800_108: ::std::os::raw::c_uint = 34;
-pub const TPM_ALG_ECC: ::std::os::raw::c_uint = 35;
-pub const TPM_ALG_SYMCIPHER: ::std::os::raw::c_uint = 37;
-pub const TPM_ALG_CAMELLIA: ::std::os::raw::c_uint = 38;
-pub const TPM_ALG_CTR: ::std::os::raw::c_uint = 64;
-pub const TPM_ALG_SHA3_256: ::std::os::raw::c_uint = 39;
-pub const TPM_ALG_SHA3_384: ::std::os::raw::c_uint = 40;
-pub const TPM_ALG_SHA3_512: ::std::os::raw::c_uint = 41;
-pub const TPM_ALG_OFB: ::std::os::raw::c_uint = 65;
-pub const TPM_ALG_CBC: ::std::os::raw::c_uint = 66;
-pub const TPM_ALG_CFB: ::std::os::raw::c_uint = 67;
-pub const TPM_ALG_ECB: ::std::os::raw::c_uint = 68;
-pub const TPM_ALG_FIRST: ::std::os::raw::c_uint = 1;
-pub const TPM_ALG_LAST: ::std::os::raw::c_uint = 68;
+pub const ALG_ERROR_VALUE: ::std::os::raw::c_uint = 0;
+pub const ALG_RSA_VALUE: ::std::os::raw::c_uint = 1;
+pub const ALG_SHA_VALUE: ::std::os::raw::c_uint = 4;
+pub const ALG_SHA1_VALUE: ::std::os::raw::c_uint = 4;
+pub const ALG_HMAC_VALUE: ::std::os::raw::c_uint = 5;
+pub const ALG_AES_VALUE: ::std::os::raw::c_uint = 6;
+pub const ALG_MGF1_VALUE: ::std::os::raw::c_uint = 7;
+pub const ALG_KEYEDHASH_VALUE: ::std::os::raw::c_uint = 8;
+pub const ALG_XOR_VALUE: ::std::os::raw::c_uint = 10;
+pub const ALG_SHA256_VALUE: ::std::os::raw::c_uint = 11;
+pub const ALG_SHA384_VALUE: ::std::os::raw::c_uint = 12;
+pub const ALG_SHA512_VALUE: ::std::os::raw::c_uint = 13;
+pub const ALG_NULL_VALUE: ::std::os::raw::c_uint = 16;
+pub const ALG_SM3_256_VALUE: ::std::os::raw::c_uint = 18;
+pub const ALG_SM4_VALUE: ::std::os::raw::c_uint = 19;
+pub const ALG_RSASSA_VALUE: ::std::os::raw::c_uint = 20;
+pub const ALG_RSAES_VALUE: ::std::os::raw::c_uint = 21;
+pub const ALG_RSAPSS_VALUE: ::std::os::raw::c_uint = 22;
+pub const ALG_OAEP_VALUE: ::std::os::raw::c_uint = 23;
+pub const ALG_ECDSA_VALUE: ::std::os::raw::c_uint = 24;
+pub const ALG_ECDH_VALUE: ::std::os::raw::c_uint = 25;
+pub const ALG_ECDAA_VALUE: ::std::os::raw::c_uint = 26;
+pub const ALG_SM2_VALUE: ::std::os::raw::c_uint = 27;
+pub const ALG_ECSCHNORR_VALUE: ::std::os::raw::c_uint = 28;
+pub const ALG_ECMQV_VALUE: ::std::os::raw::c_uint = 29;
+pub const ALG_KDF1_SP800_56A_VALUE: ::std::os::raw::c_uint = 32;
+pub const ALG_KDF2_VALUE: ::std::os::raw::c_uint = 33;
+pub const ALG_KDF1_SP800_108_VALUE: ::std::os::raw::c_uint = 34;
+pub const ALG_ECC_VALUE: ::std::os::raw::c_uint = 35;
+pub const ALG_SYMCIPHER_VALUE: ::std::os::raw::c_uint = 37;
+pub const ALG_CAMELLIA_VALUE: ::std::os::raw::c_uint = 38;
+pub const ALG_CTR_VALUE: ::std::os::raw::c_uint = 64;
+pub const ALG_OFB_VALUE: ::std::os::raw::c_uint = 65;
+pub const ALG_CBC_VALUE: ::std::os::raw::c_uint = 66;
+pub const ALG_CFB_VALUE: ::std::os::raw::c_uint = 67;
+pub const ALG_ECB_VALUE: ::std::os::raw::c_uint = 68;
+pub const ALG_FIRST_VALUE: ::std::os::raw::c_uint = 1;
+pub const ALG_LAST_VALUE: ::std::os::raw::c_uint = 68;
 pub const SHA1_DIGEST_SIZE: ::std::os::raw::c_uint = 20;
 pub const SHA1_BLOCK_SIZE: ::std::os::raw::c_uint = 64;
 pub const SHA1_DER_SIZE: ::std::os::raw::c_uint = 15;
@@ -344,8 +345,9 @@ pub const CAMELLIA_ALLOWED_KEY_SIZE_256: ::std::os::raw::c_uint = 1;
 pub const CAMELLIA_128_BLOCK_SIZE_BYTES: ::std::os::raw::c_uint = 16;
 pub const CAMELLIA_192_BLOCK_SIZE_BYTES: ::std::os::raw::c_uint = 16;
 pub const CAMELLIA_256_BLOCK_SIZE_BYTES: ::std::os::raw::c_uint = 16;
+pub const ADD_FILL: ::std::os::raw::c_uint = 1;
+pub const ALG_CAMELLIA: ::std::os::raw::c_uint = 0;
 pub const MAX_CAP_ALGS: ::std::os::raw::c_uint = 68;
-pub const MAX_CAP_CC: ::std::os::raw::c_uint = 256;
 pub const TPM_SPEC_FAMILY: ::std::os::raw::c_uint = 841887744;
 pub const TPM_SPEC_LEVEL: ::std::os::raw::c_uint = 0;
 pub const TPM_SPEC_VERSION: ::std::os::raw::c_uint = 126;
@@ -2645,6 +2647,7 @@ impl Clone for TPM2B_MAX_HASH_BLOCK {
 impl Default for TPM2B_MAX_HASH_BLOCK {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
+pub type TPM2B_HASH_BLOCK = TPM2B_MAX_HASH_BLOCK;
 #[repr(C)]
 #[derive(Debug, Default, Copy)]
 pub struct TPM2B_SEED {
@@ -3445,20 +3448,22 @@ impl Clone for TPMA_OBJECT {
 #[derive(Debug, Default, Copy)]
 pub struct TPMA_SESSION {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_SESSION__bindgen_ty_1>,
-    pub val: __BindgenUnionField<UINT8>,
-    pub bindgen_union_field: u8,
+    pub val: __BindgenUnionField<UINT32>,
+    pub bindgen_union_field: u32,
 }
 #[repr(C)]
 #[derive(Debug, Default, Copy)]
 pub struct TPMA_SESSION__bindgen_ty_1 {
     pub _bitfield_1: u8,
+    pub __bindgen_padding_0: [u8; 3usize],
+    pub __bindgen_align: [u32; 0usize],
 }
 #[test]
 fn bindgen_test_layout_TPMA_SESSION__bindgen_ty_1() {
-    assert_eq!(::std::mem::size_of::<TPMA_SESSION__bindgen_ty_1>() , 1usize ,
+    assert_eq!(::std::mem::size_of::<TPMA_SESSION__bindgen_ty_1>() , 4usize ,
                concat ! (
                "Size of: " , stringify ! ( TPMA_SESSION__bindgen_ty_1 ) ));
-    assert_eq! (::std::mem::align_of::<TPMA_SESSION__bindgen_ty_1>() , 1usize
+    assert_eq! (::std::mem::align_of::<TPMA_SESSION__bindgen_ty_1>() , 4usize
                 , concat ! (
                 "Alignment of " , stringify ! ( TPMA_SESSION__bindgen_ty_1 )
                 ));
@@ -3626,9 +3631,9 @@ impl TPMA_SESSION__bindgen_ty_1 {
 }
 #[test]
 fn bindgen_test_layout_TPMA_SESSION() {
-    assert_eq!(::std::mem::size_of::<TPMA_SESSION>() , 1usize , concat ! (
+    assert_eq!(::std::mem::size_of::<TPMA_SESSION>() , 4usize , concat ! (
                "Size of: " , stringify ! ( TPMA_SESSION ) ));
-    assert_eq! (::std::mem::align_of::<TPMA_SESSION>() , 1usize , concat ! (
+    assert_eq! (::std::mem::align_of::<TPMA_SESSION>() , 4usize , concat ! (
                 "Alignment of " , stringify ! ( TPMA_SESSION ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMA_SESSION ) ) . val as * const _ as
@@ -3643,7 +3648,7 @@ impl Clone for TPMA_SESSION {
 #[derive(Debug, Default, Copy)]
 pub struct TPMA_LOCALITY {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_LOCALITY__bindgen_ty_1>,
-    pub val: __BindgenUnionField<UINT8>,
+    pub val: __BindgenUnionField<UINT32>,
     pub bindgen_union_field: u32,
 }
 #[repr(C)]
@@ -4781,7 +4786,6 @@ pub struct TPMU_HA {
     pub sha384: __BindgenUnionField<[BYTE; 48usize]>,
     pub sha512: __BindgenUnionField<[BYTE; 64usize]>,
     pub sm3_256: __BindgenUnionField<[BYTE; 32usize]>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u8; 64usize],
 }
 #[test]
@@ -4815,11 +4819,6 @@ fn bindgen_test_layout_TPMU_HA() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_HA ) , "::" ,
                 stringify ! ( sm3_256 ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_HA ) ) . na as * const _ as usize }
-                , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_HA ) , "::" ,
-                stringify ! ( na ) ));
 }
 impl Clone for TPMU_HA {
     fn clone(&self) -> Self { *self }
@@ -5219,7 +5218,6 @@ impl Clone for TPM2B_IV {
 pub struct TPMU_NAME {
     pub digest: __BindgenUnionField<TPMT_HA>,
     pub handle: __BindgenUnionField<TPM_HANDLE>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u32; 17usize],
 }
 #[test]
@@ -5238,11 +5236,6 @@ fn bindgen_test_layout_TPMU_NAME() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_NAME ) , "::" ,
                 stringify ! ( handle ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_NAME ) ) . na as * const _ as usize
-                } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_NAME ) , "::" ,
-                stringify ! ( na ) ));
 }
 impl Clone for TPMU_NAME {
     fn clone(&self) -> Self { *self }
@@ -5592,11 +5585,11 @@ impl Clone for TPMS_TAGGED_PCR_SELECT {
 #[repr(C)]
 pub struct TPML_CC {
     pub count: UINT32,
-    pub commandCodes: [TPM_CC; 256usize],
+    pub commandCodes: [TPM_CC; 114usize],
 }
 #[test]
 fn bindgen_test_layout_TPML_CC() {
-    assert_eq!(::std::mem::size_of::<TPML_CC>() , 1028usize , concat ! (
+    assert_eq!(::std::mem::size_of::<TPML_CC>() , 460usize , concat ! (
                "Size of: " , stringify ! ( TPML_CC ) ));
     assert_eq! (::std::mem::align_of::<TPML_CC>() , 4usize , concat ! (
                 "Alignment of " , stringify ! ( TPML_CC ) ));
@@ -5617,11 +5610,11 @@ impl Default for TPML_CC {
 #[repr(C)]
 pub struct TPML_CCA {
     pub count: UINT32,
-    pub commandAttributes: [TPMA_CC; 256usize],
+    pub commandAttributes: [TPMA_CC; 114usize],
 }
 #[test]
 fn bindgen_test_layout_TPML_CCA() {
-    assert_eq!(::std::mem::size_of::<TPML_CCA>() , 1028usize , concat ! (
+    assert_eq!(::std::mem::size_of::<TPML_CCA>() , 460usize , concat ! (
                "Size of: " , stringify ! ( TPML_CCA ) ));
     assert_eq! (::std::mem::align_of::<TPML_CCA>() , 4usize , concat ! (
                 "Alignment of " , stringify ! ( TPML_CCA ) ));
@@ -5943,6 +5936,33 @@ impl Default for TPML_ECC_CURVE {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+pub struct TPML_INTEL_PTT_PROPERTY {
+    pub count: UINT32,
+    pub property: [UINT32; 254usize],
+}
+#[test]
+fn bindgen_test_layout_TPML_INTEL_PTT_PROPERTY() {
+    assert_eq!(::std::mem::size_of::<TPML_INTEL_PTT_PROPERTY>() , 1020usize ,
+               concat ! (
+               "Size of: " , stringify ! ( TPML_INTEL_PTT_PROPERTY ) ));
+    assert_eq! (::std::mem::align_of::<TPML_INTEL_PTT_PROPERTY>() , 4usize ,
+                concat ! (
+                "Alignment of " , stringify ! ( TPML_INTEL_PTT_PROPERTY ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPML_INTEL_PTT_PROPERTY ) ) . count as *
+                const _ as usize } , 0usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPML_INTEL_PTT_PROPERTY
+                ) , "::" , stringify ! ( count ) ));
+    assert_eq! (unsafe {
+                & ( * ( 0 as * const TPML_INTEL_PTT_PROPERTY ) ) . property as
+                * const _ as usize } , 4usize , concat ! (
+                "Alignment of field: " , stringify ! ( TPML_INTEL_PTT_PROPERTY
+                ) , "::" , stringify ! ( property ) ));
+}
+impl Default for TPML_INTEL_PTT_PROPERTY {
+    fn default() -> Self { unsafe { ::std::mem::zeroed() } }
+}
+#[repr(C)]
 #[derive(Copy)]
 pub struct TPMU_CAPABILITIES {
     pub algorithms: __BindgenUnionField<TPML_ALG_PROPERTY>,
@@ -5954,12 +5974,12 @@ pub struct TPMU_CAPABILITIES {
     pub tpmProperties: __BindgenUnionField<TPML_TAGGED_TPM_PROPERTY>,
     pub pcrProperties: __BindgenUnionField<TPML_TAGGED_PCR_PROPERTY>,
     pub eccCurves: __BindgenUnionField<TPML_ECC_CURVE>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
-    pub bindgen_union_field: [u32; 257usize],
+    pub intelPttProperty: __BindgenUnionField<TPML_INTEL_PTT_PROPERTY>,
+    pub bindgen_union_field: [u32; 255usize],
 }
 #[test]
 fn bindgen_test_layout_TPMU_CAPABILITIES() {
-    assert_eq!(::std::mem::size_of::<TPMU_CAPABILITIES>() , 1028usize , concat
+    assert_eq!(::std::mem::size_of::<TPMU_CAPABILITIES>() , 1020usize , concat
                ! ( "Size of: " , stringify ! ( TPMU_CAPABILITIES ) ));
     assert_eq! (::std::mem::align_of::<TPMU_CAPABILITIES>() , 4usize , concat
                 ! ( "Alignment of " , stringify ! ( TPMU_CAPABILITIES ) ));
@@ -6009,10 +6029,10 @@ fn bindgen_test_layout_TPMU_CAPABILITIES() {
                 "Alignment of field: " , stringify ! ( TPMU_CAPABILITIES ) ,
                 "::" , stringify ! ( eccCurves ) ));
     assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_CAPABILITIES ) ) . na as * const _
-                as usize } , 0usize , concat ! (
+                & ( * ( 0 as * const TPMU_CAPABILITIES ) ) . intelPttProperty
+                as * const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_CAPABILITIES ) ,
-                "::" , stringify ! ( na ) ));
+                "::" , stringify ! ( intelPttProperty ) ));
 }
 impl Clone for TPMU_CAPABILITIES {
     fn clone(&self) -> Self { *self }
@@ -6028,7 +6048,7 @@ pub struct TPMS_CAPABILITY_DATA {
 }
 #[test]
 fn bindgen_test_layout_TPMS_CAPABILITY_DATA() {
-    assert_eq!(::std::mem::size_of::<TPMS_CAPABILITY_DATA>() , 1032usize ,
+    assert_eq!(::std::mem::size_of::<TPMS_CAPABILITY_DATA>() , 1024usize ,
                concat ! ( "Size of: " , stringify ! ( TPMS_CAPABILITY_DATA )
                ));
     assert_eq! (::std::mem::align_of::<TPMS_CAPABILITY_DATA>() , 4usize ,
@@ -6352,7 +6372,6 @@ pub struct TPMU_ATTEST {
     pub sessionAudit: __BindgenUnionField<TPMS_SESSION_AUDIT_INFO>,
     pub time: __BindgenUnionField<TPMS_TIME_ATTEST_INFO>,
     pub nv: __BindgenUnionField<TPMS_NV_CERTIFY_INFO>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u64; 138usize],
 }
 #[test]
@@ -6396,11 +6415,6 @@ fn bindgen_test_layout_TPMU_ATTEST() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ATTEST ) , "::" ,
                 stringify ! ( nv ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_ATTEST ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_ATTEST ) , "::" ,
-                stringify ! ( na ) ));
 }
 impl Clone for TPMU_ATTEST {
     fn clone(&self) -> Self { *self }
@@ -6536,7 +6550,7 @@ pub struct TPMS_AUTH_COMMAND {
 }
 #[test]
 fn bindgen_test_layout_TPMS_AUTH_COMMAND() {
-    assert_eq!(::std::mem::size_of::<TPMS_AUTH_COMMAND>() , 140usize , concat
+    assert_eq!(::std::mem::size_of::<TPMS_AUTH_COMMAND>() , 144usize , concat
                ! ( "Size of: " , stringify ! ( TPMS_AUTH_COMMAND ) ));
     assert_eq! (::std::mem::align_of::<TPMS_AUTH_COMMAND>() , 4usize , concat
                 ! ( "Alignment of " , stringify ! ( TPMS_AUTH_COMMAND ) ));
@@ -6552,12 +6566,12 @@ fn bindgen_test_layout_TPMS_AUTH_COMMAND() {
                 "::" , stringify ! ( nonce ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_COMMAND ) ) . sessionAttributes
-                as * const _ as usize } , 70usize , concat ! (
+                as * const _ as usize } , 72usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_COMMAND ) ,
                 "::" , stringify ! ( sessionAttributes ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_COMMAND ) ) . hmac as * const _
-                as usize } , 72usize , concat ! (
+                as usize } , 76usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_COMMAND ) ,
                 "::" , stringify ! ( hmac ) ));
 }
@@ -6576,9 +6590,9 @@ pub struct TPMS_AUTH_RESPONSE {
 }
 #[test]
 fn bindgen_test_layout_TPMS_AUTH_RESPONSE() {
-    assert_eq!(::std::mem::size_of::<TPMS_AUTH_RESPONSE>() , 134usize , concat
+    assert_eq!(::std::mem::size_of::<TPMS_AUTH_RESPONSE>() , 140usize , concat
                ! ( "Size of: " , stringify ! ( TPMS_AUTH_RESPONSE ) ));
-    assert_eq! (::std::mem::align_of::<TPMS_AUTH_RESPONSE>() , 2usize , concat
+    assert_eq! (::std::mem::align_of::<TPMS_AUTH_RESPONSE>() , 4usize , concat
                 ! ( "Alignment of " , stringify ! ( TPMS_AUTH_RESPONSE ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_RESPONSE ) ) . nonce as * const
@@ -6587,13 +6601,13 @@ fn bindgen_test_layout_TPMS_AUTH_RESPONSE() {
                 "::" , stringify ! ( nonce ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_RESPONSE ) ) .
-                sessionAttributes as * const _ as usize } , 66usize , concat !
+                sessionAttributes as * const _ as usize } , 68usize , concat !
                 (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_RESPONSE ) ,
                 "::" , stringify ! ( sessionAttributes ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMS_AUTH_RESPONSE ) ) . hmac as * const
-                _ as usize } , 68usize , concat ! (
+                _ as usize } , 72usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMS_AUTH_RESPONSE ) ,
                 "::" , stringify ! ( hmac ) ));
 }
@@ -6611,10 +6625,8 @@ pub type TPMI_CAMELLIA_KEY_BITS = TPM_KEY_BITS;
 pub struct TPMU_SYM_KEY_BITS {
     pub aes: __BindgenUnionField<TPMI_AES_KEY_BITS>,
     pub sm4: __BindgenUnionField<TPMI_SM4_KEY_BITS>,
-    pub camellia: __BindgenUnionField<TPMI_CAMELLIA_KEY_BITS>,
     pub sym: __BindgenUnionField<TPM_KEY_BITS>,
     pub exclusiveOr: __BindgenUnionField<TPMI_ALG_HASH>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: u16,
 }
 #[test]
@@ -6634,11 +6646,6 @@ fn bindgen_test_layout_TPMU_SYM_KEY_BITS() {
                 "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
                 "::" , stringify ! ( sm4 ) ));
     assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SYM_KEY_BITS ) ) . camellia as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
-                "::" , stringify ! ( camellia ) ));
-    assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_SYM_KEY_BITS ) ) . sym as * const _
                 as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
@@ -6648,11 +6655,6 @@ fn bindgen_test_layout_TPMU_SYM_KEY_BITS() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
                 "::" , stringify ! ( exclusiveOr ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SYM_KEY_BITS ) ) . na as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SYM_KEY_BITS ) ,
-                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SYM_KEY_BITS {
     fn clone(&self) -> Self { *self }
@@ -6662,9 +6664,7 @@ impl Clone for TPMU_SYM_KEY_BITS {
 pub struct TPMU_SYM_MODE {
     pub aes: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
     pub sm4: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
-    pub camellia: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
     pub sym: __BindgenUnionField<TPMI_ALG_SYM_MODE>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: u16,
 }
 #[test]
@@ -6684,20 +6684,10 @@ fn bindgen_test_layout_TPMU_SYM_MODE() {
                 "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
                 , stringify ! ( sm4 ) ));
     assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SYM_MODE ) ) . camellia as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
-                , stringify ! ( camellia ) ));
-    assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_SYM_MODE ) ) . sym as * const _ as
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
                 , stringify ! ( sym ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SYM_MODE ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SYM_MODE ) , "::"
-                , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SYM_MODE {
     fn clone(&self) -> Self { *self }
@@ -7086,7 +7076,6 @@ impl Clone for TPMS_SCHEME_XOR {
 pub struct TPMU_SCHEME_KEYEDHASH {
     pub hmac: __BindgenUnionField<TPMS_SCHEME_HMAC>,
     pub exclusiveOr: __BindgenUnionField<TPMS_SCHEME_XOR>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 2usize],
 }
 #[test]
@@ -7107,11 +7096,6 @@ fn bindgen_test_layout_TPMU_SCHEME_KEYEDHASH() {
                 as * const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SCHEME_KEYEDHASH )
                 , "::" , stringify ! ( exclusiveOr ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SCHEME_KEYEDHASH ) ) . na as * const
-                _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SCHEME_KEYEDHASH )
-                , "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SCHEME_KEYEDHASH {
     fn clone(&self) -> Self { *self }
@@ -7161,7 +7145,6 @@ pub struct TPMU_SIG_SCHEME {
     pub ecschnorr: __BindgenUnionField<TPMS_SIG_SCHEME_ECSCHNORR>,
     pub hmac: __BindgenUnionField<TPMS_SCHEME_HMAC>,
     pub any: __BindgenUnionField<TPMS_SCHEME_HASH>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 2usize],
 }
 #[test]
@@ -7210,11 +7193,6 @@ fn bindgen_test_layout_TPMU_SIG_SCHEME() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SIG_SCHEME ) ,
                 "::" , stringify ! ( any ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SIG_SCHEME ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SIG_SCHEME ) ,
-                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SIG_SCHEME {
     fn clone(&self) -> Self { *self }
@@ -7258,9 +7236,7 @@ pub type TPMS_SCHEME_KDF1_SP800_108 = TPMS_SCHEME_HASH;
 pub struct TPMU_KDF_SCHEME {
     pub mgf1: __BindgenUnionField<TPMS_SCHEME_MGF1>,
     pub kdf1_sp800_56a: __BindgenUnionField<TPMS_SCHEME_KDF1_SP800_56A>,
-    pub kdf2: __BindgenUnionField<TPMS_SCHEME_KDF2>,
     pub kdf1_sp800_108: __BindgenUnionField<TPMS_SCHEME_KDF1_SP800_108>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: u16,
 }
 #[test]
@@ -7280,20 +7256,10 @@ fn bindgen_test_layout_TPMU_KDF_SCHEME() {
                 "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
                 "::" , stringify ! ( kdf1_sp800_56a ) ));
     assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_KDF_SCHEME ) ) . kdf2 as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
-                "::" , stringify ! ( kdf2 ) ));
-    assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_KDF_SCHEME ) ) . kdf1_sp800_108 as *
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
                 "::" , stringify ! ( kdf1_sp800_108 ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_KDF_SCHEME ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_KDF_SCHEME ) ,
-                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_KDF_SCHEME {
     fn clone(&self) -> Self { *self }
@@ -7329,7 +7295,6 @@ pub type TPMI_ALG_ASYM_SCHEME = TPM_ALG_ID;
 #[derive(Debug, Default, Copy)]
 pub struct TPMU_ASYM_SCHEME {
     pub ecdh: __BindgenUnionField<TPMS_KEY_SCHEME_ECDH>,
-    pub ecmqv: __BindgenUnionField<TPMS_KEY_SCHEME_ECMQV>,
     pub rsassa: __BindgenUnionField<TPMS_SIG_SCHEME_RSASSA>,
     pub rsapss: __BindgenUnionField<TPMS_SIG_SCHEME_RSAPSS>,
     pub ecdsa: __BindgenUnionField<TPMS_SIG_SCHEME_ECDSA>,
@@ -7339,7 +7304,6 @@ pub struct TPMU_ASYM_SCHEME {
     pub rsaes: __BindgenUnionField<TPMS_ENC_SCHEME_RSAES>,
     pub oaep: __BindgenUnionField<TPMS_ENC_SCHEME_OAEP>,
     pub anySig: __BindgenUnionField<TPMS_SCHEME_HASH>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 2usize],
 }
 #[test]
@@ -7353,11 +7317,6 @@ fn bindgen_test_layout_TPMU_ASYM_SCHEME() {
                 as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
                 "::" , stringify ! ( ecdh ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_ASYM_SCHEME ) ) . ecmqv as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
-                "::" , stringify ! ( ecmqv ) ));
     assert_eq! (unsafe {
                 & ( * ( 0 as * const TPMU_ASYM_SCHEME ) ) . rsassa as * const
                 _ as usize } , 0usize , concat ! (
@@ -7403,11 +7362,6 @@ fn bindgen_test_layout_TPMU_ASYM_SCHEME() {
                 _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
                 "::" , stringify ! ( anySig ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_ASYM_SCHEME ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_ASYM_SCHEME ) ,
-                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_ASYM_SCHEME {
     fn clone(&self) -> Self { *self }
@@ -7956,7 +7910,6 @@ pub struct TPMU_SIGNATURE {
     pub ecschnorr: __BindgenUnionField<TPMS_SIGNATURE_ECSCHNORR>,
     pub hmac: __BindgenUnionField<TPMT_HA>,
     pub any: __BindgenUnionField<TPMS_SCHEME_HASH>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 130usize],
 }
 #[test]
@@ -8005,11 +7958,6 @@ fn bindgen_test_layout_TPMU_SIGNATURE() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_SIGNATURE ) , "::"
                 , stringify ! ( any ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SIGNATURE ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_SIGNATURE ) , "::"
-                , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SIGNATURE {
     fn clone(&self) -> Self { *self }
@@ -8053,7 +8001,6 @@ pub struct TPMU_ENCRYPTED_SECRET {
     pub rsa: __BindgenUnionField<[BYTE; 256usize]>,
     pub symmetric: __BindgenUnionField<[BYTE; 66usize]>,
     pub keyedHash: __BindgenUnionField<[BYTE; 66usize]>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u8; 256usize],
 }
 #[test]
@@ -8084,11 +8031,6 @@ fn bindgen_test_layout_TPMU_ENCRYPTED_SECRET() {
                 * const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_ENCRYPTED_SECRET )
                 , "::" , stringify ! ( keyedHash ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_ENCRYPTED_SECRET ) ) . na as * const
-                _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_ENCRYPTED_SECRET )
-                , "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_ENCRYPTED_SECRET {
     fn clone(&self) -> Self { *self }
@@ -8167,7 +8109,6 @@ pub struct TPMU_PUBLIC_ID {
     pub sym: __BindgenUnionField<TPM2B_DIGEST>,
     pub rsa: __BindgenUnionField<TPM2B_PUBLIC_KEY_RSA>,
     pub ecc: __BindgenUnionField<TPMS_ECC_POINT>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 129usize],
 }
 #[test]
@@ -8196,11 +8137,6 @@ fn bindgen_test_layout_TPMU_PUBLIC_ID() {
                 usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_PUBLIC_ID ) , "::"
                 , stringify ! ( ecc ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_PUBLIC_ID ) ) . na as * const _ as
-                usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_PUBLIC_ID ) , "::"
-                , stringify ! ( na ) ));
 }
 impl Clone for TPMU_PUBLIC_ID {
     fn clone(&self) -> Self { *self }
@@ -8339,7 +8275,6 @@ pub struct TPMU_PUBLIC_PARMS {
     pub rsaDetail: __BindgenUnionField<TPMS_RSA_PARMS>,
     pub eccDetail: __BindgenUnionField<TPMS_ECC_PARMS>,
     pub asymDetail: __BindgenUnionField<TPMS_ASYM_PARMS>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u32; 5usize],
 }
 #[test]
@@ -8373,11 +8308,6 @@ fn bindgen_test_layout_TPMU_PUBLIC_PARMS() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! ( TPMU_PUBLIC_PARMS ) ,
                 "::" , stringify ! ( asymDetail ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_PUBLIC_PARMS ) ) . na as * const _
-                as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! ( TPMU_PUBLIC_PARMS ) ,
-                "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_PUBLIC_PARMS {
     fn clone(&self) -> Self { *self }
@@ -8598,7 +8528,6 @@ pub struct TPMU_SENSITIVE_COMPOSITE {
     pub bits: __BindgenUnionField<TPM2B_SENSITIVE_DATA>,
     pub sym: __BindgenUnionField<TPM2B_SYM_KEY>,
     pub any: __BindgenUnionField<TPM2B_PRIVATE_VENDOR_SPECIFIC>,
-    pub na: __BindgenUnionField<::std::os::raw::c_char>,
     pub bindgen_union_field: [u16; 321usize],
 }
 #[test]
@@ -8634,11 +8563,6 @@ fn bindgen_test_layout_TPMU_SENSITIVE_COMPOSITE() {
                 const _ as usize } , 0usize , concat ! (
                 "Alignment of field: " , stringify ! (
                 TPMU_SENSITIVE_COMPOSITE ) , "::" , stringify ! ( any ) ));
-    assert_eq! (unsafe {
-                & ( * ( 0 as * const TPMU_SENSITIVE_COMPOSITE ) ) . na as *
-                const _ as usize } , 0usize , concat ! (
-                "Alignment of field: " , stringify ! (
-                TPMU_SENSITIVE_COMPOSITE ) , "::" , stringify ! ( na ) ));
 }
 impl Clone for TPMU_SENSITIVE_COMPOSITE {
     fn clone(&self) -> Self { *self }
@@ -10467,7 +10391,7 @@ extern "C" {
                                abiVersion: *mut TSS2_ABI_VERSION) -> TSS2_RC;
 }
 extern "C" {
-    pub fn Tss2_Sys_Finalize(sysContext: *mut TSS2_SYS_CONTEXT) -> TSS2_RC;
+    pub fn Tss2_Sys_Finalize(sysContext: *mut TSS2_SYS_CONTEXT);
 }
 extern "C" {
     pub fn Tss2_Sys_GetTctiContext(sysContext: *mut TSS2_SYS_CONTEXT,
