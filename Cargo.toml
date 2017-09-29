@@ -1,6 +1,6 @@
 [package]
 name = "tss-sapi"
-version = "0.0.4-pre"
+version = "0.0.4"
 authors = ["Doug Goldstein <doug@starlab.io>"]
 license = "MIT/Apache-2.0"
 description = "Bindings to the TPM 2.0 TSS SAPI"
