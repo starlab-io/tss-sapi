@@ -3904,21 +3904,19 @@ impl Clone for TPMA_OBJECT {
 pub struct TPMA_SESSION {
     pub __bindgen_anon_1: __BindgenUnionField<TPMA_SESSION__bindgen_ty_1>,
     pub val: __BindgenUnionField<UINT32>,
-    pub bindgen_union_field: u32,
+    pub bindgen_union_field: u8,
 }
 #[repr(C)]
 #[derive(Debug, Default, Copy)]
 pub struct TPMA_SESSION__bindgen_ty_1 {
     pub _bitfield_1: u8,
-    pub __bindgen_padding_0: [u8; 3usize],
-    pub __bindgen_align: [u32; 0usize],
 }
 #[test]
 fn bindgen_test_layout_TPMA_SESSION__bindgen_ty_1() {
-    assert_eq!(::std::mem::size_of::<TPMA_SESSION__bindgen_ty_1>() , 4usize ,
+    assert_eq!(::std::mem::size_of::<TPMA_SESSION__bindgen_ty_1>() , 1usize ,
                concat ! (
                "Size of: " , stringify ! ( TPMA_SESSION__bindgen_ty_1 ) ));
-    assert_eq! (::std::mem::align_of::<TPMA_SESSION__bindgen_ty_1>() , 4usize
+    assert_eq! (::std::mem::align_of::<TPMA_SESSION__bindgen_ty_1>() , 1usize
                 , concat ! (
                 "Alignment of " , stringify ! ( TPMA_SESSION__bindgen_ty_1 )
                 ));
