@@ -590,7 +590,7 @@ impl<'ctx> NvRamArea<'ctx> {
         let nvpub = sys::TPMS_NV_PUBLIC {
             nvIndex: index,
             nameAlg: hash.to_u16().unwrap(),
-            attributes: attrs.into(),
+            attributes: attrs.clone().into(),
             authPolicy: sys::TPM2B_DIGEST::default(),
             dataSize: size,
         };
@@ -613,11 +613,17 @@ impl<'ctx> NvRamArea<'ctx> {
         let resp = sys::TPMS_AUTH_RESPONSE::default();
         let mut session_out = RespAuths::from(resp);
 
-        trace!("Tss2_Sys_NV_DefineSpace({:?}, {:?}, {:?}, NULL index passwd, {:?}, SESSION_OUT)",
+        trace!("Tss2_Sys_NV_DefineSpace({:?}, {:?}, {:?}, {:?}, \
+            {{ index: 0x{:08X}, alg: {:?}, attrs: {:?}, size: {} }}, \
+            SESSION_OUT)",
                ctx,
                ctx.auth_type,
                session_data.inner,
-               nv);
+               nv_passwd,
+               index,
+               hash,
+               attrs,
+               size);
         tss_err(unsafe {
                     sys::Tss2_Sys_NV_DefineSpace(ctx.inner,
                                                  ctx.auth_type.to_u32().unwrap(),
