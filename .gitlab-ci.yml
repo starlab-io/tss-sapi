@@ -5,19 +5,14 @@ stages:
 
 format:
     stage: format
-    image: starlabio/ubuntu-native-build:1.0.9
+    image: starlabio/ubuntu-native-build:1.0.12
     script:
         - cargo fmt -- --write-mode=diff
 
 build:
     stage: build
-    image: starlabio/tpm-emulator:2.0
+    image: starlabio/ubuntu-native-build:1.0.12
     dependencies: []
-    before_script:
-        - curl -sSf rustup-install.sh https://sh.rustup.rs > rustup-install.sh
-        - sh rustup-install.sh -y
-        - source $HOME/.cargo/env
-        - rustup default 1.15.1-x86_64-unknown-linux-gnu
     script:
         - cargo build --verbose
         - cargo test --verbose
@@ -28,13 +23,8 @@ build:
 
 build-device-only:
     stage: build
-    image: starlabio/tpm-emulator:2.0
+    image: starlabio/ubuntu-native-build:1.0.12
     dependencies: []
-    before_script:
-        - curl -sSf rustup-install.sh https://sh.rustup.rs > rustup-install.sh
-        - sh rustup-install.sh -y
-        - source $HOME/.cargo/env
-        - rustup default 1.15.1-x86_64-unknown-linux-gnu
     script:
         - cargo build --no-default-features --features tcti-device
 
