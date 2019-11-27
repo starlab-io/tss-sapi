@@ -9,7 +9,9 @@ TPM 2.0 TSS (TPM Software Stack) SAPI (System API) Rust Wrapper
 
 ## Build
 
-To compile this library you must have tpm2-tss installed from https://github.com/01org/tpm2-tss
+To compile this library you must have tpm2-tss installed from https://github.com/tpm2-software/tpm2-tss
+
+A precompiled package should be available at your distro: https://tpm2-software.github.io/packaging/
 
 If you have it installed in a non-standard path you can export the following environment variables:
 
